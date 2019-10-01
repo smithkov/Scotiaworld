@@ -1,0 +1,240 @@
+<!-- Waves Effect Css -->
+
+<section class="content">
+  <!-- Advanced Form Example With Validation -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="header">
+          <h2>APPLICATION FORM</h2>
+          <ul class="nav nav-tabs tab-nav-right" role="tablist">
+            <li role="presentation"><a href="">Step One</a></li>
+            <li role="presentation"><a href="#">Step Two</a></li>
+            <li role="presentation" class="active"><a href="#" data-toggle="tab">Step Three</a></li>
+            <li role="presentation"><a href="#">Step Four</a></li>
+            <li role="presentation"><a href="#">Step Five</a></li>
+            <li role="presentation" class=""><a href="#" data-toggle="tab">Finish</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content"></div>
+        </div>
+        <div class="body">
+          <form action="/application/form3" method="POST">
+            <input type="hidden" name="view" value="{{app.view}}" />
+            <input type="hidden" name="step" value="step3" />
+            <input type="hidden" name="id" value="{{app.id}}" />
+            <div class="form-group form-float">
+              <label>Select highest qualification obtained </label>
+              <div class="form-line">
+                <select class='form-control' name="hQualification" required>
+                  <option value='{{app.hQualification}}'>
+
+                    {{#if app.hQualification}}
+                    {{app.hQualification}}
+                    {{else}}
+                    --Select Highest Qualification--
+                    {{/if}}
+
+                  </option>
+                  {{#each quali}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+            <div class="form-group form-float">
+              <label>Qualification grade</label>
+              <div class="form-line">
+                <input name="hGrade" value="{{app.hGrade}}" class="form-control" type="text" required>
+              </div>
+            </div>
+            <div class="form-group form-float">
+              <label>Institution name</label>
+              <div class="form-line">
+                <input name="hSchoolName" value="{{app.hSchoolName}}" class="form-control" type="text" required>
+              </div>
+            </div>
+            <div class="form-group form-float">
+              <label>Programme completed?</label>
+              <div class="form-line">
+                <select class='form-control' name="hCompleted" required>
+                  <option value='{{app.hCompleted}}'>
+                    {{#if app.hCompleted}}
+                    {{app.hCompleted}}
+                    {{else}}
+                    --Programme Completed?--
+                    {{/if}}
+
+                  </option>
+                  <option value='Yes'>Yes</option>
+                  <option value='No'>No</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group form-float">
+              <label>Programme year</label>
+              <div class="form-line">
+                <select class='form-control' name="hProgrammeYear" required>
+                  <option value='{{app.hProgrammeYear}}'>
+                    {{#if app.hProgrammeYear}}
+                    {{app.hProgrammeYear}}
+                    {{else}}
+                    --Select Programme Year--
+                    {{/if}}
+
+                  </option>
+                  {{#each year}}
+                  <option value='{{this}}'>{{this}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+            <hr>
+            <div class="form-group form-float">
+              <label>Select previous qualification</label>
+              <div class="form-line">
+                <select class='form-control' name="pQualification">
+                  <option value='{{app.pQualification}}'>
+                    {{#if app.pQualification}}
+                    {{app.pQualification}}
+                    {{else}}
+                    --Select Previous Qualification--
+                    {{/if}}
+
+                  </option>
+                  {{#each quali}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+            <div class="form-group form-float">
+              <label>Qualification grade</label>
+              <div class="form-line">
+                <input name="pGrade" value="{{app.pGrade}}" class="form-control" type="text">
+              </div>
+            </div>
+            <div class="form-group form-float">
+              <label>Institution name</label>
+              <div class="form-line">
+                <input name="pSchoolName" value="{{app.pSchoolName}}" class="form-control" type="text">
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Programme completed?</label>
+              <div class="form-line">
+                <select class='form-control' name="pCompleted">
+                  <option value='{{app.pCompleted}}'>
+                    {{#if app.pCompleted}}
+                    {{app.pCompleted}}
+                    {{else}}
+                    --Select Programme Completed?--
+                    {{/if}}
+
+                  </option>
+                  <option value='Yes'>Yes</option>
+                  <option value='No'>No</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Programme year</label>
+              <div class="form-line">
+                <select class='form-control' name="pProgrammeYear">
+                  <option value='{{app.pProgrammeYear}}'>
+                    {{#if app.pProgrammeYear}}
+                    {{app.pProgrammeYear}}
+                    {{else}}
+                    --Select Programme Year--
+                    {{/if}}
+
+                  </option>
+                  {{#each year}}
+                  <option value='{{this}}'>{{this}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+
+            <hr>
+            <div class="form-group form-float">
+              <label>High school name</label>
+              <div class="form-line">
+                <input name="highSchoolName" value="{{app.highSchoolName}}" class="form-control" type="text">
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Year of completion</label>
+              <div class="form-line">
+                <select class='form-control' name="completionYr">
+                  <option value='{{app.completionYr}}'>
+                    {{#if app.completionYr}}
+                    {{app.completionYr}}
+                    {{else}}
+                    --Select Year of Completion--
+                    {{/if}}
+                  </option>
+                  {{#each year}}
+                  <option value='{{this}}'>{{this}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>English proficiency test</label>
+              <div class="form-line">
+                <select class='form-control' name="englishTest">
+                  <option value='{{app.englishTest}}'>
+                    {{#if app.englishTest}}
+                    {{app.englishTest}}
+                    {{else}}
+                    --Select English proficiency Test--
+                    {{/if}}
+                  </option>
+                  <option value='IELTS'>IELTS</option>
+                  <option value='TOEFL'>TOEFL</option>
+                  <option value='PTE'>PTE</option>
+                  <option value='NONE'>NONE</option>
+                </select>
+              </div>
+            </div>
+            <a href="/application/step2" type="button" class="btn bg-orange waves-effect">
+              <i class="material-icons">arrow_back</i> <span class="icon-name">back</span>
+            </a>
+            <button type="submit" class="btn pull-right bg-primary waves-effect">
+              <i class="material-icons">arrow_forward</i> <span class="icon-name">Save and continue</span>
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- #END# Advanced Form Example With Validation -->
+</section>
+<!-- Jquery DataTable Plugin Js -->
+<script>
+  $(function () {
+
+    $(".btnStep1").hover(function () {
+      alert("uueue")
+    })
+
+  });
+</script>
+<!-- Input Mask Plugin Js -->
+<script src="/admin_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+
+<!-- Dropzone Plugin Js -->
+<script src="/admin_theme/plugins/dropzone/dropzone.js"></script>
+
+<!-- Waves Effect Plugin Js -->
+<script src="/admin_theme/plugins/node-waves/waves.js"></script>
+<!-- Demo Js -->
+<script src="/admin_theme/js/demo.js"></script>

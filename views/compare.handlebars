@@ -1,0 +1,117 @@
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
+
+<!-- bread-crumb start here -->
+<div class="bread-crumb">
+	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
+	<div class="container">
+		<div class="matter">
+			<h2>COMPARE TUTION FEES </h2>
+
+		</div>
+	</div>
+</div>
+<!-- bread-crumb end here -->
+
+<!-- coures start here -->
+<div>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 col-xs-12 hidden-xs">
+
+				<div class="left">
+					<h4>POPULAR COURSES</h4>
+					<div class="popular">
+						{{#each data}}
+							<div class="box">
+								<img src="/main_theme/images/p1.jpg" class="img-responsive" alt="img" title="img" />
+								<p>{{this.name}}</p>
+								<span>£{{this.fee}}</span>
+							</div>
+						{{/each}}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9 col-xs-12 mainpage">
+				<div class="col-sm-12 sort">
+
+						<h3 style="text-align:center"><strong>COMPARE FEES</strong></h3>
+
+
+				</div>
+				<div class="row">
+					<div class="schoolDiv">
+
+						<table id="course" class="display table table-striped table-bordered" style="width:100%">
+			        <thead>
+			            <tr>
+			                <th>Name</th>
+			                <th>Duration</th>
+											<th>Degree</th>
+											<th>Time</th>
+			                <th>Faculty</th>
+											<th>Fee</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+								{{#each courses}}
+								<tr>
+
+										<td>{{this.name}}</td>
+										<td>{{this.duration}}</td>
+										<td>{{this.DegreeType.name}}</td>
+										<td>{{this.time}}</td>
+										<td>{{this.StudyArea.name}}</td>
+										<td><strong>£{{this.fee}}</strong></td>
+										<!-- <td><a href="/school-courses/{{this._id}}">View courses</a></td> -->
+								</tr>
+								{{/each}}
+			        </tbody>
+							<tfoot>
+								 <tr>
+									 <th>Name</th>
+									 <th>Duration</th>
+									 <th>Degree</th>
+									 <th>Time</th>
+									 <th>Faculty</th>
+									 <th>Fee</th>
+								 </tr>
+						 </tfoot>
+			    </table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+	$('#course').DataTable( {
+			initComplete: function () {
+					this.api().columns().every( function () {
+							var column = this;
+							var select = $('<select><option value=""></option></select>')
+									.appendTo( $(column.footer()).empty() )
+									.on( 'change', function () {
+											var val = $.fn.dataTable.util.escapeRegex(
+													$(this).val()
+											);
+
+											column
+													.search( val ? '^'+val+'$' : '', true, false )
+													.draw();
+									} );
+
+							column.data().unique().sort().each( function ( d, j ) {
+									select.append( '<option value="'+d+'">'+d+'</option>' )
+							} );
+					} );
+			}
+	} );
+} );
+</script>
+<!-- coures end here -->

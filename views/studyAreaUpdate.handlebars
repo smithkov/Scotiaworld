@@ -1,0 +1,13 @@
+<form action="/studyAreaUpdate" method="POST">
+  <div class="col-lg-8">
+    <a href="/listing" class="btn btn-primary">List Crypto</a><hr>
+    {{#if success_msg}}
+    <hr>
+      <div class="alert alert-success">{{success_msg}}</div>
+    {{/if}}
+    <input type="hidden" name ="id" value="{{data.id}}"></input>
+    <input class="form-control" value ="{{data.name}}" placeholder="Study Area" type="text" name="name" ></input>
+
+    <input class="btn btn-primary" type="submit" name="submit" value="submit"></input>
+</div>
+</form>

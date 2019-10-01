@@ -1,0 +1,456 @@
+
+<!-- Waves Effect Css -->
+
+<section class="content">
+    <!-- Advanced Form Example With Validation -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>ADVANCED FORM EXAMPLE WITH VALIDATION</h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <form id="wizard_with_validation" action="/application/form" method="POST">
+                        <h3>Step</h3>
+                        <fieldset>
+
+                              <input id="txtStep" type="hidden" name="step" value=""/>
+                              <input type="hidden" name="id" value="{{app.id}}"/>
+                            <div class="form-group form-float">
+              								<label>First name (as stated on the passport)*</label>
+              								<input type="text" name="firstname" value="{{app.firstname}}" placeholder="first name"  class="form-control" required>
+              							</div>
+
+              							<div class="form-group form-float">
+              								<label>Middle name</label>
+              								<input type="text" name="middlename" value="{{app.middlename}}" placeholder="middle name"  class="form-control">
+              							</div>
+
+              							<div class="form-group form-float">
+              								<label>Last name *</label>
+              								<input type="text" name="lastname" value="{{app.lastname}}" placeholder="last name"  class="form-control" required>
+              							</div>
+
+              		          <div class="form-group form-float">
+              								<label>Nationality *</label>
+              							  <select class='form-control show-tick' name="nationality" required>
+                                <option value='{{app.nationality}}'>
+                                  {{#if app.marital}}
+                                    {{app.nationality}}
+                                  {{else}}
+                                     --Select Nationality--
+                                  {{/if}}
+                                </option>
+              									{{#each countries}}
+              							      <option value='{{this.id}}'>{{this.name}}</option>
+              									{{/each}}
+              							  </select>
+              							</div>
+
+              							<div class="form-group form-float">
+              								<label>Date of birth *</label>
+                              <div class="input-group demo-masked-input">
+                                  <span class="input-group-addon">
+                                      <i class="material-icons">date_range</i>
+                                  </span>
+                                  <div class="form-line">
+                                      <input type="text" name="dob" class="form-control date" placeholder="Ex: 30/07/2016">
+                                  </div>
+                              </div>
+
+              							</div>
+
+              							<div class="form-group form-float">
+              								<label>Gender * </label>
+              							  <select class='form-control show-tick' name="gender" required>
+              									  <option value='{{app.gender}}'>
+                                    {{#if app.gender}}
+                                      {{app.marital}}
+                                    {{else}}
+                                       --Select Gender--
+                                    {{/if}}
+
+                                  </option>
+              									  <option value='Male'>Male</option>
+              							      <option value='Female'>Female</option>
+              							  </select>
+              							</div>
+
+              							<div class="form-group form-float">
+              								<label>Marital status *</label>
+              								<select class='form-control show-tick' name="marital" required>
+              									 <option value='{{app.marital}}'>
+                                     {{#if app.marital}}
+                                       {{app.marital}}
+                                     {{else}}
+                                        --Select Marital Status--
+                                     {{/if}}
+                                 </option>
+              									 <option value='Married'>Married</option>
+              									 <option value='Single'>Single</option>
+              							 </select>
+              						 </div>
+                         <button id="btnStep1" type="submit" class="btn btn-primary m-t-15 waves-effect btnStep1">Save to continue later</button>
+
+                        </fieldset>
+
+                        <h3>Step</h3>
+                        <fieldset>
+                              <div class="form-group form-float">
+                                <label>Home Address *</label>
+                                <textarea name="homeAddress" value="{{app.homeAddress}}" cols="30" rows="3" placeholder="home address" class="form-control no-resize"></textarea>
+                              </div>
+
+                              <div class="form-group form-float">
+                                <label>Postal address (if different)</label>
+                                <textarea name="postalAddress" value="{{app.postalAddress}}" cols="30" rows="3" placeholder="postal address" class="form-control no-resize"></textarea>
+                              </div>
+
+                              <div class="form-group form-float">
+                                <label>Telephone phone number*</label>
+                                <input name="phone" value="{{app.phone}}" class="form-control" placeholder="telephone number" type="text" required>
+                              </div>
+                              <button id="btnStep2" type="submit" class="btn btn-primary m-t-15 waves-effect">Save to continue later</button>
+                            </fieldset>
+                            <h3>Step</h3>
+                              <fieldset>
+                                    <div class="form-group form-float">
+                                      <label>Select highest qualification obtained </label>
+                                      <select class='form-control' name="hQualification" required>
+                                        <option value='{{app.hQualification}}'>
+
+                                          {{#if app.hQualification}}
+                                            {{app.hQualification}}
+                                          {{else}}
+                                             --Select Highest Qualification--
+                                          {{/if}}
+
+                                        </option>
+                                        {{#each quali}}
+                                          <option value='{{this.name}}'>{{this.name}}</option>
+                                        {{/each}}
+                                      </select>
+                                    </div>
+                                    <div class="form-group form-float">
+                                      <label>Qualification grade</label>
+                                      <input name="hGrade" value="{{app.hGrade}}" class="form-control" type="text" required>
+                                    </div>
+                                    <div class="form-group form-float">
+                                      <label>Institution name</label>
+                                      <input name="hSchoolName" value="{{hSchoolName}}" class="form-control" type="text" required>
+                                    </div>
+                                    <div class="form-group form-float">
+                                      <label>Programme completed?</label>
+                                      <select class='form-control' name="hCompleted" required>
+                                         <option value='{{app.hCompleted}}'>
+                                           {{#if app.hCompleted}}
+                                             {{app.hCompleted}}
+                                           {{else}}
+                                              --Programme Completed?--
+                                           {{/if}}
+
+                                         </option>
+                                         <option value='Yes'>Yes</option>
+                                         <option value='No'>No</option>
+                                     </select>
+                                   </div>
+                                  <div class="form-group form-float">
+                                     <label>Programme year</label>
+                                     <select class='form-control' name="hProgrammeYear" required>
+                                       <option value='{{app.hProgrammeYear}}'>
+                                         {{#if app.hProgrammeYear}}
+                                           {{app.hProgrammeYear}}
+                                         {{else}}
+                                            --Select Programme Year--
+                                         {{/if}}
+
+                                       </option>
+                                       {{#each year}}
+                                         <option value='{{this}}'>{{this}}</option>
+                                       {{/each}}
+                                     </select>
+                                 </div>
+                                  <hr>
+                                  <div class="form-group form-float">
+                                    <label>Select previous qualification</label>
+                                    <select class='form-control' name="pQualification">
+                                      <option value='{{app.pQualification}}'>
+                                        {{#if app.pQualification}}
+                                          {{app.pQualification}}
+                                        {{else}}
+                                           --Select Previous Qualification--
+                                        {{/if}}
+
+                                      </option>
+                                      {{#each quali}}
+                                        <option value='{{this.name}}'>{{this.name}}</option>
+                                      {{/each}}
+                                    </select>
+                                  </div>
+                                <div class="form-group form-float">
+                                  <label>Qualification grade</label>
+                                  <input name="pGrade" value="{{app.pGrade}}" class="form-control" type="text">
+                                </div>
+                                <div class="form-group form-float">
+                                  <label>Institution name</label>
+                                  <input name="pSchoolName" value="{{pSchoolName}}" class="form-control" type="text">
+                                </div>
+
+                                  <div class="form-group form-float">
+                                    <label>Programme completed?</label>
+                                    <select class='form-control' name="pCompleted">
+                                       <option value='{{app.pCompleted}}'>
+                                         {{#if app.pCompleted}}
+                                           {{app.pCompleted}}
+                                         {{else}}
+                                            --Select Programme Completed?--
+                                         {{/if}}
+
+                                       </option>
+                                       <option value='Yes'>Yes</option>
+                                       <option value='No'>No</option>
+                                   </select>
+                                 </div>
+
+                                 <div class="form-group form-float">
+                                    <label>Programme year</label>
+                                     <select class='form-control' name="pProgrammeYear">
+                                       <option value='{{app.pProgrammeYear}}'>
+                                         {{#if app.pProgrammeYear}}
+                                           {{app.pProgrammeYear}}
+                                         {{else}}
+                                            --Select Programme Year--
+                                         {{/if}}
+
+                                       </option>
+                                       {{#each year}}
+                                         <option value='{{this}}'>{{this}}</option>
+                                       {{/each}}
+                                     </select>
+                                 </div>
+
+                                 <hr>
+                                 <div class="form-group form-float">
+                                   <label>High school name</label>
+                                   <input name="highSchoolName" value="{{app.highSchoolName}}" class="form-control" type="text">
+                                 </div>
+
+                                 <div class="form-group form-float">
+                                   <label>Year of completion</label>
+                                  <select class='form-control' name="completionYr">
+                                    <option value='{{app.completionYr}}'>
+                                      {{#if app.completionYr}}
+                                        {{app.completionYr}}
+                                      {{else}}
+                                         --Select Year of Completion--
+                                      {{/if}}
+                                    </option>
+                                    {{#each year}}
+                                      <option value='{{this}}'>{{this}}</option>
+                                    {{/each}}
+                                  </select>
+                                </div>
+
+                                <div class="form-group form-float">
+                                  <label>English proficiency test</label>
+                                  <select class='form-control' name="englishTest">
+                                     <option value='{{app.englishTest}}'>
+                                       {{#if app.englishTest}}
+                                         {{app.englishTest}}
+                                       {{else}}
+                                          --Select English proficiency Test--
+                                       {{/if}}
+                                     </option>
+                                     <option value='IELTS'>IELTS</option>
+                                     <option value='TOEFL'>TOEFL</option>
+                                     <option value='PTE'>PTE</option>
+                                     <option value='NONE'>NONE</option>
+                                 </select>
+                               </div>
+                           <button id="btnStep3" type="submit" class="btn btn-primary m-t-15 waves-effect">Save to continue later</button>
+
+                        </fieldset>
+                        <h3>Step</h3>
+                        <fieldset>
+                              <div class="form-group form-float">
+                  			 				<label>Course of interest 1</label>
+                  			 				 <select class='form-control' name="course1" required>
+                  			 					 <option value='{{app.course1}}'>
+                                     {{#if app.course1}}
+                                       {{app.course1}}
+                                     {{else}}
+                                        --Select Course of Interest--
+                                     {{/if}}
+                                   </option>
+                  			 					 {{#each courses}}
+                  			 						 <option value='{{this.id}}'>{{this.name}}</option>
+                  			 					 {{/each}}
+                  			 				 </select>
+                  			 		 </div>
+
+                  			 		 <div class="form-group form-float">
+                  			 				<label>Programme level</label>
+                  			 				 <select class='form-control' name="level" required>
+                  			 					 <option value='{{app.level}}'>
+                                     {{#if app.level}}
+                                       {{app.level}}
+                                     {{else}}
+                                        --Programme Level--
+                                     {{/if}}
+                                   </option>
+                  			 					 {{#each quali}}
+                  			 						 <option value='{{this.id}}'>{{this.name}}</option>
+                  			 					 {{/each}}
+                  			 				 </select>
+                  			 		 </div>
+
+                  			 		 <div class="form-group form-float">
+                  			 				<label>Preffered location in Scotland</label>
+                  			 				 <select class='form-control' name="cityOfChoice" required>
+                  			 					 <option value='{{app.cityOfChoice}}'>
+                                     {{#if app.cityOfChoice}}
+                                       {{app.cityOfChoice}}
+                                     {{else}}
+                                        --Preffere Location--
+                                     {{/if}}
+                                   </option>
+                  			 					 {{#each cities}}
+                  			 						 <option value='{{this.id}}'>{{this.name}}</option>
+                  			 					 {{/each}}
+                  			 				 </select>
+                  			 		 </div>
+
+                  			 		 <div class="form-group form-float">
+                  			 				<label>Preffered institution first choice (if any)</label>
+                  			 				 <select class='form-control' name="schoolWish1" required>
+                  			 					 <option value='{{app.schoolWish1}}'>
+                                     {{#if app.schoolWish1}}
+                                       {{app.schoolWish1}}
+                                     {{else}}
+                                        --Select School--
+                                     {{/if}}
+                                   </option>
+                  			 					 {{#each institutions}}
+                  			 						 <option value='{{this.id}}'>{{this.name}}</option>
+                  			 					 {{/each}}
+                  			 				 </select>
+                  			 		 </div>
+
+                  			 		 <div class="form-group form-float">
+                  			 				<label>Preffered institution second choice (if any)</label>
+                  			 				 <select class='form-control' name="schoolWish2" required>
+                  			 					 <option value='{{app.schoolWish2}}'>
+                                     {{#if app.schoolWish2}}
+                                       {{app.schoolWish2}}
+                                     {{else}}
+                                        --Select School--
+                                     {{/if}}
+                                   </option>
+                  			 					 {{#each institutions}}
+                  			 						 <option value='{{this.id}}'>{{this.name}}</option>
+                  			 					 {{/each}}
+                  			 				 </select>
+                  			 		 </div>
+                             <hr>
+                             <div class="form-group form-float">
+                 							<label>Sponsorship</label>
+                 							<select name="sponsor" class="form-control" required>
+                                <option value='{{app.sponsor}}'>
+                                  {{#if app.sponsor}}
+                                    {{app.sponsor}}
+                                  {{else}}
+                                     --Select Sponsor--
+                                  {{/if}}
+                                </option>
+                 								<option value="Self-sponsored">Self-sponsored</option>
+                 								<option value="Parents">Parents</option>
+                 								<option value="Other relatives">Other relatives</option>
+                 								<option value="Employer">Employer</option>
+                 								<option value="Scholarship">Scholarship</option>
+                 							</select>
+                 						</div>
+
+                 						<div class="form-group form-float">
+                 							<label>Sponsor name</label>
+                 							<input name="sponsorName" value="{{app.sponsorName}}" class="form-control" type="text" required>
+                 						</div>
+
+                 						<div class="form-group form-float">
+                 							<label>Sponsor occupation</label>
+                 							<input name="sponsorOccupation" value="{{app.sponsorOccupation}}" class="form-control" type="text" required>
+                 						</div>
+
+                 						<div class="form-group form-float">
+                 							<label>Your budget for tuition fees</label>
+                 							<input name="budget" value="{{app.budget}}" class="form-control" type="text">
+                 						</div>
+                        <button id="btnStep4" type="submit" class="btn btn-primary m-t-15 waves-effect">Save to continue later</button>
+
+                        </fieldset>
+                        <h3>Step</h3>
+                        <fieldset>
+                              <div class="form-group form-float">
+                  							<input name="hasApplied" value="{{app.hasApplied}}" type="checkbox">Have you applied for a UK visa before?
+                  						</div>
+
+                  						<div class="form-group  form-float">
+                  							<label>If yes (visa granted) purpose of travel to the UK (eg. Study, visit)</label>
+                  							<textarea cols="30" rows="3" value={{app.purpose}} name="purpose" class="form-control"></textarea>
+                  						</div>
+
+                  						<div class="form-group  form-float">
+                  							<label>If yes (visa refused) state reasons of visa refusal</label>
+                  							<textarea cols="30" rows="3" value="{{app.reasonOfRefusal}}" name="reasonOfRefusal" class="form-control"></textarea>
+                  						</div>
+
+                  						<div class="form-group form-float">
+                  							<label>More information</label>
+                  							<textarea cols="30" rows="3"  cols="30" value={{app.moreInfo}} name="moreInfo" class="form-control"></textarea>
+                  						</div>
+                          <button id="btnStep5" type="submit" class="btn btn-primary m-t-15 waves-effect">Save to continue later</button>
+                        </form>
+                        </fieldset>
+                        <h3>Finish</h3>
+                        <fieldset>
+                            <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
+                            <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+                        </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Advanced Form Example With Validation -->
+   </section>
+   <!-- Jquery DataTable Plugin Js -->
+   <script>
+   $( function() {
+
+    $(".btnStep1").hover(function(){
+      alert("uueue")
+    })
+
+   } );
+   </script>
+   <!-- Input Mask Plugin Js -->
+   <script src="/admin_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+
+   <!-- Dropzone Plugin Js -->
+   <script src="/admin_theme/plugins/dropzone/dropzone.js"></script>
+
+   <!-- Waves Effect Plugin Js -->
+   <script src="/admin_theme/plugins/node-waves/waves.js"></script>
+   <!-- Demo Js -->
+   <script src="/admin_theme/js/demo.js"></script>

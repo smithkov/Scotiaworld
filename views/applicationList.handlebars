@@ -1,0 +1,74 @@
+<!-- Waves Effect Css -->
+
+<section class="content">
+       <div class="container-fluid">
+           <div class="block-header">
+               <a href="{{entity.url}}add" class="btn">Add new {{entity.name}}</a>
+           </div>
+           <!-- Exportable Table -->
+           <div class="row clearfix">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                   <div class="card">
+                       <div class="header">
+                           <h2>
+                               Application list
+                           </h2>
+                       </div>
+                       <div class="body">
+                           <div class="table-responsive">
+                               <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+
+
+
+
+                                     <thead>
+                                         <tr>
+                                            <th></th>
+                                             <th>Name</th>
+                                             <th>Fee</th>
+                                             <th>Duration</th>
+                                             <th>Time</th>
+                                             <th>Institution</th>
+                                             <th>Degree Type</th>
+                                             <th>Study Area</th>
+                                             <th></th>
+                                             <th>Edit</th>
+                                             <th>Delete</th>
+                                         </tr>
+                                     </thead>
+
+                                     <tbody>
+                                       {{#each data}}
+                                         <tr>
+                                           <td>
+                                             {{#if this.path}}
+                                                <img style="height:30px; width:30px" class="img-responsive thumbnail" src="/uploads/{{this.path}}">
+                                               {{else}}
+
+                                                 <img style="height:30px; width:30px" class="img-responsive thumbnail" src="/cancel.png">
+                                             {{/if}}
+                                           </td>
+                                            <td>{{this.name}}</td>
+                                             <td>{{this.fee}}</td>
+                                             <td>{{this.duration}}</td>
+                                             <td>{{this.time}}</td>
+                                             <td>{{this.institution.name}}</td>
+                                             <td>{{this.degreeType.name}}</td>
+                                             <td>{{this.studyArea.name}}</td>
+                                              <td><a href="{{entity.url}}popular/{{this.id}}">  {{#if this.isPopular}} Make unPopular{{else}} Make Popular{{/if}}</a></td>
+                                             <td><a href="{{entity.url}}update/{{this.id}}"><img style="height:25px; width:25px" src="/fancy_buttons/edit.ico"/></a></td>
+                                             <td><a href="{{entity.url}}delete/{{this.id}}"><img style="height:25px; width:25px" src="/fancy_buttons/delete.ico"/></a></td>
+                                         </tr>
+                                         {{/each}}
+                                     </tbody>
+
+                               </table>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <!-- #END# Exportable Table -->
+       </div>
+   </section>
+   <!-- Jquery DataTable Plugin Js -->

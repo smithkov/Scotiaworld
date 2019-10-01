@@ -1,0 +1,137 @@
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
+
+<!-- bread-crumb start here -->
+<div class="bread-crumb">
+	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
+	<div class="container">
+		<div class="matter">
+			<h2>All Courses in {{name}} </h2>
+
+		</div>
+	</div>
+</div>
+<!-- bread-crumb end here -->
+
+<!-- coures start here -->
+<div ng-controller="searchCtrl" class="coures">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 col-xs-12 hidden-xs">
+
+				<div class="left">
+					<h4>POPULAR COURSES</h4>
+					<div class="popular">
+						{{#each data}}
+							<div class="box">
+								<img src="/main_theme/images/p1.jpg" class="img-responsive" alt="img" title="img" />
+								<p>{{this.name}}</p>
+								<span>£{{this.fee}}</span>
+							</div>
+						{{/each}}
+					</div>
+				</div>
+			</div>
+			<div ng-controller="searchCtrl2" class="col-sm-9 col-xs-12 mainpage">
+				<div class="col-sm-12 sort">
+
+						<h3 style="text-align:center"><strong>ALL COURSES IN {{name}}</strong></h3>
+
+
+				</div>
+				<div class="row">
+					<div class="schoolDiv">
+
+						<table id="example" class="example table table-striped table-bordered" style="width:100%">
+			        <thead>
+			            <tr>
+			                <th>Name</th>
+			                <th>Fee</th>
+			                <th>Duration</th>
+											<th>Degree</th>
+											<th>Time</th>
+			                <th>Faculty</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+								{{#each courses}}
+								<tr>
+
+										<td>{{this.name}}</td>
+										<td>£{{this.fee}}</td>
+										<td>{{this.duration}}</td>
+										<td>{{this.degreeType.name}}</td>
+										<td>{{this.time}}</td>
+										<td>{{this.studyArea.name}}</td>
+										<!-- <td><a href="/school-courses/{{this._id}}">View courses</a></td> -->
+								</tr>
+								{{/each}}
+			        </tbody>
+			    </table>
+					</div>
+
+					<div  class="courseDiv">
+ 					 <div  ng-repeat = "data in myData2" class="product-layout product-grid col-lg-4 col-md-4 col-sm-6 col-xs-12">
+ 						 <div class="product-thumb">
+ 							 <div class="image">
+ 								 <a href="all_courses_singleview.html">
+ 									 <img src="/main_theme/images/01.jpg" class="img-responsive" alt="img" title="img" />
+ 								 </a>
+ 							 </div>
+ 							 <div class="caption">
+ 								 <h3><span ng-bind="data.studyArea.name"></span> <span class="price">{{data._id}}</span></h3>
+ 								 <h4 style="font-size:16px" ng-bind="data.name"></h4>
+ 								 <h5 ng-bind="data.name"> <span class="price">$29.00</span></h5>
+ 								 <h6>Technology </h6>
+ 								 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla interdum ipsum malesuada arcu tristique, sit amet fringilla metus volutpat.</p>
+ 								 <ul class="list-inline">
+ 									 <li>
+ 										 <a href="#" ng-bind="data.duration"></i>15</a>
+ 									 </li>
+ 									 <li>
+ 										 <a href="#" ng-bind="data.time"></i></a>
+ 									 </li>
+ 									 <li ng-bind="'£ '+(data.fee | filter)"></li>
+ 								 </ul>
+ 							 </div>
+ 						 </div>
+ 					 </div>
+ 				 </div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(document).ready(function(){
+  var cboSelectCat = $(".cboSelectCat");
+  var schoolDiv = $(".schoolDiv");
+	var courseDiv = $(".courseDiv");
+	 schoolDiv.show();
+	 courseDiv.hide();
+	cboSelectCat.change(function(){
+
+		var cboValue = $('.cboSelectCat :selected').text();
+
+		if(cboValue === "Courses"){
+       schoolDiv.hide();
+			 courseDiv.show();
+
+		}
+		else{
+			schoolDiv.show();
+			courseDiv.hide();
+		}
+	})
+});
+</script>
+<script>
+$(document).ready(function() {
+
+    $('#example').DataTable();
+} );
+</script>
+<!-- coures end here -->

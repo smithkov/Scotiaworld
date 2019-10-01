@@ -1,0 +1,46 @@
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
+<!-- bread-crumb start here -->
+<div class="bread-crumb">
+	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
+	<div class="container">
+		<div class="matter">
+			<h2>{{name}}</h2>
+
+		</div>
+	</div>
+</div>
+<!-- bread-crumb end here -->
+
+<!-- abouts start here -->
+<div class="abouts">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-xs-12">
+				<div class="commontop text-center">
+					<h2>{{description}}</h2>
+
+				</div>
+			</div>
+			<div class="col-sm-12 col-xs-12">
+
+				<div class="bo" id="name"></div>
+				<input value="{{app.name}}" id="edit" type="hidden"/>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+	let text = $("#edit").val();
+	$("#name").html(text);
+});
+</script>
+<style>
+.bo{
+	box-shadow: 0 8px 6px -6px black;
+	padding: 20px
+}
+
+</style>
+<!-- abouts end here -->

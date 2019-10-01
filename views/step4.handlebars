@@ -1,0 +1,208 @@
+<!-- Waves Effect Css -->
+
+<section class="content">
+  <!-- Advanced Form Example With Validation -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="header">
+          <h2>APPLICATION FORM</h2>
+          <ul class="nav nav-tabs tab-nav-right" role="tablist">
+            <li role="presentation"><a href="">Step One</a></li>
+            <li role="presentation"><a href="#">Step Two</a></li>
+            <li role="presentation"><a href="#">Step Three</a></li>
+            <li role="presentation" class="active"><a href="#" data-toggle="tab">Step Four</a></li>
+            <li role="presentation"><a href="#">Step Five</a></li>
+            <li role="presentation" class=""><a href="#" data-toggle="tab">Finish</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content"></div>
+        </div>
+        <div class="body">
+          <form action="/application/form4" method="POST">
+            <input type="hidden" name="view" value="{{app.view}}" />
+            <input type="hidden" name="step" value="step4" />
+            <input type="hidden" name="id" value="{{app.id}}" />
+            <div class="form-group form-float">
+              <label>Course of interest (first choice):</label>
+              <div class="form-line">
+                <select class='form-control' name="course1" required>
+                  <option value='{{app.course1}}'>
+                    {{#if app.course1}}
+                    {{app.course1}}
+                    {{else}}
+                    --Select Course of Interest--
+                    {{/if}}
+                  </option>
+                  {{#each courses}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Course of interest (second choice):</label>
+              <div class="form-line">
+                <select class='form-control' name="course2" required>
+                  <option value='{{app.course2}}'>
+                    {{#if app.course2}}
+                    {{app.course2}}
+                    {{else}}
+                    --Select Course of Interest--
+                    {{/if}}
+                  </option>
+                  {{#each courses}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Programme level</label>
+              <div class="form-line">
+                <select class='form-control' name="level" required>
+                  <option value='{{app.level}}'>
+                    {{#if app.level}}
+                    {{app.level}}
+                    {{else}}
+                    --Programme Level--
+                    {{/if}}
+                  </option>
+                  {{#each quali}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Preffered location in Scotland</label>
+              <div class="form-line">
+                <select class='form-control' name="cityOfChoice" required>
+                  <option value='{{app.cityId}}'>
+                    {{#if app.cityId}}
+                    {{app.City.name}}
+                    {{else}}
+                    --Preffere Location--
+                    {{/if}}
+                  </option>
+                  {{#each cities}}
+                  <option value='{{this.id}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Preffered institution first choice (if any)</label>
+              <div class="form-line">
+                <select class='form-control' name="schoolWish1" required>
+                  <option value='{{app.schoolWish1}}'>
+                    {{#if app.schoolWish1}}
+                    {{app.schoolWish1}}
+                    {{else}}
+                    --Select School--
+                    {{/if}}
+                  </option>
+                  {{#each institutions}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Preffered institution second choice (if any)</label>
+              <div class="form-line">
+                <select class='form-control' name="schoolWish2" required>
+                  <option value='{{app.schoolWish2}}'>
+                    {{#if app.schoolWish2}}
+                    {{app.schoolWish2}}
+                    {{else}}
+                    --Select School--
+                    {{/if}}
+                  </option>
+                  {{#each institutions}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+            <hr>
+            <div class="form-group form-float">
+              <label>Sponsorship</label>
+              <div class="form-line">
+                <select name="sponsor" class="form-control" required>
+                  <option value='{{app.sponsor}}'>
+                    {{#if app.sponsor}}
+                    {{app.sponsor}}
+                    {{else}}
+                    --Select Sponsor--
+                    {{/if}}
+                  </option>
+                  <option value="Self-sponsored">Self-sponsored</option>
+                  <option value="Parents">Parents</option>
+                  <option value="Other relatives">Other relatives</option>
+                  <option value="Employer">Employer</option>
+                  <option value="Scholarship">Scholarship</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Sponsor name</label>
+              <div class="form-line">
+                <input name="sponsorName" value="{{app.sponsorName}}" class="form-control" type="text" required>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Sponsor occupation</label>
+              <div class="form-line">
+                <input name="sponsorOccupation" value="{{app.sponsorOccupation}}" class="form-control" type="text"
+                  required>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Your budget for tuition fees</label>
+              <div class="form-line">
+                <input name="budget" value="{{app.budget}}" class="form-control" type="text">
+              </div>
+            </div>
+            <a href="/application/step3" type="button" class="btn bg-orange waves-effect">
+              <i class="material-icons">arrow_back</i> <span class="icon-name">back</span>
+            </a>
+            <button type="submit" class="btn pull-right bg-primary waves-effect">
+              <i class="material-icons">arrow_forward</i> <span class="icon-name">Save and continue</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- #END# Advanced Form Example With Validation -->
+</section>
+<!-- Jquery DataTable Plugin Js -->
+<script>
+  $(function () {
+
+    $(".btnStep1").hover(function () {
+      alert("uueue")
+    })
+
+  });
+</script>
+<!-- Input Mask Plugin Js -->
+<script src="/admin_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+
+<!-- Dropzone Plugin Js -->
+<script src="/admin_theme/plugins/dropzone/dropzone.js"></script>
+
+<!-- Waves Effect Plugin Js -->
+<script src="/admin_theme/plugins/node-waves/waves.js"></script>
+<!-- Demo Js -->
+<script src="/admin_theme/js/demo.js"></script>

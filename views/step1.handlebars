@@ -1,0 +1,149 @@
+<!-- Waves Effect Css -->
+
+<section class="content">
+  <!-- Advanced Form Example With Validation -->
+  <div class="row clearfix">
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="header">
+          <h2>APPLICATION</h2>
+          <ul class="nav nav-tabs tab-nav-right" role="tablist">
+            <li role="presentation" class="active"><a href="#home" data-toggle="tab">Step One</a></li>
+            <li role="presentation" class="deactivate"><a href="#">Step Two</a></li>
+            <li role="presentation"><a href="#">Step Three</a></li>
+            <li role="presentation"><a href="#">Step Four</a></li>
+            <li role="presentation"><a href="#">Step Five</a></li>
+            <li role="presentation" class=""><a href="#" data-toggle="tab">Finish</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content"></div>
+        </div>
+        <div class="body">
+
+
+          <form action="/application/form1" method="POST">
+            <input type="hidden" name="id" value="{{app.id}}" />
+            <div class="form-group form-float">
+              <label>First name (as stated on the passport)*</label>
+              <div class="form-line">
+                <input type="text" name="firstname" value="{{app.firstname}}" placeholder="first name"
+                  class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Middle name</label>
+              <div class="form-line">
+                <input type="text" name="middlename" value="{{app.middlename}}" placeholder="middle name"
+                  class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Last name *</label>
+              <div class="form-line">
+                <input type="text" name="lastname" value="{{app.lastname}}" placeholder="last name" class="form-control"
+                  required>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Nationality *</label>
+              <div class="form-line">
+                <select class='form-control show-tick' name="countryId" required>
+                  <option value='{{app.countryId}}'>
+                    {{#if app.countryId}}
+                    {{app.Country.name}}
+                    {{else}}
+                    --Select Nationality--
+                    {{/if}}
+                  </option>
+                  {{#each countries}}
+                  <option value='{{this.id}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Date of birth *</label>
+              <div class="input-group demo-masked-input">
+                <span class="input-group-addon">
+                  <i class="material-icons">date_range</i>
+                </span>
+                <div class="form-line">
+                  <input type="text" value="{{app.dob}}" name="dob" class="form-control date"
+                    placeholder="Ex: 30/07/2016">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group form-float">
+              <label>Gender * </label>
+              <div class="form-line">
+                <select class='form-control show-tick' name="gender" required>
+                  <option value='{{app.gender}}'>
+                    {{#if app.gender}}
+                    {{app.gender}}
+                    {{else}}
+                    --Select Gender--
+                    {{/if}}
+
+                  </option>
+                  <option value='Male'>Male</option>
+                  <option value='Female'>Female</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>Marital status *</label>
+              <div class="form-line">
+                <select class='form-control show-tick' name="marital" required>
+                  <option value='{{app.marital}}'>
+                    {{#if app.marital}}
+                    {{app.marital}}
+                    {{else}}
+                    --Select Marital Status--
+                    {{/if}}
+                  </option>
+                  <option value='Married'>Married</option>
+                  <option value='Single'>Single</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn bg-primary waves-effect">
+              <i class="material-icons">arrow_forward</i> <span class="icon-name">Save and continue</span>
+            </button>
+            <!-- <button type="submit" class="btn btn-primary m-t-15 waves-effect btnStep1">Save to continue later</button> -->
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- #END# Advanced Form Example With Validation -->
+</section>
+<!-- Jquery DataTable Plugin Js -->
+<script>
+  $(function () {
+
+    // $(".btnStep1").hover(function(){
+    //   alert("uueue")
+    // })
+
+  });
+</script>
+<!-- Input Mask Plugin Js -->
+<script src="/admin_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+
+<!-- Dropzone Plugin Js -->
+<script src="/admin_theme/plugins/dropzone/dropzone.js"></script>
+
+<!-- Waves Effect Plugin Js -->
+<script src="/admin_theme/plugins/node-waves/waves.js"></script>
+<!-- Demo Js -->
+<script src="/admin_theme/js/demo.js"></script>

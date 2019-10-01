@@ -1,0 +1,49 @@
+<!-- Waves Effect Css -->
+<section class="content">
+     <div class="container-fluid">
+         <!-- Exportable Table -->
+         <div class="row clearfix">
+             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                 <div class="card">
+                     <div class="header">
+                         <h2>
+                             List of applicants
+                         </h2>
+                     </div>
+                     <div class="body">
+                         <div class="table-responsive">
+                             <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                 <thead>
+                                     <tr>
+                                         <th>Full name</th>
+                                         <th>Status</th>
+                                         <th>Decision</th>
+                                         <th>Details</th>
+                                     </tr>
+                                 </thead>
+
+                                 <tbody>
+                                   {{#each app}}
+                                     <tr>
+                                        <td>{{this.firstname}} {{this.middlename}} {{this.lastname}}</td>
+                                        <td>
+                                          {{#if this.hasSubmitted}}
+                                          SUBMITTED
+                                          {{else}}
+                                          NOT SUBMITTED
+                                          {{/if}}
+                                        </td>
+                                         <td>{{this.decision}}</td>
+                                         <td><a href="/application/applicationByUser/{{this.user.id}}">View more</a></td>
+                                     </tr>
+                                     {{/each}}
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+    </div>
+</section>
+   <!-- Jquery DataTable Plugin Js -->

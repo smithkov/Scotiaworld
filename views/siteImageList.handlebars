@@ -1,0 +1,116 @@
+<!-- Waves Effect Css -->
+
+<section class="content">
+       <div class="container-fluid">
+           <div class="block-header">
+               <a href="/siteImage/add" class="btn btn-primary m-t-15 waves-effect">Add banners & logos</a>
+           </div>
+           <!-- Exportable Table -->
+           <div class="row clearfix">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                   <div class="card">
+                       <div class="header">
+                           <h2>
+                               Site Images
+                           </h2>
+                       </div>
+                       {{#if error_msg}}
+                       <hr>
+                         <div class="alert alert-danger"><h3>{{error_msg}}</h3></div>
+                       {{/if}}
+
+                       {{#if success_msg}}
+                       <hr>
+                         <div class="alert alert-success"><h3>{{success_msg}}</h3></div>
+                       {{/if}}
+
+                       <div class="body">
+                        {{#if logos}}
+                        <h2>HomePage Logos</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                               <thead>
+                                   <tr>
+                                       <th>Top Logo</th>
+                                       <th>Bottom Logo</th>
+                                       <th>Toggle</th>
+                                       <th>Edit</th>
+                                       <th>Delete</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                 {{#each logos}}
+                                   <tr>
+                                      <td>
+                                        {{#if this.topLogo}}
+                                           <img style="height:60px; width:100px" class="img-responsive thumbnail" src="/uploads/{{this.topLogo}}">
+                                          {{else}}
+                                            <img style="height:60px; width:100px" class="img-responsive thumbnail" src="/cancel.png">
+                                        {{/if}}
+                                      </td>
+                                      <td>
+                                        {{#if this.bottomLogo}}
+                                           <img style="height:60px; width:100px" class="img-responsive thumbnail" src="/uploads/{{this.bottomLogo}}">
+                                          {{else}}
+                                            <img style="height:60px; width:100px" class="img-responsive thumbnail" src="/cancel.png">
+                                        {{/if}}
+                                      </td>
+                                      <td>
+                                      {{#if this.isActive}}
+                                         <a href="/siteImage/toggleLogo/{{this.id}}">Deactivate (currently in use)</a>
+                                        {{else}}
+                                           <a href="/siteImage/toggleLogo/{{this.id}}">Activate (currently not in use)</a>
+                                      {{/if}}
+                                      </td>
+                                       <td><a href="/siteImage/update/{{this.id}}"><img style="height:25px; width:25px" src="/fancy_buttons/edit.ico"/></a></td>
+                                       <td><a href="/siteImage/deleteLogo/{{this.id}}"><img style="height:25px; width:25px" src="/fancy_buttons/delete.ico"/></a></td>
+                                   </tr>
+                                   {{/each}}
+                               </tbody>
+                           </table>  <!-- #END# of Table -->
+                       </div> <!-- #END# of Table responsive -->
+                         {{/if}}
+                         {{#if banners}}
+                         <h2>HomePage Banners</h2>
+                         <div class="table-responsive">
+                             <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                <thead>
+                                    <tr>
+                                        <th>Banner</th>
+                                        <th>Toggle</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                  {{#each banners}}
+                                    <tr>
+                                       <td>
+                                         {{#if this.path}}
+                                            <img style="height:60px; width:200px" class="img-responsive thumbnail" src="/uploads/{{this.path}}">
+                                           {{else}}
+                                             <img style="height:60px; width:200px" class="img-responsive thumbnail" src="/cancel.png">
+                                         {{/if}}
+                                       </td>
+                                       <td>
+                                         {{#if this.isActive}}
+                                            <a href="/siteImage/toggleBanner/{{this.id}}">Deactivate (currently in use)</a>
+                                           {{else}}
+                                              <a href="/siteImage/toggleBanner/{{this.id}}">Activate (currently not in use)</a>
+                                         {{/if}}
+                                       </td>
+                                        <td><a href="/siteImage/deleteBanner/{{this.id}}"><img style="height:25px; width:25px" src="/fancy_buttons/delete.ico"/></a></td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                              </table>  <!-- #END# of Table -->
+                          </div> <!-- #END# of Table responsive -->
+                          {{/if}}
+                       </div> <!-- #END# of body -->
+                   </div>
+               </div>
+           </div>
+           <!-- #END# Exportable Table -->
+       </div>
+   </section>
+   <!-- Jquery DataTable Plugin Js -->

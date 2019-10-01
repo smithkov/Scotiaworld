@@ -1,0 +1,248 @@
+
+<section class="content">
+       <div class="container-fluid">
+           <div class="block-header">
+               <h2>{{entity.name}}</h2>
+           </div>
+           <!-- Vertical Layout -->
+           <div class="row clearfix">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                   <div class="card">
+
+                       <div class="body">
+
+                               {{#if entity.basic}}
+                                <form method="post" action="{{entity.url}}add">
+                                {{#each entity.form}}
+                                    {{#if this.visible}}
+                                        <label for="password">{{this.display}}</label>
+                                       <div class="form-group">
+                                           <div class="form-line">
+                                               <input type="{{this.type}}" name="{{this.name}}" id="text" class="form-control" placeholder="Enter {{this.name}}">
+                                           </div>
+                                       </div>
+                                      {{/if}}
+                                   {{/each}}
+                                   <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+                                   </form>
+                                   {{/if}}
+                                   {{#if entity.richText}}
+                                    <form method="post" action="{{entity.url}}add">
+                                      <div class="form-group">
+                                          <div class="form-line">
+                                            <textarea id="edit" rows="4" class="form-control no-resize richText" name="name" placeholder="Enter about">{{data.name}}</textarea>
+                                          </div>
+                                      </div>
+                                      <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+                                      <hr>
+                                      <div id="name"></div>
+                                      <input value="{{data.name}}" id="edit" type="hidden"/>
+
+                                       </form>
+                                       {{/if}}
+                                    {{#if entity.studyArea}}
+                                     <form method="post" action="{{entity.url}}add">
+                                       <!-- <div class="form-group">
+                                           <select required name="institution" class="form-control">
+                                              <option value="">-- Please select institution --</option>
+                                               {{#each institution}}
+                                                 <option value="{{this._id}}">{{this.name}}</option>
+                                               {{/each}}
+                                           </select>
+                                       </div> -->
+                                       <div class="form-group">
+                                           <div class="form-line">
+                                               <input required type="text" name="name" id="text" class="form-control" placeholder="Enter name">
+                                           </div>
+                                       </div>
+                                       <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+                                  </form>
+                                  {{/if}}
+                                   <!-- Institution Form begins here-->
+                                   {{#if entity.institution}}
+                                    <form method="post" enctype="multipart/form-data" action="{{entity.url}}add">
+                                    <label for="password">Name</label>
+                                     <div class="form-group">
+                                         <div class="form-line">
+                                             <input required type="text" name="name" id="text" class="form-control" placeholder="Enter name">
+                                         </div>
+                                     </div>
+                                    <label for="password">About</label>
+                                     <div class="form-group">
+                                         <div class="form-line">
+                                           <textarea rows="4" class="form-control no-resize richText" name="about" placeholder="Enter about"></textarea>
+                                         </div>
+                                     </div>
+                                      <!-- <label for="password">School Type</label>
+                                      <div class="form-group">
+                                          <select required name="type" class="form-control show-tick">
+                                             <option value="">-- Please select type --</option>
+                                              {{#each type}}
+                                                <option value="{{this.id}}">{{this.name}}</option>
+                                              {{/each}}
+                                          </select>
+                                    </div> -->
+                                    <!-- <div class="form-group">
+                                       <select name="country" class="form-control">
+                                          <option value="">-- Please select country --</option>
+                                           {{#each country}}
+                                             <option value="{{this._id}}">{{this.name}}</option>
+                                           {{/each}}
+                                       </select>
+                                   </div> -->
+                                    <label for="password">City</label>
+                                     <div class="form-group">
+                                        <select required name="city" class="form-control">
+                                           <option value="">-- Please select city --</option>
+                                            {{#each city}}
+                                              <option value="{{this.id}}">{{this.name}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div><hr>
+                                    <label for="password">Logo</label>
+                                    <div class="form-group">
+                                       <input class="form-control"  type="file" name="logo"></input>
+                                    </div>
+
+                                    <label for="password">Banner</label>
+                                    <div class="form-group">
+                                       <input class="form-control"  type="file" name="banner"></input>
+                                    </div>
+
+                                  <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+                             </form>
+                            {{/if}}
+
+
+                              {{#if entity.course}}
+                                <form enctype="multipart/form-data" method="post" action="{{entity.url}}add">
+                               <label for="password">Name</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input required type="text" name="name" id="text" class="form-control" placeholder="Enter name">
+                                    </div>
+                                </div>
+                               <label for="password">Requirement</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                      <textarea rows="4" class="form-control no-resize richText" name="requirement" placeholder="Enter about"></textarea>
+
+                                    </div>
+                                </div>
+                                <label for="password">Fee</label>
+                                 <div class="form-group">
+                                     <div class="form-line">
+                                         <input required type="text" name="fee" id="text" class="form-control" placeholder="Enter tuition fee">
+                                     </div>
+                                 </div>
+                                 <label for="password">Duration</label>
+                                  <div class="form-group">
+                                      <div class="form-line">
+                                          <input required type="text" name="duration" id="text" class="form-control" placeholder="Enter duration">
+                                      </div>
+                                  </div>
+                                   <label for="password">Season</label>
+                                  <div class="form-group">
+                                    <select required name="time" class="form-control show-tick">
+                                       <option value="">-- Please select time --</option>
+                                       <option value="Full-Time">Full-Time</option>
+                                       <option value="Part-Time">Part-Time</option>
+                                      <option value="Both">Both</option>
+                                    </select>
+                                </div>
+                                <label for="password">Institution</label>
+                                 <div class="form-group">
+                                     <select id="cboSchool" required name="institution" class="form-control show-tick">
+                                        <option value="">-- Please select institution --</option>
+                                         {{#each inst}}
+                                           <option value="{{this.id}}">{{this.name}}</option>
+                                         {{/each}}
+                                     </select>
+                               </div>
+                                 <label for="password">Study Area/Faculty</label>
+                               <div id="studyContainer" class="form-group">
+
+                                  <select id="studyWrapper" required name="studyArea" class="form-control">
+                                    <option value="">-- Please select study area --</option>
+                                    {{#each studyAreaData}}
+                                      <option value="{{this.id}}">{{this.name}}</option>
+                                    {{/each}}
+                                  </select>
+                              </div>
+                                <label for="password">Degree</label>
+                               <div class="form-group">
+                                  <select required name="degreeType" class="form-control">
+                                     <option value="">-- Please select degree --</option>
+                                      {{#each degreeTypeData}}
+                                        <option value="{{this.id}}">{{this.name}}</option>
+                                      {{/each}}
+                                  </select>
+                              </div>
+
+
+                             </br>
+                               <label for="password">Course related image</label>
+                               <div class="form-group">
+                                  <input class="form-control"  type="file" name="logo" ></input>
+                               </div>
+
+                            <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+                       </form>
+                       {{/if}}
+
+
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+           <!-- #END# Vertical Layout -->
+       </div>
+   </section>
+ <script>
+ // $(function(){
+ //   var cboSchool = $("#cboSchool");
+ //   var studyContainer = $("#studyContainer");
+ //   //studyContainer.hide();
+ //    cboSchool.change(function(){
+ //      var _id = cboSchool.val();
+ //      $.post( "/study-area/studyAreaBySchool", { id: _id })
+ //        .done(function( data ) {
+ //          studyContainer.show();
+ //          $("#studyWrapper").empty();
+ //          $("#studyWrapper").append($("<option></option>").val("").html("-- Please select study area --"));
+ //          $.each(data.data, function (data, value) {
+ //              $("#studyWrapper").append($("<option></option>").val(value._id).html(value.name));
+ //          })
+ //        })
+ //    });
+ // })
+</script>
+<script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+var text = $("#edit").val();
+
+$("#name").html(text);
+tinymce.init({
+    selector: "textarea.richText",
+    theme: "modern",
+    plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern"
+    ],
+    toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+    toolbar2: "print preview media | forecolor backcolor emoticons",
+    image_advtab: true,
+    templates: [
+        {title: 'Test template 1', content: 'Test 1'},
+        {title: 'Test template 2', content: 'Test 2'}
+    ]
+});
+</script>
+<style>
+#mceu_2.{
+    height: 24px;
+}
+</style>

@@ -1,0 +1,127 @@
+
+
+
+
+
+<!-- bread-crumb start here -->
+<div class="bread-crumb">
+	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
+	<div class="container">
+		<div class="matter">
+
+
+
+			<h2>
+			 All Courses
+
+		</div>
+	</div>
+</div>
+<!-- bread-crumb end here -->
+
+<!-- coures start here -->
+<div  class="coures">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 col-xs-12 hidden-xs">
+				<div class="left">
+					<h4>POPULAR COURSES</h4>
+					<div class="popular">
+						{{#each data}}
+						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
+							<div class="box">
+								<img src="/main_theme/images/p1.jpg" class="img-responsive" alt="img" title="img" />
+								<p>{{this.name}}</p>
+								<span>£{{this.fee}}</span>
+							</div>
+						</a>
+						{{/each}}
+					</div>
+				</div>
+			</div>
+			<div  class="col-sm-9 col-xs-12">
+
+				<div class="col-sm-12 sort">
+						<h3 style="text-align:center">All Courses</h3>
+				</div>
+				<div class="row">
+					<table id="co" class="example table table-striped table-bordered" style="width:100%">
+						<thead>
+								<tr>
+									  <th></th>
+										<th>Name</th>
+										<th>Degree</th>
+										<th>Faculty</th>
+										<th>Fee</th>
+								</tr>
+						</thead>
+						<tbody>
+							{{#each courses}}
+							<tr>
+								<td>
+										{{#if this.path}}
+										  <img class="img-thumbnail" src="/uploads/{{this.path}}" style="height:35px; width:50px"/>
+										{{else}}
+										  <img class="img-thumbnail" src="/noLogo.png" style="height:35px; width:50px"/>
+										{{/if}}
+								</td>
+									<td>{{this.name}}</td>
+									<td>{{this.DegreeType.name}}</td>
+									<td>{{this.StudyArea.name}}</td>
+									<td><strong>£{{this.fee}}</strong></td>
+							</tr>
+							{{/each}}
+						</tbody>
+						<tfoot>
+							 <tr>
+								 <th></th>
+								 <th>Name</th>
+								 <th>Degree</th>
+								 <th>Faculty</th>
+								 <th>Fee</th>
+							 </tr>
+					 </tfoot>
+				</table>
+				</div>
+        <hr>
+				<!-- Courses list start here -->
+
+
+
+
+				<!--Courses list ends here-->
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+	$('#co').DataTable( {
+		responsive: true,
+			initComplete: function () {
+					this.api().columns([1, 2, 3,4]).every( function () {
+							var column = this;
+							var select = $('<select><option value=""></option></select>')
+									.appendTo( $(column.footer()).empty() )
+									.on( 'change', function () {
+											var val = $.fn.dataTable.util.escapeRegex(
+													$(this).val()
+											);
+
+											column
+													.search( val ? '^'+val+'$' : '', true, false )
+													.draw();
+									} );
+
+							column.data().unique().sort().each( function ( d, j ) {
+									select.append( '<option value="'+d+'">'+d+'</option>' )
+							} );
+					} );
+			}
+	} );
+} );
+</script>
+<!-- coures end here -->
+
+
+<!-- coures end here -->

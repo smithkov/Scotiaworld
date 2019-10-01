@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "thescoti_admin",
+    "password": "nnamdics123",
+    "database": "thescoti_db",
+    "host": "68.66.224.47",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "thescoti_admin",
+    "password": "nnamdics123",
+    "database": "thescoti_db",
+    "host": "68.66.224.47",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}

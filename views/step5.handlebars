@@ -1,0 +1,101 @@
+<!-- Waves Effect Css -->
+
+<section class="content">
+  <!-- Advanced Form Example With Validation -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="header">
+          <h2>APPLICATION FORM</h2>
+          <ul class="nav nav-tabs tab-nav-right" role="tablist">
+            <li role="presentation"><a href="">Step One</a></li>
+            <li role="presentation"><a href="#">Step Two</a></li>
+            <li role="presentation"><a href="#">Step Three</a></li>
+            <li role="presentation"><a href="#">Step Four</a></li>
+            <li role="presentation" class="active"><a href="#" data-toggle="tab">Step Five</a></li>
+            <li role="presentation" class=""><a href="#" data-toggle="tab">Finish</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content"></div>
+        </div>
+        <div class="body">
+          <form action="/application/form5" method="POST" enctype="multipart/form-data">
+
+            <input type="hidden" name="id" value="{{app.id}}" />
+            <div class="form-group form-float">
+              <label for="basic_checkbox_2">Have you applied for a UK visa before?</label>
+              <div class="form-line">
+                <select class='form-control' name="hasApplied" required>
+                  <option value='{{app.hasApplied}}'>
+                    {{#if app.hasApplied}}
+                    {{app.hasApplied}}
+                    {{else}}
+                    --Select one of the options--
+                    {{/if}}
+
+                  </option>
+                  <option value='Yes'>Yes</option>
+                  <option value='No'>No</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group  form-float">
+              <label>If yes (visa granted) purpose of travel to the UK (eg. Study, visit)</label>
+              <div class="form-line">
+                <textarea cols="30" rows="3" name="purpose" class="form-control">{{app.purpose}}</textarea>
+              </div>
+            </div>
+
+            <div class="form-group  form-float">
+              <label>If yes (visa refused) state reasons of visa refusal</label>
+              <div class="form-line">
+                <textarea cols="30" rows="3" name="reasonOfRefusal"
+                  class="form-control">{{app.reasonOfRefusal}}</textarea>
+              </div>
+            </div>
+
+            <div class="form-group form-float">
+              <label>More information</label>
+              <div class="form-line">
+                <textarea cols="30" rows="3" cols="30" name="moreInfo" class="form-control">{{app.moreInfo}}</textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Please upload your credentials (zipped file or merged pdf file)</label>
+              <input class="form-control" type="file" name="credential" />
+            </div>
+            <a href="/application/step4" type="button" class="btn bg-orange waves-effect">
+              <i class="material-icons">arrow_back</i> <span class="icon-name">back</span>
+            </a>
+            <button type="submit" class="btn pull-right bg-primary waves-effect">
+              <i class="material-icons">arrow_forward</i> <span class="icon-name">Save and continue</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- #END# Advanced Form Example With Validation -->
+</section>
+<!-- Jquery DataTable Plugin Js -->
+<script>
+  $(function () {
+    $(".btnStep1").hover(function () {
+
+    })
+  });
+</script>
+<!-- Input Mask Plugin Js -->
+<script src="/admin_theme/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+
+<!-- Dropzone Plugin Js -->
+<script src="/admin_theme/plugins/dropzone/dropzone.js"></script>
+
+<!-- Waves Effect Plugin Js -->
+<script src="/admin_theme/plugins/node-waves/waves.js"></script>
+<!-- Demo Js -->
+<script src="/admin_theme/js/demo.js"></script>
+<script src="/admin_theme/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>

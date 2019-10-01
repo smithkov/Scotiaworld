@@ -1,0 +1,472 @@
+
+<link rel="stylesheet" href="/admin_theme/jquery.steps.css" type="text/css"/>
+<script src="/admin_theme/plugins/jquery/jquery.min.js"></script>
+
+<!-- Jquery Validation Plugin Css -->
+<script src="/admin_theme/plugins/jquery-validation/jquery.validate.js"></script>
+
+<script src="/admin_theme/plugins/jquery-steps/jquery.steps.js"></script>
+<script src="/admin_theme/js/pages/forms/form-wizard.js"></script>
+
+<style>
+  .lbl:{position: absolute; float: left}
+</style>
+<!-- bread-crumb start here -->
+<div class="bread-crumb">
+	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
+	<div class="container">
+		<div class="matter">
+			<h2>apply now</h2>
+			<ul class="list-inline">
+				<li>
+					<a href="index-2.html">HOME</a>
+				</li>
+				<li>
+					<a href="login_register.html">apply now</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- bread-crumb end here -->
+
+<!-- login start here -->
+<div class="login">
+	<div class="container">
+		<div class="col-md-12 col-sm-12 col-xs-12 box padd0">
+      <div class="col-md-3 col-sm-3 col-xs-6"></div>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<h5>APPLY</h5>
+				<hr>
+        {{#if user}}
+                <div class="alert alert-danger">Username has taken already try a different one</div>
+        {{/if}}
+        {{#if mail}}
+                <div class="alert alert-danger">Email has taken try a different one</div>
+        {{/if}}
+        {{#if errors}}
+              {{#each errors}}
+                <div class="alert alert-danger">{{msg}}</div>
+              {{/each}}
+        {{/if}}
+				<form method="post" action="/application/form">
+					<button type="submit" class="btn btn-primary btn-block" >Apply now</button>
+				</form>
+				<div class="donot">
+					Have an account?
+					<a href="/user/login">Login Now</a>
+				</div>
+			</div>
+
+      	<div class="col-md-3 col-sm-3 col-xs-6"></div>
+		</div>
+	</div>
+</div>
+<!-- login end here -->
+
+<!-- newsletter start here -->
+<div id="newsletter">
+	<div class="container">
+		<div class="row">
+			<form id="example-advanced-form" action="#">
+			    <h3>Step 1</h3>
+			    <fieldset>
+			        <legend>Personal Information</legend>
+
+							<div class="form-group">
+								<label>First name (as stated on the passport)*</label>
+								<input type="text" name="firstname" value="" placeholder="first name"  class="form-control required" />
+							</div>
+
+							<div class="form-group">
+								<label>Middle name</label>
+								<input type="text" name="middlename" value="" placeholder="middle name"  class="form-control" />
+							</div>
+
+							<div class="form-group">
+								<label>Last name</label>
+								<input type="text" name="lastname" value="" placeholder="last name"  class="form-control required" />
+							</div>
+
+		          <div class="form-group">
+								<label>Nationality </label>
+							  <select class='form-control required' name="nationality">
+									{{#each cities}}
+							      <option value='{{this.id}}'>{{this.name}}</option>
+									{{/each}}
+							  </select>
+							</div>
+
+							<div class="form-group">
+								<label>Date of birth *</label>
+								<input name="dob" class="form-control required" type="text" id="datepicker">
+							</div>
+
+							<div class="form-group">
+								<label>Gender * </label>
+							  <select class='form-control required' name="gender">
+									  <option value=''></option>
+									  <option value='Male'>Male</option>
+							      <option value='Female'>Female</option>
+							  </select>
+							</div>
+
+							<div class="form-group">
+								<label>Marital status </label>
+								<select class='form-control required' name="marital">
+									 <option value=''></option>
+									 <option value='Married'>Married</option>
+									 <option value='Single'>Single</option>
+							 </select>
+						 </div>
+
+			        <p>(*) Mandatory</p>
+			    </fieldset>
+
+			    <h3>Step 2</h3>
+			    <fieldset>
+			        <legend>Step 2</legend>
+
+							<div class="form-group">
+								<label>Home Address *</label>
+								<textarea name="home-address" class="form-control required"></textarea>
+							</div>
+
+							<div class="form-group">
+								<label>Postal address (if different)</label>
+								<textarea name="postal-address" class="form-control"></textarea>
+							</div>
+
+							<div class="form-group">
+								<label>Telephone phone number*</label>
+								<input name="phone" class="form-control required" type="text">
+							</div>
+			        <p>(*) Mandatory</p>
+			    </fieldset>
+
+			    <h3>Step 3</h3>
+			    <fieldset>
+			        <legend>Step 3</legend>
+
+							<div class="form-group">
+								<label>Select highest qualification obtained </label>
+							  <select class='form-control' name="hQualification">
+									<option value='0'>--Select Highest Qualification --</option>
+									{{#each quali}}
+							      <option value='{{this.name}}'>{{this.name}}</option>
+									{{/each}}
+							  </select>
+						  </div>
+							<div class="form-group">
+								<label>Qualification grade</label>
+								<input name="hGrade" class="form-control" type="text">
+							</div>
+							<div class="form-group">
+								<label>Institution name</label>
+								<input name="hSchoolName" class="form-control" type="text">
+							</div>
+							<div class="form-group">
+								<label>Programme completed?</label>
+								<select class='form-control' name="hCompleted">
+									 <option value='0'>--Programme Completed?--</option>
+									 <option value='Yes'>Yes</option>
+									 <option value='No'>No</option>
+							 </select>
+						 </div>
+						<div class="form-group">
+			 				 <label>Programme year</label>
+							 <select class='form-control' name="hProgrammeYear">
+								 <option value='0'>--Select Programme Year --</option>
+								 {{#each year}}
+									 <option value='{{this}}'>{{this}}</option>
+								 {{/each}}
+							 </select>
+					 </div>
+		        <hr>
+						<div class="form-group">
+							<label>Select previous qualification</label>
+							<select class='form-control' name="pQualification">
+								<option value='0'>--Select Previous Qualification --</option>
+								{{#each quali}}
+									<option value='{{this.name}}'>{{this.name}}</option>
+								{{/each}}
+							</select>
+						</div>
+					<div class="form-group">
+						<label>Qualification grade</label>
+						<input name="pGrade" class="form-control" type="text">
+					</div>
+					<div class="form-group">
+						<label>Institution name</label>
+						<input name="pSchoolName" class="form-control" type="text">
+					</div>
+
+		        <div class="form-group">
+							<label>Programme completed?</label>
+							<select class='form-control' name="pCompleted">
+								 <option value='0'>--Programme completed?--</option>
+								 <option value='Yes'>Yes</option>
+								 <option value='No'>No</option>
+						 </select>
+					 </div>
+
+					 <div class="form-group">
+						 	<label>Programme year</label>
+							 <select class='form-control' name="pProgrammeYear">
+								 <option value='0'>--Select Programme Year --</option>
+								 {{#each year}}
+									 <option value='{{this}}'>{{this}}</option>
+								 {{/each}}
+							 </select>
+					 </div>
+
+					 <hr>
+					 <div class="form-group">
+						 <label>High school name</label>
+						 <input name="highSchoolName" class="form-control" type="text">
+					 </div>
+
+					 <div class="form-group">
+						 <label>Year of completion</label>
+						<select class='form-control' name="completionYr">
+							<option value='0'>--Select Year of Completion--</option>
+							{{#each year}}
+								<option value='{{this}}'>{{this}}</option>
+							{{/each}}
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label>English proficiency test</label>
+						<select class='form-control' name="pCompleted">
+							 <option value='0'>--Select English proficiency test--</option>
+							 <option value='IELTS'>IELTS</option>
+							 <option value='TOEFL'>TOEFL</option>
+							 <option value='PTE'>PTE</option>
+							 <option value='NONE'>NONE</option>
+					 </select>
+				 </div>
+			 </fieldset>
+
+          <h3>Step 4<h3>
+					<fieldset>
+
+						<div class="form-group">
+			 				<label>Course of interest 1</label>
+			 				 <select class='form-control' name="course1">
+			 					 <option value='0'>--Select First Course of Interest--</option>
+			 					 {{#each courses}}
+			 						 <option value='{{this.id}}'>{{this.name}}</option>
+			 					 {{/each}}
+			 				 </select>
+			 		 </div>
+
+			 		 <div class="form-group">
+			 				<label>Programme level</label>
+			 				 <select class='form-control' name="level">
+			 					 <option value='0'>--Programme Level--</option>
+			 					 {{#each quali}}
+			 						 <option value='{{this.id}}'>{{this.name}}</option>
+			 					 {{/each}}
+			 				 </select>
+			 		 </div>
+
+			 		 <div class="form-group">
+			 				<label>Preffered location in Scotland</label>
+			 				 <select class='form-control' name="cityOfChoice">
+			 					 <option value='0'>--Preffered Location--</option>
+			 					 {{#each cities}}
+			 						 <option value='{{this.id}}'>{{this.name}}</option>
+			 					 {{/each}}
+			 				 </select>
+			 		 </div>
+
+			 		 <div class="form-group">
+			 				<label>Preffered institution first choice (if any)</label>
+			 				 <select class='form-control' name="schoolWish1">
+			 					 <option value='0'>--Preffered Location--</option>
+			 					 {{#each institutions}}
+			 						 <option value='{{this.id}}'>{{this.name}}</option>
+			 					 {{/each}}
+			 				 </select>
+			 		 </div>
+
+			 		 <div class="form-group">
+			 				<label>Preffered institution second choice (if any)</label>
+			 				 <select class='form-control' name="schoolWish2">
+			 					 <option value='0'>--Preffered Location--</option>
+			 					 {{#each institutions}}
+			 						 <option value='{{this.id}}'>{{this.name}}</option>
+			 					 {{/each}}
+			 				 </select>
+			 		 </div>
+					</fieldset>
+					<h3>Step 5</h3>
+					<fieldset>
+
+						<div class="form-group">
+							<label>Sponsorship</label>
+							<select name="relationship" class="form-control">
+								<option value="Self-sponsored">Self-sponsored</option>
+								<option value="Parents">Parents</option>
+								<option value="Other relatives">Other relatives</option>
+								<option value="Employer">Employer</option>
+								<option value="Scholarship">Scholarship</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label>Sponsor name</label>
+							<input name="sponsorName" class="form-control" type="text">
+						</div>
+
+						<div class="form-group">
+							<label>Sponsor occupation</label>
+							<input name="sponsorOccupation" class="form-control" type="text">
+						</div>
+
+						<div class="form-group">
+							<label>Your budget for tuition fees</label>
+							<input name="budget" class="form-control" type="text">
+						</div>
+					</fieldset>
+					<h3>Step 6</h3>
+					<fieldset>
+						<legend>Step 6</legend>
+						<div class="form-group">
+							<input name="hasApplied" type="checkbox">Have you applied for a UK visa before?
+						</div>
+
+						<div class="form-group">
+							<label>If yes (visa granted) purpose of travel to the UK (eg. Study, visit)</label>
+							<textarea name="purpose" class="form-control"></textarea>
+						</div>
+
+						<div class="form-group">
+							<label>If yes (visa refused) state reasons of visa refusal</label>
+							<textarea name="reasonOfRefusal" class="form-control"></textarea>
+						</div>
+
+						<div class="form-group">
+							<label>More information</label>
+							<textarea rows="4" cols="50" name="moreInfo" class="form-control"></textarea>
+						</div>
+					</fieldset>
+			    <h3>Finish</h3>
+			    <fieldset>
+			        <legend>Terms and Conditions</legend>
+
+			        <input id="acceptTerms-2" name="acceptTerms" type="checkbox" class="required"> <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+			    </fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	var form = $("#example-advanced-form").show();
+
+	form.steps({
+		headerTag: "h3",
+		bodyTag: "fieldset",
+		transitionEffect: "slideLeft",
+		onStepChanging: function (event, currentIndex, newIndex)
+		{
+				// Allways allow previous action even if the current form is not valid!
+				if (currentIndex > newIndex)
+				{
+						return true;
+				}
+				// Forbid next action on "Warning" step if the user is to young
+				if (newIndex === 3 && Number($("#age-2").val()) < 18)
+				{
+						return false;
+				}
+				// Needed in some cases if the user went back (clean up)
+				if (currentIndex < newIndex)
+				{
+						// To remove error styles
+						form.find(".body:eq(" + newIndex + ") label.error").remove();
+						form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+				}
+				form.validate().settings.ignore = ":disabled,:hidden";
+				return form.valid();
+		},
+		onStepChanged: function (event, currentIndex, priorIndex)
+		{
+				// Used to skip the "Warning" step if the user is old enough.
+				if (currentIndex === 2 && Number($("#age-2").val()) >= 18)
+				{
+						form.steps("next");
+				}
+				// Used to skip the "Warning" step if the user is old enough and wants to the previous step.
+				if (currentIndex === 2 && priorIndex === 3)
+				{
+						form.steps("previous");
+				}
+		},
+		onFinishing: function (event, currentIndex)
+		{
+				form.validate().settings.ignore = ":disabled";
+				return form.valid();
+		},
+		onFinished: function (event, currentIndex)
+		{
+				alert("Submitted!");
+		}
+	}).validate({
+		errorPlacement: function errorPlacement(error, element) { element.before(error); },
+		rules: {
+				confirm: {
+						equalTo: "#password-2"
+				}
+		}
+	});
+</script>
+<!-- newsletter end here -->
+
+
+
+<!--
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+
+        {{#if user}}
+                <div class="alert alert-danger">Username has taken already try new</div>
+        {{/if}}
+        {{#if mail}}
+                <div class="alert alert-danger">Email has taken already try new</div>
+        {{/if}}
+        {{#if errors}}
+              {{#each errors}}
+                <div class="alert alert-danger">{{msg}}</div>
+              {{/each}}
+        {{/if}}
+        <div class="address-box boxshadow">
+            <h4>Register</h4>
+          <form action="/register" method="post">
+            <div class="form-group">
+                <input type="text" name="name" placeholder="Full name" class="form-control" required/>
+            </div>
+              <div class="form-group">
+                  <input type="text" name="username" placeholder="Username" class="form-control" required/>
+              </div>
+              <div class="form-group">
+                  <input type="email" name="email" placeholder="Email" class="form-control" required/>
+              </div>
+              <div class="form-group">
+                  <input type="password" name="password" placeholder="Password" class="form-control" required/>
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" placeholder="Confirm Password" name="password2">
+              </div>
+              <button type="submit" class="cryptod-button-warning">Register</button><hr/>
+              <div class="form-group">
+                  <div class="g-recaptcha" data-sitekey="6Lc-zXIUAAAAACe_rS1Q8DP7BNbly8LolGJGxcb3"></div>
+              </div>
+          </form>
+        </div>
+
+    </div>
+    <div class="col-lg-3"></div>
+</div> -->

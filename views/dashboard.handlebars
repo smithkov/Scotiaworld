@@ -1,0 +1,284 @@
+
+
+    {{#if user.roleId}}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>DASHBOARD</h2>
+            </div>
+
+            <!-- Widgets -->
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">playlist_add_check</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">REGISTERED USERS</div>
+                            <div class="number count-to" data-from="0" data-to="{{users}}" data-speed="15" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-cyan hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">help</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">TOTAL SCHOOLS</div>
+                            <div class="number count-to" data-from="0" data-to="{{institutions}}" data-speed="1000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-light-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">forum</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">TOTAL COURSES</div>
+                            <div class="number count-to" data-from="0" data-to="{{courses}}" data-speed="1000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+                  <a href="/application/applicants">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                    <div class="info-box bg-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">person_add</i>
+                        </div>
+                        <div class="content">
+                              <div class="text">TOTAL APPLICANTS</div>
+                              <div class="number count-to" data-from="0" data-to="{{apply}}" data-speed="1000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+
+                </div>
+                </a>
+            </div>
+            <!-- #END# Widgets -->
+            <!-- CPU Usage -->
+            <div class="row clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="row clearfix">
+                                <div class="col-xs-12 col-sm-6">
+                                    <h2>CPU USAGE (%)</h2>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 align-right">
+                                    <div class="switch panel-switch-btn">
+                                        <span class="m-r-10 font-12">REAL TIME</span>
+                                        <label>OFF<input type="checkbox" id="realtime" checked><span class="lever switch-col-cyan"></span>ON</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="body">
+                            <div id="real_time_chart" class="dashboard-flot-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# CPU Usage -->
+
+
+            <div class="row clearfix">
+                <!-- Task Info -->
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <div class="card">
+                        <div class="header">
+                            <h2>INSTITUTIONS</h2>
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-hover dashboard-task-infos">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>City</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                         {{#each instLim}}
+                                            <tr>
+                                                <td></td>
+                                                <td>{{this.name}}</td>
+                                                <td><span class="label bg-green">{{this.City.name}}</span></td>
+
+                                            </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- #END# Task Info -->
+                <!-- Browser Usage -->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="card">
+                        <div class="header">
+                            <h2>BROWSER USAGE</h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div id="donut_chart" class="dashboard-donut-chart"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- #END# Browser Usage -->
+            </div>
+        </div>
+    </section>
+    {{else}}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>DASHBOARD</h2>
+            </div>
+
+            <!-- Widgets -->
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                          <i class="material-icons">home</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">HOME PAGE</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                  {{#if app.hasSubmitted}}
+                    <div class="info-box bg-cyan hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">check_circle</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">APPLICATION </div>
+                            <div >SUBMITTED</div>
+                        </div>
+                    </div>
+                    {{else}}
+                    <a href="/application/step1">
+                      <div class="info-box bg-cyan hover-expand-effect">
+                          <div class="icon">
+                              <i class="material-icons">create</i>
+                          </div>
+                          <div class="content">
+                              <div class="text">APPLICATION</div>
+                              <div>PROCEED</div>
+                          </div>
+                      </div>
+                    </a>
+                    {{/if}}
+                </div>
+                {{#if app.hasSubmitted}}
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-light-green hover-expand-effect">
+                        <div class="icon">
+                          <i class="material-icons">thumbs_up_down</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">DECISION STATUS</div>
+                            <div>{{app.decision}}</div>
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+
+                  <a href="#">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                    <div class="info-box bg-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">inbox</i>
+                        </div>
+                        <div class="content">
+                              <div class="text">INBOX</div>
+                              <div class="number count-to" data-from="0" data-to="{{apply}}" data-speed="1000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+
+                </div>
+                </a>
+            </div>
+            <!-- #END# Widgets -->
+            <!-- CPU Usage -->
+            <div style="visibility: hidden" class="row clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="row clearfix">
+                                <div class="col-xs-12 col-sm-6">
+                                    <h2>CPU USAGE (%)</h2>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 align-right">
+                                    <div class="switch panel-switch-btn">
+                                        <span class="m-r-10 font-12">REAL TIME</span>
+                                        <label>OFF<input type="checkbox" id="realtime" checked><span class="lever switch-col-cyan"></span>ON</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div id="real_time_chart" class="dashboard-flot-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# CPU Usage -->
+
+
+            <div style="visibility: hidden" class="row clearfix">
+                <!-- Task Info -->
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+
+                </div>
+                <!-- #END# Task Info -->
+                <!-- Browser Usage -->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="card">
+
+                        <div class="body">
+                            <div id="donut_chart" class="dashboard-donut-chart"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- #END# Browser Usage -->
+            </div>
+        </div>
+    </section>
+    {{/if}}
+
+    <script src="/admin_theme/js/pages/index.js"></script>

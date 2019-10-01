@@ -1,0 +1,88 @@
+<section class="content">
+       <div class="container-fluid">
+           <div class="block-header">
+               <h2>Site Logos</h2>
+           </div>
+
+           <!-- Vertical Layout -->
+           <div class="row clearfix">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                 <a href="/siteImage/listing" class="btn btn-primary m-t-15 waves-effect">View Logo & Banner</a><hr>
+                   <div class="card">
+                     <div class="header">
+                      <h2>Site Logos</h2></hr>
+                       {{#if error}}
+                       <hr>
+                         <div class="alert alert-danger" alert-dismissible" role="alert">
+                           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                           <h4>{{error}}</h4>
+                         </div>
+                       {{/if}}
+
+                       {{#if success}}
+                       <hr>
+                         <div class="alert alert-success" alert-dismissible" role="alert">
+                           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                           <h4>{{success}}</h4>
+                         </div>
+                       {{/if}}
+                        </div>
+                       <div class="body">
+                         <form method="post" enctype="multipart/form-data">
+                            <div class="row clearfix">
+                             <label for="password">Top Logo (Dimension 187 X 62)</label>
+                             <div class="form-group">
+                                <input class="form-control"  type="file" name="topLogo"></input>
+                             </div>
+                             <label for="password">Bottom Logo (Dimension 187 X 48)</label>
+                             <div class="form-group">
+                                <input class="form-control"  type="file" name="bottomLogo"></input>
+                             </div>
+                             <hr>
+                             <label for="password">Banner 1 (Dimension 1120 X 350)</label>
+                             <div class="form-group">
+                                <input class="form-control"  type="file" name="banner"></input>
+                             </div>
+                             <label for="password">Banner 2 (Dimension 1120 X 350)</label>
+                             <div class="form-group">
+                                <input class="form-control"  type="file" name="banner"></input>
+                             </div>
+                             <label for="password">Banner 3 (Dimension 1120 X 350)</label>
+                             <div class="form-group">
+                                <input class="form-control"  type="file" name="banner"></input>
+                             </div>
+                             <label for="password">Banner 4 (Dimension 1120 X 350)</label>
+                             <div class="form-group">
+                                <input class="form-control"  type="file" name="banner"></input>
+                             </div>
+
+                         </div>
+                         <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+                      </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+           <!-- #END# Vertical Layout -->
+       </div>
+   </section>
+ <script>
+ $(function(){
+   var cboSchool = $("#cboSchool");
+   var studyContainer = $("#studyContainer");
+   //studyContainer.hide();
+    cboSchool.change(function(){
+      var _id = cboSchool.val();
+      $.post( "/study-area/studyAreaBySchool", { id: _id })
+        .done(function( data ) {
+          studyContainer.show();
+          $("#studyWrapper").empty();
+          $("#studyWrapper").append($("<option></option>").val("").html("-- Please select study area --"));
+          $.each(data.data, function (data, value) {
+              $("#studyWrapper").append($("<option></option>").val(value._id).html(value.name));
+          })
+        })
+    });
+ })
+</script>

@@ -1,0 +1,113 @@
+
+
+
+
+
+
+<!-- bread-crumb start here -->
+<div class="bread-crumb">
+	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
+	<div class="container">
+		<div class="matter">
+			<h2><a href='/school-faculties/{{course.Institution.name}}/{{course.Institution.id}}'>{{course.Institution.name}}</a></h2>
+			<ul class="list-inline">
+				<li>
+				<a href='/school-faculties/{{course.Institution.name}}/{{course.Institution.id}}'>{{course.Institution.name}}</a>
+				</li>
+				<li>
+					<a href="#">{{course.name}}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- bread-crumb end here -->
+
+<!-- eventview start here -->
+<div class="eventview">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 col-xs-12 hidden-xs">
+				<div class="left">
+					<h4>POPULAR COURSES</h4>
+					<div class="popular">
+						{{#each data}}
+						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
+							<div class="box">
+								<img src="/main_theme/images/p1.jpg" class="img-responsive" alt="img" title="img" />
+								<p>{{this.name}}</p>
+								<span>£{{this.fee}}</span>
+							</div>
+						</a>
+						{{/each}}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9 col-xs-12">
+				<div class="box">
+					<div class="image">
+						<img src="/main_theme/images/default_course.jpg" class="img-responsive" alt="img" title="img" />
+					</div>
+					<ul class="list-inline">
+						<li>
+							<i class="icofont icofont-clock-time"></i>
+							<div class="text">
+								<p>Duration</p>
+								<span><strong>{{course.duration}}</strong></span>
+							</div>
+						</li>
+						<li>
+							<i class="icofont icofont-money-bag"></i>
+							<div class="text">
+								<p>Tuition fee</p>
+								<span><strong>£{{course.fee}}</strong></span>
+							</div>
+						</li>
+						<li>
+							<i class="icofont icofont-social-google-map"></i>
+							<div class="text">
+								<p>Degree</p>
+								<span><strong>{{course.DegreeType.name}}</strong></span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="matter">
+					<h4>{{course.name}}</h4>
+					<button type="button">Apply online</button>
+					<hr>
+					<h3>Requirements</h3>
+					<div id="requirement"></div>
+					<input value="{{course.requirement}}" id="edit" type="hidden"/>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+		var text = $("#edit").val();
+
+		$("#requirement").html(text);
+
+    $('.example').DataTable();
+		$(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#faculty').offset().top
+    }, 'slow');
+
+		$(".linkCourse").click(function(e){
+			e.preventDefault();
+			$('html, body').animate({
+	        scrollTop: $('#course').offset().top
+	    }, 'slow');
+		})
+});
+} );
+
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+<!-- coures end here -->
