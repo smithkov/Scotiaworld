@@ -1,39 +1,37 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var exphbs = require('express-handlebars');
-var flash = require('connect-flash');
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
-var favicon = require('serve-favicon')
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+var exphbs = require("express-handlebars");
+var flash = require("connect-flash");
+var session = require("express-session");
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+var mongo = require("mongodb");
+var mongoose = require("mongoose");
+var favicon = require("serve-favicon");
 
+var routes = require("./routes/index");
+var users = require("./routes/users");
+var studyArea = require("./routes/studyArea");
+var siteImage = require("./routes/siteImage");
+var course = require("./routes/course");
+var institutionType = require("./routes/institutionType");
+var degreeType = require("./routes/degreeType");
+var city = require("./routes/city");
+var institution = require("./routes/institution");
+var application = require("./routes/application");
+var facultyImage = require("./routes/facultyimage");
 
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var studyArea = require('./routes/studyArea');
-var siteImage = require('./routes/siteImage');
-var course = require('./routes/course');
-var institutionType = require('./routes/institutionType');
-var degreeType = require('./routes/degreeType');
-var city = require('./routes/city');
-var institution = require('./routes/institution');
-var application = require('./routes/application');
-
-
-var departure = require('./routes/departure');
-var guideline = require('./routes/guideline');
+var departure = require("./routes/departure");
+var guideline = require("./routes/guideline");
 // Init App
 var app = express();
 
 // View Engine
-app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs({defaultLayout:'layout'}));
-app.set('view engine', 'handlebars');
+app.set("views", path.join(__dirname, "views"));
+app.engine("handlebars", exphbs({ defaultLayout: "layout" }));
+app.set("view engine", "handlebars");
 
 // BodyParser Middleware
 app.use(bodyParser.json());
@@ -41,59 +39,59 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Set Static Folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Express Session
-app.use(session({
-    secret: 'secret',
+app.use(
+  session({
+    secret: "secret",
     saveUninitialized: true,
     resave: true
-}));
+  })
+);
 
 // Passport init
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-app.use(favicon(path.join(__dirname, 'public', 'favicon.jpg')))
+app.use(favicon(path.join(__dirname, "public", "favicon.jpg")));
 // Connect Flash
 app.use(flash());
 
 // Global Vars
-app.use(function (req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.error = req.flash("error");
   res.locals.user = req.user || null;
   next();
 });
 
 app.use(function(error, req, res, next) {
-   res.send("Oops! Request did not complete")
+  res.send("Oops! Request did not complete");
   next();
 });
 
-
-
-app.use('/', routes);
-app.use('/user', users);
-app.use('/study-area', studyArea);
-app.use('/course', course);
-app.use('/institution-type', institutionType);
-app.use('/institution', institution);
-app.use('/degree-type', degreeType);
-app.use('/city', city);
-app.use('/siteImage', siteImage);
-app.use('/application', application);
-app.use('/guideline', guideline);
-app.use('/departure', departure);
-app.get('*', function(req, res){
-  res.render('error-404');
+app.use("/", routes);
+app.use("/user", users);
+app.use("/study-area", studyArea);
+app.use("/course", course);
+app.use("/institution-type", institutionType);
+app.use("/institution", institution);
+app.use("/degree-type", degreeType);
+app.use("/facultyImage", facultyImage);
+app.use("/city", city);
+app.use("/siteImage", siteImage);
+app.use("/application", application);
+app.use("/guideline", guideline);
+app.use("/departure", departure);
+app.get("*", function(req, res) {
+  res.render("error-404");
 });
 
 // Set Port
-app.set('port', (process.env.PORT || 3000));
+app.set("port", process.env.PORT || 3000);
 
-app.listen(app.get('port'), function(){
-	console.log('Server started on port '+app.get('port'));
+app.listen(app.get("port"), function() {
+  console.log("Server started on port " + app.get("port"));
 });

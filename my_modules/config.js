@@ -118,6 +118,18 @@ var getCacheData = (module.exports.getCacheData = function(key) {
     return false;
   }
 });
+var storageAny = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "public/uploads/");
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now());
+  }
+});
+var uploadAny = multer({
+  storage: storageAny
+});
+module.exports.uploadAny = uploadAny;
 module.exports.cpUpload = upload.fields([{ name: "logo", maxCount: 1 }]);
 module.exports.cpUpload3 = upload.fields([
   { name: "logo", maxCount: 1 },

@@ -1,38 +1,38 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose').Schema;
-var config = require('../my_modules/config');
-var bcrypt = require('bcryptjs');
-var Query = require('../queries/query');
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+var bodyParser = require("body-parser");
+var mongoose = require("mongoose").Schema;
+var config = require("../my_modules/config");
+var bcrypt = require("bcryptjs");
+var Query = require("../queries/query");
 
-var Recaptcha = require('express-recaptcha').Recaptcha;
-var recaptcha = new Recaptcha('6Lc-zXIUAAAAACe_rS1Q8DP7BNbly8LolGJGxcb3', '6Lc-zXIUAAAAANQ7gn9T32ahpdd21lIWUxpe55AC');
+var Recaptcha = require("express-recaptcha").Recaptcha;
+var recaptcha = new Recaptcha(
+  "6Lc-zXIUAAAAACe_rS1Q8DP7BNbly8LolGJGxcb3",
+  "6Lc-zXIUAAAAANQ7gn9T32ahpdd21lIWUxpe55AC"
+);
 
-var User = require('../models').User;
-var Model = require('../models');
-var Mailer = require('../my_modules/mailer');
-const url ="https://namdex.herokuapp.com";
+var User = require("../models").User;
+var Model = require("../models");
+var Mailer = require("../my_modules/mailer");
+const url = "https://namdex.herokuapp.com";
 //const url = "http://localhost:3000";
 const verifyPath = "/verifyAccount/";
-const verifyUrl = url+verifyPath;
-const forgotPasswordUrl = url +"/resetPassword/";
+const verifyUrl = url + verifyPath;
+const forgotPasswordUrl = url + "/resetPassword/";
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-
-
 // Register
-router.get('/register',function (req, res) {
-	res.render('register');
+router.get("/register", function(req, res) {
+  res.render("register");
 });
 
 // Login
-router.get(config.login,recaptcha.middleware.render,function (req, res) {
-
-	res.render('login', {captcha:res.recaptcha});
+router.get(config.login, recaptcha.middleware.render, function(req, res) {
+  res.render("login", { captcha: res.recaptcha });
 });
 
 // router.get('/resendVerification',ensureAuthenticated,function (req, res) {
@@ -67,9 +67,17 @@ router.get(config.login,recaptcha.middleware.render,function (req, res) {
 
 //router.post(config.login,recaptcha.middleware.verify,captchaVerificationLogin,passport.authenticate('local', { successRedirect: '/dashboard', failureRedirect: config.login, failureFlash: true }),function (req, res, next) {
 //router.post(config.login,passport.authenticate('local', { successRedirect: '/dashboard', failureRedirect: config.login, failureFlash: true }),function (req, res, next) {
-router.post(config.login,passport.authenticate('local', { successRedirect: '/dashboard', failureRedirect: config.loginRedirect, failureFlash: true }),function (req, res, next) {
-   res.redirect('/dashboard');
-});
+router.post(
+  config.login,
+  passport.authenticate("local", {
+    successRedirect: "/dashboard",
+    failureRedirect: config.loginRedirect,
+    failureFlash: true
+  }),
+  function(req, res, next) {
+    res.redirect("/dashboard");
+  }
+);
 
 // router.get('/verifyAccount/:_id',function (req, res, next) {
 // 		let userId = req.params._id;
@@ -195,118 +203,104 @@ router.post(config.login,passport.authenticate('local', { successRedirect: '/das
 // });
 //router.post('/register',recaptcha.middleware.verify,captchaVerificationRegister, function (req, res) {
 // Register User
-router.post('/register', function (req, res) {
-  console.log("1")
-	var email = req.body.email;
-	var username = req.body.username;
-	var password = req.body.password;
-	var password2 = req.body.confirmPassword;
+router.post("/register", async function(req, res) {
+  var email = req.body.email;
+  var username = req.body.username;
+  var password = req.body.password;
+  var password2 = req.body.confirmPassword;
 
+  var newUser = {
+    email: email,
+    username: username,
+    password: password,
+    roleId: false
+  };
+  //checking for email and username are already taken
+  let mailExist = await User.findOne({ where: { email: email } });
+  let userExist = await User.findOne({ where: { username: username } });
+  if (!mailExist && !userExist) {
+    bcrypt.genSalt(4, function(err, salt) {
+      bcrypt.hash(newUser.password, salt, function(err, hash) {
+        newUser.password = hash;
+        // create that user as no one by that username exists
+        User.create(newUser).then(function(user) {
+          if (user) {
+            req.flash("success_msg", "You are registered and can now login");
+            res.redirect(config.loginRedirect);
+          }
+        });
+      });
+    });
+  } else {
+    // there's already someone with that username
+    res.render("register", {
+      username: userExist ? true : false,
+      mail: mailExist ? true : false
+    });
+  }
+});
 
-
-
-	var newUser =
-	{
-		email: email,
-		username: username,
-		password: password,
-		roleId: false
-	};
-		//checking for email and username are already taken
-		User.findOne({ where:{email:email}}).then(function(user) {
-      if(!user) {
-				bcrypt.genSalt(4, function(err, salt) {
-				    bcrypt.hash(newUser.password, salt, function(err, hash) {
-				        newUser.password = hash;
-								// create that user as no one by that username exists
-								User.create(newUser)
-									.then(function(user) {
-										if(user) {
-
-											req.flash('success_msg', 'You are registered and can now login');
-											res.redirect(config.loginRedirect);
-										}
-									});
-				    });
-				});
-
-      } else {
-        // there's already someone with that username
-				res.render('register', {
-					//	user: user.email,
-						mail: email
-					});
+passport.use(
+  new LocalStrategy(function(username, password, done) {
+    User.findOne({ where: { username: username } }).then(user => {
+      if (!user) {
+        return done(null, false, { message: "Unknown User" });
       }
-    })
-    .catch(function(err){
-      throw err;
-    })
+
+      Query.comparePassword(password, user.password, function(err, isMatch) {
+        if (err) throw err;
+        if (isMatch) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: "Invalid password" });
+        }
+      });
+    });
+  })
+);
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
 });
 
-passport.use(new LocalStrategy(
-	function (username, password, done) {
-		User.findOne({ where: {username: username} }).then(user => {
-			if (!user) {
-				return done(null, false, { message: 'Unknown User' });
-			}
-
-			Query.comparePassword(password, user.password, function (err, isMatch) {
-				if (err) throw err;
-				if (isMatch) {
-					return done(null, user);
-				} else {
-					return done(null, false, { message: 'Invalid password' });
-				}
-			});
-	  })
-	}));
-
-passport.serializeUser(function (user, done) {
-	done(null, user.id);
+passport.deserializeUser(function(id, done) {
+  User.findByPk(id).then(user => {
+    done(null, user);
+  });
 });
-
-passport.deserializeUser(function (id, done) {
-	User.findByPk(id).then(user => {
-	  	done(null, user);
-	})
-});
-
-
 
 function captchaVerificationLogin(req, res, next) {
-	if (req.recaptcha.error) {
-			req.flash('error_msg','Captcha not correct');
-			res.redirect(config.loginRedirect);
-	} else {
-			return next();
-	}
-
-};
+  if (req.recaptcha.error) {
+    req.flash("error_msg", "Captcha not correct");
+    res.redirect(config.loginRedirect);
+  } else {
+    return next();
+  }
+}
 function captchaVerificationRegister(req, res, next) {
-	if (req.recaptcha.error) {
-			req.flash('error_msg','Captcha not correct');
-			res.redirect('/register');
-	} else {
-			return next();
-	}
+  if (req.recaptcha.error) {
+    req.flash("error_msg", "Captcha not correct");
+    res.redirect("/register");
+  } else {
+    return next();
+  }
+}
 
-};
+router.get("/logout", function(req, res) {
+  req.logout();
 
-router.get('/logout', function (req, res) {
-	req.logout();
+  req.flash("success_msg", "You are logged out");
 
-	req.flash('success_msg', 'You are logged out');
-
-	res.redirect(config.loginRedirect);
+  res.redirect(config.loginRedirect);
 });
 
-function ensureAuthenticated(req, res, next){
-	if(req.isAuthenticated()){
-		return next();
-	} else {
-		//req.flash('error_msg','You are not logged in');
-		res.redirect(config.loginRedirect);
-	}
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    //req.flash('error_msg','You are not logged in');
+    res.redirect(config.loginRedirect);
+  }
 }
 
 module.exports = router;

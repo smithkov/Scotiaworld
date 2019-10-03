@@ -303,13 +303,13 @@ router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function(
   let purpose = req.body.purpose;
   let reasonOfRefusal = req.body.reasonOfRefusal;
   let moreInfo = req.body.moreInfo;
-  console.log("///////////////////")
+  let credential = req.body.credential;
+
   console.log(req.body);
-  console.log("///////////////////")
   let img =
     req.files["credential"] === undefined
-      ? ""
-      : req.files["credential"][0].originalname;
+      ? credential
+      : req.files["credential"][0].filename;
 
   let newApplication = {
     id: applicationId,
@@ -370,21 +370,22 @@ router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function(
     throw new Error("Application error ocuured");
   }
 });
+
 router.post("/decision", function(req, res, next) {
-  let id = req.body.id;
+  let applicationId = req.body.id;
   let userId = req.body.userId;
   var decision = req.body.decision;
   var reason = req.body.reason;
 
-  Application.findByUser(userId).then(data => {
+  Application.findById(applicationId).then(data => {
     var newApplication = {
-      id: id,
+      id: applicationId,
       decision: decision,
       reasonOfRefusal: reason
     };
 
     if (data) {
-      Application.update(newApplication, id).then(application => {
+      Application.update(newApplication, applicationId).then(application => {
         res.redirect("/application/applicants");
       });
     }
@@ -554,7 +555,7 @@ router.post("/form5", config.cpUpload2, ensureAuthenticated, function(
   let img =
     req.files["credential"] === undefined
       ? ""
-      : req.files["credential"][0].originalname;
+      : req.files["credential"][0].filename;
 
   let newApplication = {
     userId: req.user.id,

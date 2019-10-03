@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       institutionId: DataTypes.INTEGER,
       degreeTypeId: DataTypes.INTEGER,
       time: DataTypes.STRING,
-      path: DataTypes.STRING
+      path: DataTypes.STRING,
+      thumbnail: DataTypes.STRING,
+      facultyImageId: DataTypes.INTEGER
     },
     {}
   );

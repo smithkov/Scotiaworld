@@ -13,6 +13,7 @@ var DegreeType = Model.DegreeType;
 var Image = Model.Image;
 var Logo = Model.Logo;
 var Qualification = Model.Qualification;
+var FacultyImage = Model.FacultyImage;
 var bcrypt = require("bcryptjs");
 //Courses queries
 
@@ -58,6 +59,29 @@ module.exports = {
     },
     delete: function(id) {
       return Departure.destroy({ where: { id: id } });
+    }
+  },
+  FacultyImage: {
+    create: function(obj) {
+      return FacultyImage.create(obj);
+    },
+    findById: function(id) {
+      return FacultyImage.findByPk(id, { include: [{ all: true }] });
+    },
+    findAll: function() {
+      return FacultyImage.findAll({ include: [{ all: true }] });
+    },
+    update: function(obj, id) {
+      return FacultyImage.update(obj, { where: { id: id } });
+    },
+    findByStudyArea: function(id) {
+      return FacultyImage.findAll({
+        where: { studyAreaId: id },
+        include: [{ all: true }]
+      });
+    },
+    delete: function(id) {
+      return FacultyImage.destroy({ where: { id: id } });
     }
   },
   Guideline: {
@@ -197,7 +221,7 @@ module.exports = {
     findByInstitutionId: function(id) {
       return Course.findAll({
         where: { institutionId: id },
-        include: ["StudyArea", "DegreeType", "Institution"]
+        include: [{ all: true }]
       });
     },
     findCourseByFacultyAndSchool: function(facultyId, schoolId) {
@@ -277,6 +301,12 @@ module.exports = {
     findByUser: function(id) {
       return Application.findOne({
         where: { userId: id },
+        include: [{ all: true }]
+      });
+    },
+    findBySubmitted: function(id) {
+      return Application.findAll({
+        where: { hasSubmitted: true },
         include: [{ all: true }]
       });
     }

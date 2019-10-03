@@ -40,74 +40,78 @@
 
 <!-- bread-crumb start here -->
 <div class="bread-crumb">
-	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
-	<div class="container">
-		<div class="matter">
-			<h2>register now</h2>
-			<ul class="list-inline">
-				<li>
-					<a href="index-2.html">HOME</a>
-				</li>
-				<li>
-					<a href="login_register.html">register now</a>
-				</li>
-			</ul>
-		</div>
-	</div>
+  <img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
+  <div class="container">
+    <div class="matter">
+      <h2>register now</h2>
+      <ul class="list-inline">
+        <li>
+          <a href="index-2.html">HOME</a>
+        </li>
+        <li>
+          <a href="login_register.html">register now</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
 <!-- bread-crumb end here -->
 
 <!-- login start here -->
 <div class="login">
-	<div class="container">
-		<div class="col-md-12 col-sm-12 col-xs-12 box padd0">
+  <div class="container">
+    <div class="col-md-12 col-sm-12 col-xs-12 box padd0">
       <div class="col-md-3 col-sm-3 col-xs-6"></div>
-			<div class="col-md-6 col-sm-6 col-xs-12">
-				<h5>sign UP</h5>
-				<hr>
-        {{#if user}}
-                <div class="alert alert-danger">Username has taken already try a different one</div>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <h5>sign UP</h5>
+        <hr>
+        {{#if username}}
+        <div class="alert alert-danger">Username already exist consider a different one</div>
         {{/if}}
         {{#if mail}}
-                <div class="alert alert-danger">Email has taken try a different one</div>
+        <div class="alert alert-danger">Email already exist consider a different one</div>
         {{/if}}
         <!-- {{#if errors}}
               {{#each errors}}
                 <div class="alert alert-danger">{{msg}}</div>
               {{/each}}
         {{/if}} -->
-				<form method="post" action="/user/register">
-					<div class="form-group">
-						<label>Username*</label>
-						<input type="text" required name="username" value="" placeholder="Example : johndoe" id="input-name" class="form-control" />
-					</div>
-					<div class="form-group">
-						<label>Email*</label>
-						<input type="text" required name="email" value="" placeholder="Johndoe@example.com" id="email" class="form-control" />
-					</div>
-					<div class="form-group">
-						<label>password*</label>
-						<input type="password" required name="password" value="" placeholder="********" id="password" class="form-control" />
-					</div>
-					<div class="form-group">
-						<label>comfirm password*</label>
-						<input type="password" name="confirmPassword" value="" placeholder="********" id="input-confirmpassword" class="form-control" />
-					</div>
-					<!-- <div class="links">
+        <form method="post" action="/user/register">
+          <div class="form-group">
+            <label>Username*</label>
+            <input type="text" required name="username" value="" placeholder="Example : johndoe" id="input-name"
+              class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Email*</label>
+            <input type="text" required name="email" value="" placeholder="Johndoe@example.com" id="email"
+              class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>password*</label>
+            <input type="password" required name="password" value="" placeholder="********" id="password"
+              class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>comfirm password*</label>
+            <input type="password" name="confirmPassword" value="" placeholder="********" id="input-confirmpassword"
+              class="form-control" />
+          </div>
+          <!-- <div class="links">
 						<input type="checkbox"  name="credit" class="checkclass checkbox-inline"/>
 						By register, I read & accept the terms.
 					</div> -->
-					<button type="submit" class="btn btn-primary btn-block" >Register now</button>
-				</form>
-				<div class="donot">
-					Have an account?
-					<a href="/user/login">Login Now</a>
-				</div>
-			</div>
+          <button type="submit" class="btn btn-primary btn-block">Register now</button>
+        </form>
+        <div class="donot">
+          Have an account?
+          <a href="/user/login">Login Now</a>
+        </div>
+      </div>
 
-      	<div class="col-md-3 col-sm-3 col-xs-6"></div>
-		</div>
-	</div>
+      <div class="col-md-3 col-sm-3 col-xs-6"></div>
+    </div>
+  </div>
 </div>
 <!-- login end here -->
 

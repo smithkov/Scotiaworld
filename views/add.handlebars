@@ -58,6 +58,30 @@
                                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
                                   </form>
                                   {{/if}}
+                                  {{#if entity.facultyImage}}
+                                      {{#if success_msg}}
+                                        <hr>
+                                          <div class="alert alert-success">{{success_msg}}  <a class="pull-right" style="color: white" href="/facultyImage/listing">  View image list</a></div>
+                                        {{/if}}
+
+                                   
+                                      <form method="post" enctype="multipart/form-data" action="{{entity.url}}add">
+                                        <div class="form-group">
+                                            <select required name="studyAreaId" class="form-control">
+                                              <option value="">-- Please select Faculty --</option>
+                                                {{#each studyArea}}
+                                                  <option value="{{this.id}}">{{this.name}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                        <hr>
+                                        <label for="password">Upload faculty related image</label>
+                                        <div class="form-group">
+                                          <input class="form-control"  type="file" name="file"></input>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+                                  </form>
+                                  {{/if}}
                                    <!-- Institution Form begins here-->
                                    {{#if entity.institution}}
                                     <form method="post" enctype="multipart/form-data" action="{{entity.url}}add">

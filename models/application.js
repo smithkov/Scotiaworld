@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       hCompleted: DataTypes.STRING,
       hProgrammeYear: DataTypes.STRING,
       pQualification: DataTypes.STRING,
+      createdAt: DataTypes.DATE,
       pGrade: DataTypes.STRING,
       pSchoolName: DataTypes.STRING,
       pCompleted: DataTypes.STRING,

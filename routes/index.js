@@ -49,9 +49,19 @@ router.get("/schools", async (req, res) => {
   var fac = [];
   for (var i = 0; i < schools.length; i++) {
     let course = await Query.Course.findByInstitutionId(schools[i].id);
-
+    console.log("-----------------------------------------------------------");
+    console.log(`school: ${schools[i].name}  courses: ${course.length}`);
+    console.log("-----------------------------------------------------------");
     for (var j = 0; j < course.length; j++) {
-      let idVal = fac.filter(item => item.id !== course[j].id);
+      if (j == 0) {
+        fac.push(course[j].StudyArea);
+        console.log("trapppppppppppppppppppppppppppppppppppppppppppp");
+        console.log(course[j]);
+        console.log("trapppppppppppppppppppppppppppppppppppppppppppp");
+      }
+
+      idVal = fac.filter(item => item.id !== course[j].StudyArea.id);
+
       if (idVal.length == 0) {
         fac.push(course[j].StudyArea);
       }
@@ -223,7 +233,7 @@ router.post("/faculty-courses", async (req, res) => {
       course: courses
     });
   }
-  console.log("3");
+
   return res.send({
     auth: false,
     token: null,
@@ -232,24 +242,24 @@ router.post("/faculty-courses", async (req, res) => {
   });
 });
 
-router.get("/dashboard", ensureAuthenticated, function(req, res) {
-  Query.Course.findAll().then(function(courses) {
-    Query.Institution.findAll().then(function(institutions) {
-      // Query.Course.findByInstitutionId(id).then(function(courseByInstitution){
-      Query.User.findAll().then(function(users) {
-        res.render("dashboard", {
-          layout: "layoutDashboard.handlebars",
-          instLim: institutions,
-          courses: courses.length,
-          institutions: institutions.length,
-          users: users.length,
-          apply: 3,
-          app: null
-        });
-      });
-      // });
-    });
+router.get("/dashboard", ensureAuthenticated, async function(req, res) {
+  let courses = await Query.Course.findAll();
+  let institutions = await Query.Institution.findAll();
+  let submittedApplication = await Query.Application.findBySubmitted();
+  let app = await Query.Application.findByUser(req.user.id);
+  let allApplications = await Query.Application.findAll();
+  let users = await Query.User.findAll();
+  res.render("dashboard", {
+    layout: "layoutDashboard.handlebars",
+    instLim: institutions,
+    courses: courses.length,
+    submitted: submittedApplication,
+    institutions: institutions.length,
+    users: users.length,
+    apply: allApplications,
+    app: app
   });
+  // });
 });
 
 function ensureAuthenticated(req, res, next) {
