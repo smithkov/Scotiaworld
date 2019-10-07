@@ -1,0 +1,147 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="block-header">
+      <h2>{{entity.name}}</h2>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+
+          <div class="body">
+            <form method="post" action="/feeRange/add">
+              <input name="institutionId" value="{{institutionId}}" type="hidden" />
+
+              <div class="form-group">
+                <select required name="studyAreaId" class="form-control">
+                  <option value="">-- Select StudyArea/Faculty --</option>
+                  {{#each studyArea}}
+                  <option value="{{this.id}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="form-line">
+                  <input required type="text" name="fee" id="text" class="form-control" placeholder="Enter fee Range">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+            </form>
+            <hr>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Faculty/Study Area</th>
+                  <th>Fee Range</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each data}}
+                <tr>
+                  <td>{{this.StudyArea.name}}</td>
+                  <td>{{this.fee}}</td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #END# Vertical Layout -->
+  </div>
+</section>
+<script>
+ // $(function(){
+ //   var cboSchool = $("#cboSchool");
+ //   var studyContainer = $("#studyContainer");
+ //   //studyContainer.hide();
+ //    cboSchool.change(function(){
+ //      var _id = cboSchool.val();
+ //      $.post( "/study-area/studyAreaBySchool", { id: _id })
+ //        .done(function( data ) {
+ //          studyContainer.show();
+ //          $("#studyWrapper").empty();
+ //          $("#studyWrapper").append($("<option></option>").val("").html("-- Please select study area --"));
+ //          $.each(data.data, function (data, value) {
+ //              $("#studyWrapper").append($("<option></option>").val(value._id).html(value.name));
+ //          })
+ //        })
+ //    });
+ // })
+</script>
+<script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+  var text = $("#edit").val();
+
+  $("#name").html(text);
+  tinymce.init({
+    selector: 'textarea.richText',
+    plugins: 'print preview fullpage paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+    imagetools_cors_hosts: ['picsum.photos'],
+    menubar: 'file edit view insert format tools table help',
+    toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+    toolbar_sticky: true,
+    autosave_ask_before_unload: true,
+    autosave_interval: "30s",
+    autosave_prefix: "{path}{query}-{id}-",
+    autosave_restore_when_empty: false,
+    autosave_retention: "2m",
+    image_advtab: true,
+    content_css: [
+      '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+      '//www.tiny.cloud/css/codepen.min.css'
+    ],
+    link_list: [
+      { title: 'My page 1', value: 'http://www.tinymce.com' },
+      { title: 'My page 2', value: 'http://www.moxiecode.com' }
+    ],
+    image_list: [
+      { title: 'My page 1', value: 'http://www.tinymce.com' },
+      { title: 'My page 2', value: 'http://www.moxiecode.com' }
+    ],
+    image_class_list: [
+      { title: 'None', value: '' },
+      { title: 'Some class', value: 'class-name' }
+    ],
+    importcss_append: true,
+    height: 400,
+    file_picker_callback: function (callback, value, meta) {
+      /* Provide file and text for the link dialog */
+      if (meta.filetype === 'file') {
+        callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+      }
+
+      /* Provide image and alt text for the image dialog */
+      if (meta.filetype === 'image') {
+        callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+      }
+
+      /* Provide alternative source and posted for the media dialog */
+      if (meta.filetype === 'media') {
+        callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+      }
+    },
+    templates: [
+      { title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+      { title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
+      { title: 'New list with dates', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+    ],
+    template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+    template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+    height: 600,
+    image_caption: true,
+    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+    noneditable_noneditable_class: "mceNonEditable",
+    toolbar_drawer: 'sliding',
+    contextmenu: "link image imagetools table",
+  });
+
+
+</script>
+<style>
+  #mceu_2. {
+    height: 24px;
+  }
+</style>

@@ -44,6 +44,9 @@ module.exports = {
       studyAreaId: {
         type: Sequelize.INTEGER
       },
+      feeRangeId: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

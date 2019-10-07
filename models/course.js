@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       studyAreaId: DataTypes.INTEGER,
       institutionId: DataTypes.INTEGER,
       degreeTypeId: DataTypes.INTEGER,
+      feeRangeId: DataTypes.INTEGER,
       time: DataTypes.STRING,
       path: DataTypes.STRING,
       thumbnail: DataTypes.STRING,
@@ -23,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     Course.belongsTo(models.Institution);
     Course.belongsTo(models.DegreeType);
     Course.belongsTo(models.StudyArea);
+    Course.belongsTo(models.FeeRange);
   };
   return Course;
 };

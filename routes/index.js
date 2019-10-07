@@ -49,15 +49,10 @@ router.get("/schools", async (req, res) => {
   var fac = [];
   for (var i = 0; i < schools.length; i++) {
     let course = await Query.Course.findByInstitutionId(schools[i].id);
-    console.log("-----------------------------------------------------------");
-    console.log(`school: ${schools[i].name}  courses: ${course.length}`);
-    console.log("-----------------------------------------------------------");
+
     for (var j = 0; j < course.length; j++) {
       if (j == 0) {
         fac.push(course[j].StudyArea);
-        console.log("trapppppppppppppppppppppppppppppppppppppppppppp");
-        console.log(course[j]);
-        console.log("trapppppppppppppppppppppppppppppppppppppppppppp");
       }
 
       idVal = fac.filter(item => item.id !== course[j].StudyArea.id);
@@ -108,6 +103,51 @@ router.get("/courses", function(req, res) {
         data: populars
       });
     });
+  });
+});
+
+router.get("/getCourses", async function(req, res) {
+  let courses = await Query.Course.findAll();
+  return res.send({
+    data: courses
+  });
+});
+
+router.get("/dropDown", async function(req, res) {
+  let faculty = await Query.StudyArea.findAll();
+  let degreeTypes = await Query.DegreeType.findAll();
+  let cities = await Query.City.findAll();
+  return res.send({
+    data: { faculty: faculty, degree: degreeTypes, cities: cities }
+  });
+});
+
+router.post("/courseSearch", async function(req, res) {
+  let degreeId = req.body.degreeId;
+  let facultyId = req.body.facultyId;
+  let cityId = req.body.cityId;
+
+  let course = await Query.Course.courseSearch(degreeId, facultyId, cityId);
+  return res.send({
+    data: course
+  });
+});
+
+router.post("/compareFee", async function(req, res) {
+  let institutionId = req.body.institutionId;
+  let institutionId2 = req.body.institutionId2;
+  let facultyId = req.body.facultyId;
+
+  let courseForInstitution1 = await Query.Course.findByInstitutionIdSearch(
+    institutionId,
+    facultyId
+  );
+  let courseForInstitution2 = await Query.Course.findByInstitutionId(
+    institutionId2,
+    facultyId
+  );
+  return res.send({
+    data: { course1: courseForInstitution1, course2: courseForInstitution2 }
   });
 });
 

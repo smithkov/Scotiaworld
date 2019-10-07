@@ -22,6 +22,7 @@ var city = require("./routes/city");
 var institution = require("./routes/institution");
 var application = require("./routes/application");
 var facultyImage = require("./routes/facultyimage");
+var feeRange = require("./routes/feeRange");
 
 var departure = require("./routes/departure");
 var guideline = require("./routes/guideline");
@@ -75,6 +76,7 @@ app.use(function(error, req, res, next) {
 app.use("/", routes);
 app.use("/user", users);
 app.use("/study-area", studyArea);
+app.use("/feeRange", feeRange);
 app.use("/course", course);
 app.use("/institution-type", institutionType);
 app.use("/institution", institution);

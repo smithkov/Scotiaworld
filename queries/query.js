@@ -14,6 +14,7 @@ var Image = Model.Image;
 var Logo = Model.Logo;
 var Qualification = Model.Qualification;
 var FacultyImage = Model.FacultyImage;
+var FeeRange = Model.FeeRange;
 var bcrypt = require("bcryptjs");
 //Courses queries
 
@@ -42,6 +43,26 @@ module.exports = {
     },
     delete: function(id) {
       return Banner.destroy({ where: { id: id } });
+    }
+  },
+  FeeRange: {
+    create: function(obj) {
+      return FeeRange.create(obj);
+    },
+
+    findById: function(id) {
+      return FeeRange.findByPk(id);
+    },
+    findAll: function() {
+      return FeeRange.findAll({ include: [{ all: true }] });
+    },
+    findByFaculty: function(institutionId, studyId) {
+      return FeeRange.findOne({
+        where: { studyAreaId: studyId, institutionId: institutionId }
+      });
+    },
+    update: function(obj, id) {
+      return FeeRange.update(obj, { where: { id: id } });
     }
   },
   Departure: {
@@ -208,7 +229,7 @@ module.exports = {
   Course: {
     findAll: function() {
       return Course.findAll({
-        include: ["Institution", "DegreeType", "StudyArea"]
+        include: [{ all: true }]
       });
     },
     findByPopular: function() {
@@ -224,18 +245,66 @@ module.exports = {
         include: [{ all: true }]
       });
     },
+    findByInstitutionIdSearch: function(schoolId, facultyId) {
+      let dataObj = {
+        institutionId: schoolId,
+        studyAreaId: facultyId
+      };
+      let hasValues = true;
+
+      if (facultyId == 0) {
+        delete dataObj.studyAreaId;
+      }
+      if (schoolId == 0) {
+        delete dataObj.institutionId;
+      }
+
+      if (schoolId && facultyId) hasValues = false;
+
+      return hasValues
+        ? Course.findAll({
+            where: dataObj,
+            include: [{ all: true }]
+          })
+        : Course.findAll({
+            include: [{ all: true }]
+          });
+    },
     findCourseByFacultyAndSchool: function(facultyId, schoolId) {
       return Course.findAll({
         where: { institutionId: schoolId, studyAreaId: facultyId },
         include: ["StudyArea", "DegreeType", "Institution"]
       });
     },
+    courseSearch: function(degreeTypeId, facultyId, cityId) {
+      let paramObj = {
+        degreeTypeId: degreeTypeId,
+        studyAreaId: facultyId,
+        cityId: cityId
+      };
+      let isReturnAll = false;
+      if (degreeTypeId == 0) delete paramObj.degreeTypeId;
+      if (facultyId == 0) delete paramObj.studyAreaId;
+      if (cityId == 0) delete paramObj.cityId;
+
+      if (degreeTypeId == 0 && facultyId == 0 && cityId == 0)
+        isReturnAll = true;
+
+      return isReturnAll
+        ? Course.findAll({
+            include: [{ all: true }]
+          })
+        : Course.findAll({
+            where: paramObj,
+            include: [{ all: true }]
+          });
+    },
     create: function(obj) {
       return Course.create(obj);
     },
     findById: function(id) {
       return Course.findByPk(id, {
-        include: ["Institution", "DegreeType", "StudyArea"]
+        include: [{ all: true }]
       });
     },
     update: function(obj, id) {

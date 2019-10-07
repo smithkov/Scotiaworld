@@ -1,117 +1,156 @@
-
-
-<script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
-
 <!-- bread-crumb start here -->
 <div class="bread-crumb">
 	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
 	<div class="container">
-		<div class="matter">
-			<h2>COMPARE TUTION FEES </h2>
-
-		</div>
+		<div class="matter">Compare</div>
 	</div>
 </div>
 <!-- bread-crumb end here -->
 
 <!-- coures start here -->
-<div>
+<div class="coures">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-3 col-xs-12 hidden-xs">
-
 				<div class="left">
 					<h4>POPULAR COURSES</h4>
 					<div class="popular">
 						{{#each data}}
+						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
 							<div class="box">
 								<img src="/main_theme/images/p1.jpg" class="img-responsive" alt="img" title="img" />
 								<p>{{this.name}}</p>
 								<span>£{{this.fee}}</span>
 							</div>
+						</a>
 						{{/each}}
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-9 col-xs-12 mainpage">
+			<div class="col-sm-9 col-xs-12">
+
 				<div class="col-sm-12 sort">
+					<h3 style="text-align:center">Compare</h3>
+				</div>
+				<div ng-controller="school" class="col-sm-12 sort">
+					<div class="row">
+						<div class="col-lg-3">
+							<select id="uni1" class="form-control">
+								<option value="0">--Institution 1--</option>
 
-						<h3 style="text-align:center"><strong>COMPARE FEES</strong></h3>
+								<option value="{[{u.uni.id}]}" ng-repeat="u in menu">{[{u.uni.name}]}</option>
 
+							</select>
+						</div>
+						<div class="col-lg-4">
+							<select id="uni2" class="form-control">
+								<option value="0">--Institution 2--</option>
 
+								<option value="{[{u.uni.id}]}" ng-repeat="u in menu">{[{u.uni.name}]}</option>
+							</select>
+						</div>
+						<div class="col-lg-4">
+							<select id="faculty" class="form-control">
+								<option value="0">--Select Faculty--</option>
+								<option value="0">All</option>
+								<option value="{[{u.id}]}" ng-repeat="u in drop.faculty">{[{u.name}]}</option>
+							</select>
+						</div>
+						<div class="col-lg-1">
+							<button id="btnSearch" class="btn btn-primary"> <i class="fa fa-search"></i></button>
+						</div>
+					</div>
 				</div>
 				<div class="row">
-					<div class="schoolDiv">
+					<table id="table1" class="display" style="width:100%">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Faculty</th>
+								<th>Fee</th>
 
-						<table id="course" class="display table table-striped table-bordered" style="width:100%">
-			        <thead>
-			            <tr>
-			                <th>Name</th>
-			                <th>Duration</th>
-											<th>Degree</th>
-											<th>Time</th>
-			                <th>Faculty</th>
-											<th>Fee</th>
-			            </tr>
-			        </thead>
-			        <tbody>
-								{{#each courses}}
-								<tr>
+							</tr>
+						</thead>
+					</table>
 
-										<td>{{this.name}}</td>
-										<td>{{this.duration}}</td>
-										<td>{{this.DegreeType.name}}</td>
-										<td>{{this.time}}</td>
-										<td>{{this.StudyArea.name}}</td>
-										<td><strong>£{{this.fee}}</strong></td>
-										<!-- <td><a href="/school-courses/{{this._id}}">View courses</a></td> -->
-								</tr>
-								{{/each}}
-			        </tbody>
-							<tfoot>
-								 <tr>
-									 <th>Name</th>
-									 <th>Duration</th>
-									 <th>Degree</th>
-									 <th>Time</th>
-									 <th>Faculty</th>
-									 <th>Fee</th>
-								 </tr>
-						 </tfoot>
-			    </table>
-					</div>
-
+					<table id="table2" class="display" style="width:100%">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Faculty</th>
+								<th>Fee</th>
+							</tr>
+						</thead>
+					</table>
 				</div>
+				<hr>
+				<!-- Courses list start here -->
+
+
+
+
+				<!--Courses list ends here-->
 			</div>
 		</div>
 	</div>
 </div>
-
-
 <script>
-$(document).ready(function() {
-	$('#course').DataTable( {
-			initComplete: function () {
-					this.api().columns().every( function () {
-							var column = this;
-							var select = $('<select><option value=""></option></select>')
-									.appendTo( $(column.footer()).empty() )
-									.on( 'change', function () {
-											var val = $.fn.dataTable.util.escapeRegex(
-													$(this).val()
-											);
+	$(document).ready(function () {
 
-											column
-													.search( val ? '^'+val+'$' : '', true, false )
-													.draw();
-									} );
+		var btnSearch = document.getElementById("btnSearch");
 
-							column.data().unique().sort().each( function ( d, j ) {
-									select.append( '<option value="'+d+'">'+d+'</option>' )
-							} );
-					} );
+
+		var cboUni1 = document.getElementById("uni1");
+
+
+		var cboUni2 = document.getElementById("uni2");
+
+
+		var cboFaculty = document.getElementById("faculty");
+
+		function getIputs() {
+			return {
+				uni1: cboUni1.options[cboUni1.selectedIndex].value,
+				uni2: cboUni2.options[cboUni2.selectedIndex].value,
+				faculty: cboFaculty.options[cboFaculty.selectedIndex].value
 			}
-	} );
-} );
+		}
+
+
+		btnSearch.addEventListener("click", function () {
+			callApi(getIputs().uni1, getIputs().uni2, getIputs().faculty);
+		});
+		function callApi(uni1, uni2, faculty) {
+
+			$('#table1').DataTable({
+				"ajax": {
+					"url": "/compareFee",
+					"type": "POST",
+					"data": { institutionId: uni1, institutionId2: uni2, facultyId: faculty },
+					"dataSrc": "data"
+				},
+				"bDestroy": true,
+				"deferRender": true,
+				"columns": [
+					{
+						"data": "name"
+					},
+					{
+						"data": "StudyArea.name"
+					},
+					{
+						"data": "fee"
+					}
+
+				]
+			});
+
+		}
+		callApi(getIputs().uni1, getIputs().uni2, getIputs().faculty);
+
+	});
 </script>
+<!-- coures end here -->
+
+
 <!-- coures end here -->

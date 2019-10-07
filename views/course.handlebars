@@ -1,26 +1,14 @@
-
-
-
-
-
 <!-- bread-crumb start here -->
 <div class="bread-crumb">
 	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
 	<div class="container">
-		<div class="matter">
-
-
-
-			<h2>
-			 All Courses
-
-		</div>
+		<div class="matter">All Courses</div>
 	</div>
 </div>
 <!-- bread-crumb end here -->
 
 <!-- coures start here -->
-<div  class="coures">
+<div class="coures">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-3 col-xs-12 hidden-xs">
@@ -39,87 +27,119 @@
 					</div>
 				</div>
 			</div>
-			<div  class="col-sm-9 col-xs-12">
-
+			<div class="col-sm-9 col-xs-12">
 				<div class="col-sm-12 sort">
-						<h3 style="text-align:center">All Courses</h3>
+					<h3 style="text-align:center">Search for courses</h3>
+				</div>
+				<div ng-controller="school" class="col-sm-12 sort">
+					<div class="row">
+						<div class="col-lg-3">
+							<select id="degree" class="form-control">
+								<option value="0">--Select Degree--</option>
+								<option value="0">All</option>
+								<option value="{[{u.id}]}" ng-repeat="u in drop.degree">{[{u.name}]}</option>
+
+							</select>
+						</div>
+						<div class="col-lg-4">
+							<select id="faculty" class="form-control">
+								<option value="0">--Select Faculty--</option>
+								<option value="0">All</option>
+								<option value="{[{u.id}]}" ng-repeat="u in drop.faculty">{[{u.name}]}</option>
+							</select>
+						</div>
+						<div class="col-lg-4">
+							<select id="city" class="form-control">
+								<option value="0">--Select Location--</option>
+								<option value="0">All</option>
+								<option value="{[{u.id}]}" ng-repeat="u in drop.cities">{[{u.name}]}</option>
+							</select>
+						</div>
+						<div class="col-lg-1">
+							<button id="btnSearch" class="btn btn-primary"> <i class="fa fa-search"></i></button>
+						</div>
+					</div>
 				</div>
 				<div class="row">
-					<table id="co" class="example table table-striped table-bordered" style="width:100%">
+					<table id="example" class="display" style="width:100%">
 						<thead>
-								<tr>
-									  <th></th>
-										<th>Name</th>
-										<th>Degree</th>
-										<th>Faculty</th>
-										<th>Fee</th>
-								</tr>
-						</thead>
-						<tbody>
-							{{#each courses}}
 							<tr>
-								<td>
-										{{#if this.path}}
-										  <img class="img-thumbnail" src="/uploads/{{this.path}}" style="height:35px; width:50px"/>
-										{{else}}
-										  <img class="img-thumbnail" src="/noLogo.png" style="height:35px; width:50px"/>
-										{{/if}}
-								</td>
-									<td>{{this.name}}</td>
-									<td>{{this.DegreeType.name}}</td>
-									<td>{{this.StudyArea.name}}</td>
-									<td><strong>£{{this.fee}}</strong></td>
+								<th>Name</th>
+								<th>Tuition Fee</th>
+								<th>Faculty</th>
+								<th>Degree</th>
+								<th>Institution</th>
+
 							</tr>
-							{{/each}}
-						</tbody>
-						<tfoot>
-							 <tr>
-								 <th></th>
-								 <th>Name</th>
-								 <th>Degree</th>
-								 <th>Faculty</th>
-								 <th>Fee</th>
-							 </tr>
-					 </tfoot>
-				</table>
+						</thead>
+					</table>
 				</div>
-        <hr>
-				<!-- Courses list start here -->
-
-
-
-
-				<!--Courses list ends here-->
+				<hr>
 			</div>
 		</div>
 	</div>
 </div>
 <script>
-$(document).ready(function() {
-	$('#co').DataTable( {
-		responsive: true,
-			initComplete: function () {
-					this.api().columns([1, 2, 3,4]).every( function () {
-							var column = this;
-							var select = $('<select><option value=""></option></select>')
-									.appendTo( $(column.footer()).empty() )
-									.on( 'change', function () {
-											var val = $.fn.dataTable.util.escapeRegex(
-													$(this).val()
-											);
+	$(document).ready(function () {
 
-											column
-													.search( val ? '^'+val+'$' : '', true, false )
-													.draw();
-									} );
+		var btnSearch = document.getElementById("btnSearch");
 
-							column.data().unique().sort().each( function ( d, j ) {
-									select.append( '<option value="'+d+'">'+d+'</option>' )
-							} );
-					} );
-			}
-	} );
-} );
+
+		var cboFaculty = document.getElementById("faculty");
+		var facultyVal = cboFaculty.options[cboFaculty.selectedIndex].value;
+
+		var cboDegree = document.getElementById("degree");
+		var degreeVal = cboDegree.options[cboDegree.selectedIndex].value;
+
+		var cboCity = document.getElementById("city");
+		var cityVal = cboCity.options[cboCity.selectedIndex].value;
+		btnSearch.addEventListener("click", function () {
+			var degree = cboDegree.options[cboDegree.selectedIndex].value;
+			var faculty = facultyVal = cboFaculty.options[cboFaculty.selectedIndex].value;
+			var city = cboCity.options[cboCity.selectedIndex].value;
+
+			callApi(degree, faculty, city);
+		});
+		function callApi(degree, faculty, city) {
+
+			$('#example').DataTable({
+				"ajax": {
+					"url": "/courseSearch",
+					"type": "POST",
+					"data": { degreeId: degree, facultyId: faculty, cityId: city },
+					"dataSrc": "data"
+				},
+				"bDestroy": true,
+				"deferRender": true,
+				"columns": [{
+					"data": "Institution.name",
+					"render": function (data, type, row, meta) {
+						if (type === 'display') {
+							data = `<a href=" detail/${row.Institution.name}/${row.name}/ ${row.id}" >${row.name}</a>`;
+						}
+						return data;
+					}
+				},
+				{
+					"data": "fee"
+				},
+				{
+					"data": "DegreeType.name"
+				},
+				{
+					"data": "StudyArea.name"
+				},
+
+				{
+					"data": "Institution.name"
+				},
+
+				]
+			});
+		}
+		callApi(degreeVal, facultyVal, cityVal);
+
+	});
 </script>
 <!-- coures end here -->
 

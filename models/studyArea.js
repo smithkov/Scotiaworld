@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     StudyArea.hasMany(models.Course);
     StudyArea.hasMany(models.FacultyImage);
     StudyArea.belongsTo(models.Institution);
+    StudyArea.hasMany(models.FeeRange);
   };
   return StudyArea;
 };
