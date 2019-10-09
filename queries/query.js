@@ -15,6 +15,7 @@ var Logo = Model.Logo;
 var Qualification = Model.Qualification;
 var FacultyImage = Model.FacultyImage;
 var FeeRange = Model.FeeRange;
+var Enquiry = Model.Enquiry;
 var bcrypt = require("bcryptjs");
 //Courses queries
 
@@ -259,7 +260,7 @@ module.exports = {
         delete dataObj.institutionId;
       }
 
-      if (schoolId && facultyId) hasValues = false;
+      if (schoolId == 0 && facultyId == 0) hasValues = false;
 
       return hasValues
         ? Course.findAll({
@@ -332,6 +333,22 @@ module.exports = {
     },
     delete: function(id) {
       return StudyArea.destroy({ where: { id: id } });
+    }
+  },
+  Enquiry: {
+    findAll: function() {
+      return Enquiry.findAll();
+    },
+
+    create: function(obj) {
+      return Enquiry.create(obj);
+    },
+    findById: function(id) {
+      return Enquiry.findByPk(id);
+    },
+
+    delete: function(id) {
+      return Enquiry.destroy({ where: { id: id } });
     }
   },
   User: {

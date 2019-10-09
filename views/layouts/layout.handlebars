@@ -23,6 +23,7 @@
 	<link href="/main_theme/css/style.css" rel="stylesheet" type="text/css" />
 	<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 
+
 	<style>
 		.panel-group .panel {
 			border-radius: 0;
@@ -68,15 +69,11 @@
 
 			$http.get("/schools")
 				.then(function (response) {
-					console.log(response.data);
-
 					$scope.menu = response.data.data;
 				});
 
 			$http.get("/dropDown")
 				.then(function (response) {
-					console.log(response.data);
-
 					$scope.drop = response.data.data;
 				});
 		});

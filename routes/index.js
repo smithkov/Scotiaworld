@@ -134,7 +134,7 @@ router.post("/courseSearch", async function(req, res) {
 });
 
 router.post("/compareFee", async function(req, res) {
-  let institutionId = req.body.institutionId;
+  let institutionId = req.body.institutionId1;
   let institutionId2 = req.body.institutionId2;
   let facultyId = req.body.facultyId;
 
@@ -142,7 +142,7 @@ router.post("/compareFee", async function(req, res) {
     institutionId,
     facultyId
   );
-  let courseForInstitution2 = await Query.Course.findByInstitutionId(
+  let courseForInstitution2 = await Query.Course.findByInstitutionIdSearch(
     institutionId2,
     facultyId
   );
