@@ -37,6 +37,7 @@
     "mysql2": "^1.6.5",
     "node-cache": "^4.2.1",
     "nodemailer": "^4.6.8",
+    "nodemon": "^1.19.3",
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",

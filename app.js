@@ -23,6 +23,7 @@ var institution = require("./routes/institution");
 var application = require("./routes/application");
 var facultyImage = require("./routes/facultyimage");
 var feeRange = require("./routes/feeRange");
+var enquiry = require("./routes/enquiry");
 
 var departure = require("./routes/departure");
 var guideline = require("./routes/guideline");
@@ -87,6 +88,7 @@ app.use("/siteImage", siteImage);
 app.use("/application", application);
 app.use("/guideline", guideline);
 app.use("/departure", departure);
+app.use("/enquiry", enquiry);
 app.get("*", function(req, res) {
   res.render("error-404");
 });
