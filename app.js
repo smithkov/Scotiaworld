@@ -21,12 +21,13 @@ var degreeType = require("./routes/degreeType");
 var city = require("./routes/city");
 var institution = require("./routes/institution");
 var application = require("./routes/application");
-var facultyImage = require("./routes/facultyimage");
+var facultyImage = require("./routes/facultyImage");
 var feeRange = require("./routes/feeRange");
 var enquiry = require("./routes/enquiry");
 
 var departure = require("./routes/departure");
 var guideline = require("./routes/guideline");
+
 // Init App
 var app = express();
 
