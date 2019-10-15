@@ -39,68 +39,70 @@
 </div> -->
 
 <!-- bread-crumb start here -->
-
+<title>Scotiaworld | Login</title>
 <div class="bread-crumb">
-	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
-	<div class="container">
-		<div class="matter">
-			<h2>register now</h2>
-			<ul class="list-inline">
-				<li>
-					<a href="index-2.html">HOME</a>
-				</li>
-				<li>
-					<a href="login_register.html">register now</a>
-				</li>
-			</ul>
-		</div>
-	</div>
+  <img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
+  <div class="container">
+    <div class="matter">
+      <h2>register now</h2>
+      <ul class="list-inline">
+        <li>
+          <a href="index-2.html">HOME</a>
+        </li>
+        <li>
+          <a href="login_register.html">register now</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
 <!-- bread-crumb end here -->
 
 <!-- login start here -->
 <div class="login">
-	<div class="container">
-		<div class="col-md-12 col-sm-12 col-xs-12 box padd0">
+  <div class="container">
+    <div class="col-md-12 col-sm-12 col-xs-12 box padd0">
       <div class="col-md-3 col-sm-3 col-xs-6"></div>
-          <div class="col-md-6 col-sm-6 col-xs-12">
-            <h5>sign in</h5>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <h5>sign in</h5>
 
-            {{#if success_msg}}
-            <hr>
-              <div class="alert alert-success">{{success_msg}}</div>
-            {{/if}}
+        {{#if success_msg}}
+        <hr>
+        <div class="alert alert-success">{{success_msg}}</div>
+        {{/if}}
 
-            {{#if error_msg}}
-            <hr>
-              <div class="alert alert-danger">{{error_msg}}</div>
-            {{/if}}
+        {{#if error_msg}}
+        <hr>
+        <div class="alert alert-danger">{{error_msg}}</div>
+        {{/if}}
 
-            {{#if error}}
-            <hr>
-              <div class="alert alert-danger">{{error}}</div>
-            {{/if}}
-            <form method="post" action="/user/login">
-              <div class="form-group">
-                <label>Username*</label>
-                <input type="text" required name="username" value="" placeholder="johndoe" id="input-text" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label>password*</label>
-                <input type="password" required name="password" value="" placeholder="********" id="input-password" class="form-control" />
-              </div>
-              <div class="links">
-                <input type="checkbox"  name="credit" class="checkclass checkbox-inline"/>Remember me
-                <a href="#" class="pull-right">Forgot Password?</a>
-              </div>
-              <button type="submit" class="btn btn-primary btn-block" >Login Now</button>
-            </form>
-
-            <div class="donot">Don't have an account? <a href="/user/register">Create a New Account to enable you apply.</a>
-            </div>
+        {{#if error}}
+        <hr>
+        <div class="alert alert-danger">{{error}}</div>
+        {{/if}}
+        <form method="post" action="/user/login">
+          <div class="form-group">
+            <label>Username*</label>
+            <input type="text" required name="username" value="" placeholder="johndoe" id="input-text"
+              class="form-control" />
           </div>
-      	<div class="col-md-3 col-sm-3 col-xs-6"></div>
-		</div>
-	</div>
+          <div class="form-group">
+            <label>password*</label>
+            <input type="password" required name="password" value="" placeholder="********" id="input-password"
+              class="form-control" />
+          </div>
+          <div class="links">
+            <input type="checkbox" name="credit" class="checkclass checkbox-inline" />Remember me
+            <a href="#" class="pull-right">Forgot Password?</a>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Login Now</button>
+        </form>
+
+        <div class="donot">Don't have an account? <a href="/user/register">Create a New Account to enable you apply.</a>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-3 col-xs-6"></div>
+    </div>
+  </div>
 </div>
 <!-- login end here -->
