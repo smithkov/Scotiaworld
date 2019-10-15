@@ -30,7 +30,8 @@
 						{{#each data}}
 						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
 							<div class="box">
-								<img src="/main_theme/images/p1.jpg" class="img-responsive" alt="img" title="img" />
+								<img style="height:150px" src="/uploads/{{this.path}}" class="img-responsive" alt="img"
+									title="img" />
 								<p>{{this.name}}</p>
 								<span>£{{this.fee}}</span>
 							</div>
@@ -60,40 +61,16 @@
 
 				<input value="{{school.about}}" id="edit" type="hidden" />
 				<hr>
-				{{!-- <div class="col-sm-12 sort">
-					<h3 style="text-align:center">All Faculties at {{name}}</h3>
-				</div>
-				<div class="row">
-					<div id="faculty" class="schoolDiv">
-
-						<table id="example" class="example table table-striped table-bordered" style="width:100%">
-							<thead>
-								<tr>
-									<th>Faculty</th>
-								</tr>
-							</thead>
-							<tbody>
-								{{#each faculties}}
-								<tr>
-									<td>
-										<h4>{{this}}</h4>
-									</td>
-								</tr>
-								{{/each}}
-							</tbody>
-						</table>
-					</div>
-				</div> --}}
 
 				<!-- Courses list start here -->
-
-
 				<div id="course" class="row">
 					{{#if faculties.length}}
 					<ul class="list-group">
 						<li class="list-group-item active">All FACULTIES IN {{school.name}}</li>
 						{{#each faculties}}
-						<li class="list-group-item">{{this.faculty}}</li>
+						<li class="list-group-item"><a
+								href="/faculty/{{this.faculty.StudyArea.id}}/{{this.faculty.Institution.id}}">{{this.faculty.StudyArea.name}}</a>
+						</li>
 						{{/each}}
 
 					</ul>
@@ -108,7 +85,7 @@
 										href="#collapse{{@index}}" aria-expanded="true"
 										aria-controls="collapse{{@index}}">
 										<i class="more-less glyphicon glyphicon-plus"></i>
-										ALL COURSES IN SCHOOL OF <strong>{{this.faculty}}</strong>
+										ALL COURSES IN SCHOOL OF <strong>{{this.faculty.StudyArea.name}}</strong>
 									</a>
 								</h4>
 							</div>

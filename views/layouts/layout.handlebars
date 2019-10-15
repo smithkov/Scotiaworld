@@ -197,8 +197,7 @@
 										</a>
 										<input type="checkbox" id="sm2">
 										<ul class="sub-menu">
-											<li ng-repeat="f in u.faculty"><a
-													href="/school-faculties/{[{u.uni.name}]}/{[{u.uni.id}]}"
+											<li ng-repeat="f in u.faculty"><a href="/faculty/{[{f.id}]}/{[{u.uni.id}]}"
 													ng-bind="f.name"></a></li>
 
 										</ul>
@@ -214,7 +213,7 @@
 							</li>
 
 							<li>
-								<a href="/application/step1">CONTACT US</a>
+								<a href="/contact-us">CONTACT US</a>
 							</li>
 						</ul>
 					</nav>
@@ -289,7 +288,8 @@
 						{{#each data}}
 						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
 							<li class="box">
-								<img src="/main_theme/images/p1.jpg" class="img-responsive" alt="image" title="image" />
+								<img src="/uploads/{{this.path}}" style="height: 61px; width:64px"
+									class="img-responsive" alt="image" title="image" />
 								<p>{{this.name}}</p>
 								<span>{{this.fee}}</span>
 							</li>

@@ -32,6 +32,12 @@ module.exports = {
       thumbnail: {
         type: Sequelize.STRING
       },
+      scholarshipAmount: {
+        type: Sequelize.STRING
+      },
+      intake: {
+        type: Sequelize.STRING
+      },
       institutionId: {
         type: Sequelize.INTEGER
       },

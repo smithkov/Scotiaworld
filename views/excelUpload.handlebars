@@ -1,0 +1,51 @@
+<!-- Waves Effect Css -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+
+<section class="content">
+  <!-- Advanced Form Example With Validation -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+
+        <div class="body">
+          <form method="post" action="/course/saveExcel" enctype="multipart/form-data">
+
+
+
+            <div class="form-group">
+              <label>Please upload your credentials (zipped file or merged pdf file)</label>
+              <input id="upload" type="file" name="file" />
+            </div>
+
+
+            <button type="submit" class="btn bg-primary waves-effect">
+              Upload
+            </button>
+            <button type="button" id="btn-save" class="btn bg-default waves-effect">
+              Save to database
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- #END# Advanced Form Example With Validation -->
+</section>
+<script>
+  $(function () {
+    $("#btn-save").click(function () {
+      $.ajax({
+        type: 'POST',
+        url: '/course/convert',
+        dataType: "json",
+        success: function (response) {
+          console.log(response)
+        },
+        error: function (jqXHR, exception) {
+
+        }
+      });
+    })
+  })
+</script>

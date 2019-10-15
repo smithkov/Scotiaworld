@@ -233,16 +233,38 @@ module.exports = {
         include: [{ all: true }]
       });
     },
-    findByPopular: function() {
+    findByPopular: async function() {
+      let course = await Course.findAll({
+        where: { isPopular: true }
+      });
+      let courseLength = course.length;
+      let randNum = Math.floor(Math.random() * courseLength) + 1;
+      if (randNum >= courseLength) {
+        randNum = courseLength - 7;
+      }
+
       return Course.findAll({
         where: { isPopular: true },
         limit: 4,
+        offset: randNum,
         include: { all: true }
+      });
+    },
+    findNameByInstitutionId: function(id, name) {
+      return Course.findOne({
+        where: { institutionId: id, name: name },
+        include: [{ all: true }]
       });
     },
     findByInstitutionId: function(id) {
       return Course.findAll({
         where: { institutionId: id },
+        include: [{ all: true }]
+      });
+    },
+    findByFacultyId: function(id, institutionId) {
+      return Course.findAll({
+        where: { studyAreaId: id, institutionId: institutionId },
         include: [{ all: true }]
       });
     },
@@ -271,6 +293,7 @@ module.exports = {
             include: [{ all: true }]
           });
     },
+
     findCourseByFacultyAndSchool: function(facultyId, schoolId) {
       return Course.findAll({
         where: { institutionId: schoolId, studyAreaId: facultyId },

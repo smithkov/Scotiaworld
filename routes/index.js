@@ -51,18 +51,14 @@ router.get("/schools", async (req, res) => {
     let course = await Query.Course.findByInstitutionId(schools[i].id);
 
     for (var j = 0; j < course.length; j++) {
-      if (j == 0) {
-        fac.push(course[j].StudyArea);
-      }
-
-      idVal = fac.filter(item => item.id !== course[j].StudyArea.id);
-
-      if (idVal.length == 0) {
-        fac.push(course[j].StudyArea);
-      }
+      fac.push(course[j].StudyArea.id);
     }
-
-    //let faculties = uniq(fac);
+    let filterIds = uniq(fac);
+    fac = [];
+    for (var u = 0; u < filterIds.length; u++) {
+      let getById = await Query.StudyArea.findById(filterIds[u]);
+      fac.push(getById);
+    }
     schoolArray.push({ uni: schools[i], faculty: fac });
     fac = [];
   }
@@ -151,6 +147,24 @@ router.post("/compareFee", async function(req, res) {
   });
 });
 
+router.post("/compareFeeSingle", async function(req, res) {
+  let institutionId = req.body.institutionId;
+  let facultyId = req.body.facultyId;
+  let pageNext = req.body.pageNext;
+  let limit = req.body.limit;
+
+  let courseForInstitution = await Query.Course.findByInstitutionIdSearch(
+    institutionId,
+    facultyId,
+    pageNext,
+    limit
+  );
+
+  return res.send({
+    data: courseForInstitution
+  });
+});
+
 router.get("/about", function(req, res) {
   Query.Course.findByPopular().then(function(populars) {
     res.render("about", { data: populars });
@@ -183,6 +197,12 @@ router.get("/visa-application-guideline", function(req, res) {
 router.get("/why-us", (req, res) => {
   Query.Course.findByPopular().then(function(populars) {
     res.render("whyChoose", { data: populars });
+  });
+});
+
+router.get("/contact-us", (req, res) => {
+  Query.Course.findByPopular().then(function(populars) {
+    res.render("contactUs", { data: populars });
   });
 });
 
@@ -238,7 +258,7 @@ router.get("/school-faculties/:name/:_id", async function(req, res, next) {
         id
       );
       facultyCourse.push({
-        faculty: courses[0].StudyArea.name.toUpperCase(),
+        faculty: courses[0],
         course: courses
       });
     }
@@ -282,6 +302,19 @@ router.post("/faculty-courses", async (req, res) => {
   });
 });
 
+router.get("/faculty/:_id/:schoolId", async (req, res) => {
+  let facultyId = req.params._id;
+  let schoolId = req.params.schoolId;
+  let courseByFaculty = await Query.Course.findByFacultyId(facultyId, schoolId);
+  let populars = await Query.Course.findByPopular();
+
+  res.render("faculty", {
+    facultyName: courseByFaculty[0].StudyArea.name,
+    data: populars,
+    school: courseByFaculty[0].Institution.name,
+    courses: courseByFaculty
+  });
+});
 router.get("/dashboard", ensureAuthenticated, async function(req, res) {
   let courses = await Query.Course.findAll();
   let institutions = await Query.Institution.findAll();

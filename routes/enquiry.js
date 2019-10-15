@@ -13,68 +13,6 @@ const entityName = {
   url: "/feeRange/"
 };
 
-router.get("/add/:_id", async function(req, res, next) {
-  let institutionId = req.params._id;
-  let studyArea = await Query.StudyArea.findAll();
-  let feeRange = await Query.FeeRange.findAll();
-
-  res.render("feeRange", {
-    layout: "layoutDashboard.handlebars",
-    user: req.user,
-    data: feeRange,
-    studyArea: studyArea,
-    institutionId: institutionId
-  });
-});
-
-router.get("/listing", function(req, res, next) {
-  Query.FacultyImage.findAll().then(data => {
-    res.render("list", {
-      layout: "layoutDashboard.handlebars",
-      user: req.user,
-      data: data,
-      entity: entityName
-    });
-  });
-});
-
-router.get("/update/:_id", function(req, res, next) {
-  var id = req.params._id;
-  Query.FacultyImage.findById(id).then(data => {
-    res.render("update", {
-      layout: "layoutDashboard.handlebars",
-      user: req.user,
-
-      data: data,
-      entity: entityName
-    });
-  });
-});
-
-router.get("/delete/:_id", function(req, res, next) {
-  Query.FacultyImage.delete(req.params._id).then(data => {
-    res.redirect(entityName.url + "listing");
-  });
-});
-
-router.post("/update", config.uploadAny.single("file"), function(req, res) {
-  let id = req.body.id;
-  let studyAreaId = req.body.studyAreaId;
-  let name = req.files ? req.file.originalname : req.body.name;
-  let path = req.file ? req.file.filename : req.body.path;
-  let images = {
-    id: id,
-    path: path,
-    name: name,
-    studyAreaId: studyAreaId
-  };
-  //  console.log("id: "+ id);
-  Query.FacultyImage.update(images, id).then(data => {
-    req.flash("success_msg", name + " have been modified successfully");
-    res.redirect("listing");
-  });
-});
-
 router.post("/add", function(req, res) {
   let name = req.body.name;
   let phone = req.body.phone;
@@ -127,14 +65,5 @@ router.post("/add", function(req, res) {
       });
   });
 });
-
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    //req.flash('error_msg','You are not logged in');
-    res.redirect("/user/login");
-  }
-}
 
 module.exports = router;

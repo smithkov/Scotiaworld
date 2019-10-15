@@ -22,7 +22,8 @@
 						{{#each data}}
 						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
 							<div class="box">
-								<img src="/main_theme/images/p1.jpg" class="img-responsive" alt="img" title="img" />
+								<img style="height:150px" src="/uploads/{{this.path}}" class="img-responsive" alt="img"
+									title="img" />
 								<p>{{this.name}}</p>
 								<span>£{{this.fee}}</span>
 							</div>
@@ -43,7 +44,6 @@
 						<div class="col-lg-8">
 							<select id="cboSearchType" class="form-control">
 								<option value="0">Compare Fees</option>
-								<option value="1">Compare Courses</option>
 								<option value="2">Seek Professional Advice</option>
 							</select>
 						</div>
@@ -142,8 +142,8 @@
 							</tbody>
 						</table>
 						<hr>
-						<button type="button">
-							<< Back</button> <button class="pull-right" type="button">Next >>
+						<button id="btnBack" type="button">
+							<< Back</button> <button id="btnNext" class="pull-right" type="button">Next >>
 						</button>
 						<hr>
 					</div>
@@ -170,8 +170,8 @@
 							</tbody>
 						</table>
 						<hr>
-						<button type="button">
-							<< Back</button> <button class="pull-right" type="button">Next >>
+						<button id="btnBack2" type="button">
+							<< Back</button> <button id="btnNext2" class="pull-right" type="button">Next >>
 						</button>
 						<hr>
 					</div>
@@ -196,7 +196,124 @@
 			let name2 = $("#schoolName2");
 			let searchSpinner = $(".spinner");
 			let cboSearchType = $("#cboSearchType");
+			let btnBack = $("#btnBack");
+			let btnNext = $("#btnNext");
 
+			let btnBack2 = $("#btnBack2");
+			let btnNext2 = $("#btnNext2");
+			let allData = [];
+			let renderData = [];
+			let allData2 = [];
+			let renderData2 = [];
+			let totalData1 = 0;
+			let totalData2 = 0;
+			let paginationObject = {
+				limit: 10,
+				nextPage: 0,
+				nextPage2: 0,
+				total: 0,
+				total2: 0,
+				url: "/compareFee",
+				url2: "/compareFee"
+			}
+
+			var limit1 = 10;
+			var limit2 = 10;
+			var pageNext1 = 10;
+			let pagePrevious1 = 0;
+			var pageNext2 = 10;
+			let pagePrevious2 = 0;
+
+
+			btnBack.click(function (e) {
+				if (pagePrevious1 == 0) {
+					$(this).attr("disabled", true);
+				}
+				else {
+					$(this).attr("disabled", false);
+					pageNext1 -= limit1;
+					pagePrevious1 -= limit1;
+					renderData = [];
+					renderData = allData.slice(pagePrevious1, pageNext1);
+					wrapper1.empty();
+					renderData.forEach(course => {
+						wrapper1.append(template(course));
+					})
+
+					paginationControl();
+				}
+			})
+			btnBack2.click(function (e) {
+				if (pagePrevious2 == 0) {
+					$(this).attr("disabled", true);
+				}
+				else {
+					$(this).attr("disabled", false);
+					pageNext2 -= limit2;
+					pagePrevious2 -= limit2;
+					renderData2 = [];
+					renderData2 = allData2.slice(pagePrevious2, pageNext2);
+					wrapper2.empty();
+					renderData2.forEach(course => {
+						wrapper2.append(template(course));
+					})
+					paginationControl();
+				}
+			})
+
+			btnNext.click(function (e) {
+				pageNext1 += limit1;
+				pagePrevious1 += limit1;
+				renderData = [];
+				renderData = allData.slice(pagePrevious1, pageNext1);
+				wrapper1.empty();
+				renderData.forEach(course => {
+					wrapper1.append(template(course));
+				})
+
+				paginationControl();
+
+
+			})
+			btnNext2.click(function (e) {
+
+				pageNext2 += limit2;
+				pagePrevious2 += limit2;
+				renderData2 = [];
+				renderData2 = allData2.slice(pagePrevious2, pageNext2);
+				wrapper2.empty();
+				renderData2.forEach(course => {
+					wrapper2.append(template(course));
+				})
+				paginationControl();
+
+
+
+			})
+			function paginationControl() {
+				//alert(totalData2)
+				if (totalData2 < (pageNext2 - 1))
+					btnNext2.attr("disabled", true);
+				else
+					btnNext2.attr("disabled", false);
+
+				if (totalData1 < (pageNext1 - 1))
+					btnNext.attr("disabled", true);
+				else
+					btnNext.attr("disabled", false);
+
+				if (pagePrevious2 <= 0)
+					btnBack2.attr("disabled", true);
+
+				else
+					btnBack2.attr("disabled", false);
+
+
+				if (pagePrevious1 <= 0)
+					btnBack.attr("disabled", true);
+				else
+					btnBack.attr("disabled", false);
+			}
 			displayContainer(cboSearchType);
 			cboSearchType.change(function () {
 
@@ -252,6 +369,15 @@
 						searchSpinner.hide();
 						let course1 = result.data.course1;
 						let course2 = result.data.course2;
+						allData = course1;
+						allData2 = course2;
+
+						renderData = allData.slice(0, limit1);
+						renderData2 = allData2.slice(0, limit2);
+
+						totalData1 = course1.length;
+						totalData2 = course2.length;
+						paginationControl();
 
 						wrapper1.empty();
 						wrapper2.empty();
@@ -262,10 +388,10 @@
 						if (course2.length == 0)
 							wrapper2.append(nullTemplate())
 
-						course1.forEach(course => {
+						renderData.forEach(course => {
 							wrapper1.append(template(course));
 						})
-						course2.forEach(course => {
+						renderData2.forEach(course => {
 							wrapper2.append(template(course));
 						})
 					},

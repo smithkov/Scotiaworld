@@ -18,7 +18,8 @@
 						{{#each data}}
 						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
 							<div class="box">
-								<img src="/main_theme/images/p1.jpg" class="img-responsive" alt="img" title="img" />
+								<img style="height:150px" src="/uploads/{{this.path}}" class="img-responsive" alt="img"
+									title="img" />
 								<p>{{this.name}}</p>
 								<span>£{{this.fee}}</span>
 							</div>

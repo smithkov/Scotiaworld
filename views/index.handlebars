@@ -37,19 +37,20 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12">
-							<div class="box">
-								<div style="text-align:center" class="caption">
-									{{!--<img src="/main_theme/images/footer-logo.png" class="img-responsive" alt="img"--}}
-									{{!--	title="img" />--}}
-									<div>
-										<h1 style="font-size:50px; text-align:center"><strong>Simple Process</strong>
+							<div style="text-align:center" class="box">
+								<div class="row">
+									<div class="col-lg-3"></div>
+									<div class="col-lg-6">
+										<h1 style="font-size:60px; text-align:center"><strong>Simple Process</strong>
 										</h1>"... take full charge of your future"
 									</div>
-
-
+									<div class="col-lg-3">
+										<button onclick="window.location.href = '/user/login';" id="btnReg"
+											type="button">APPLY
+											NOW</button>
+									</div>
 								</div>
-								<button onclick="window.location.href = '/user/login';" id="btnReg" type="button">APPLY
-									NOW</button>
+
 							</div>
 						</div>
 					</div>
@@ -214,11 +215,11 @@
 								<h4 style="font-size:13px">{{this.institution.name}}</h4>
 								<p></p>
 								<ul class="list-inline">
-									<li>
+									{{!-- <li>
 										<a href="#"></i><strong>{{this.DegreeType.name}}</strong></a>
-									</li>
+									</li> --}}
 
-									<li><strong>£{{this.fee}}</strong></li>
+									<li><strong>{{this.fee}}</strong></li>
 								</ul>
 							</div>
 						</div>
