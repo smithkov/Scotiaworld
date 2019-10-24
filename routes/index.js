@@ -240,8 +240,8 @@ router.get("/school-courses/:name/:_id", function(req, res, next) {
 });
 
 router.get("/school-faculties/:name/:_id", async function(req, res, next) {
-  var facultyName = req.params.name;
-  var id = req.params._id;
+  let facultyName = req.params.name;
+  let id = req.params._id;
 
   Query.Course.findByPopular().then(async function(populars) {
     let courseByInstitution = await Query.Course.findByInstitutionId(id);
@@ -251,6 +251,7 @@ router.get("/school-faculties/:name/:_id", async function(req, res, next) {
     courseByInstitution.forEach(course => {
       faculty.push(course.StudyArea.id);
     });
+
     let filterIds = uniq(faculty);
     for (var i = 0; i < filterIds.length; i++) {
       let courses = await Query.Course.findCourseByFacultyAndSchool(

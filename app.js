@@ -11,6 +11,7 @@ var mongo = require("mongodb");
 var mongoose = require("mongoose");
 var favicon = require("serve-favicon");
 
+
 var routes = require("./routes/index");
 var users = require("./routes/users");
 var studyArea = require("./routes/studyArea");
@@ -29,7 +30,10 @@ var departure = require("./routes/departure");
 var guideline = require("./routes/guideline");
 
 // Init App
+var cors = require('cors');
+require('dotenv').config();
 var app = express();
+app.use(cors());
 
 // View Engine
 app.set("views", path.join(__dirname, "views"));

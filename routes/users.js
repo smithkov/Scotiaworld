@@ -7,6 +7,9 @@ var mongoose = require("mongoose").Schema;
 var config = require("../my_modules/config");
 var bcrypt = require("bcryptjs");
 var Query = require("../queries/query");
+let jwt = require('jsonwebtoken');
+require('dotenv').config();
+let middleware = require('../middleware');
 
 var Recaptcha = require("express-recaptcha").Recaptcha;
 var recaptcha = new Recaptcha(
@@ -79,130 +82,36 @@ router.post(
   }
 );
 
-// router.get('/verifyAccount/:_id',function (req, res, next) {
-// 		let userId = req.params._id;
-// 		let viewName = "AccountVerify";
-// 		Token.getTokenById(userId,function(err,token){
-// 			if(!token){
-// 					return res.render(viewName,{errorMsg:true,message:'We were unable to find a valid token. Your token may have expired.'});
-// 			}
-// 			User.getUserById(userId, function(err,user){
-// 				 if(!user){
-// 					 	return res.render(viewName,{errorMsg:true,message:'We were unable to find a user for this token.'});
-// 				 }
-// 				 if(user.status){
-// 					 return res.render(viewName,{errorMsg:true,message:'This user has already been verified.'});
-// 				 }
-// 				 else{
-// 						user.status = true;
-// 						user.save(function (err) {
-// 							 if (err) {
-//
-// 								}
-// 								 return res.render(viewName,{errorMsg:false,message:'The account has been verified. Please log in.'});
-// 					 });
-// 				 }
-// 			});
-//
-// 		})
-// });
+router.post("/mobileLogin",function(req, res) {
+  let username = req.body.username;
+  let password = req.body.password;
+  User.findOne({ where: { username: username } }).then(user => {
+    if (user) {
+      var passwordIsValid = bcrypt.compareSync(password, user.password);
+      if(passwordIsValid){
+        let token = jwt.sign({username: username},
+            process.env.secret,
+            { expiresIn: '24h' // expires in 24 hours
+            }
+        );
+        res.json({
+          success: true,
+          message: 'Authentication successful!',
+          token: token
+        });
+      }
+      else{
+        res.json({
+          success: false,
+          message: 'Authentication failes!',
+          token: null
+        });
+      }
+    }
+  });
+  }
+);
 
-// router.get('/forgotPassword',function (req, res, next) {
-//
-//     res.render('forgotPassword');
-// });
-
-// router.post('/forgotPassword',function (req, res, next) {
-// 	  var email = req.body.email;
-//
-// 		User.getUserByEmail(email, function(err,user){
-// 			if(err){
-// 				throw err;
-// 			}
-// 			var id = Math.floor(Math.random() * (100000 - 1000000)) + 10000000;
-// 			if(user){
-// 					var link = forgotPasswordUrl+id;
-// 					var token = new TokenEmail({
-// 						 _userId:user.id,
-// 						 token :id
-// 					})
-// 					TokenEmail.createToken(token,function(err,token){
-// 							Mailer.sendMail([{name:user.name,email:user.email,link:link,isVerify:false}]);
-// 					});
-// 			}
-// 		});
-// 	   res.render('forgotPassword',{message:"If this is an account in our system then you will receive an email shortly."});
-// });
-
-// router.get('/users',ensureAuthenticated, function(req, res, next) {
-//   if(req.user.roleId){
-// 		User.getUsers(function(err,users){
-// 			if(err){
-// 				throw err;
-// 			}
-// 			res.render('users',{layout: 'layoutDashboard.handlebars',users:users,user:req.user});
-// 		})
-//   }
-//   else{
-//     res.redirect("/login");
-//   }
-// });
-
-// router.get('/resetPassword/:_id',function (req, res, next) {
-// 	let tokenId = req.params._id;
-// 	TokenEmail.getTokenById(tokenId, function(err,token){
-// 		if(err){
-// 			throw err;
-// 		}
-//     console.log(token)
-// 		if(token){
-// 	  	res.render('resetpassword',{errorMsg:false,userId:token._userId});
-// 		}
-// 		else {
-// 			res.render('resetpassword',{errorMsg:true,message:'We were unable to find a user for this token.'});
-// 		}
-// 	})
-//
-// });
-
-// router.post('/resetPassword',function (req, res, next) {
-//
-// 	var password = req.body.password;
-// 	var password2 = req.body.password2;
-// 	var userId = req.body.userId;
-//
-// 	req.checkBody('password', 'Password is required').notEmpty();
-// 	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-//
-// 	var errors = req.validationErrors();
-//
-// 	if (errors) {
-// 		res.render('resetpassword', {
-// 			errors: errors
-// 		});
-// 	}
-// 	else {
-// 		User.getUserById(userId, function(err,user){
-// 			 if (err) throw err;
-// 			 if(user){
-// 				 user.password = password;
-//
-// 				 User.resetUserPassword(userId,user,{}, function (err, user) {
-// 					 if (err) throw err;
-//              console.log(user.password)
-// 						 return res.render("resetpassword",{done:'Password changed successfully.'});
-// 				 });
-//
-// 			 }
-// 			 else {
-// 			 	    return res.render("resetpassword",{undone:'Password could not be changed.'});
-// 			 }
-// 		 })
-// 	}
-//
-// });
-//router.post('/register',recaptcha.middleware.verify,captchaVerificationRegister, function (req, res) {
-// Register User
 router.post("/register", async function(req, res) {
   var email = req.body.email;
   var username = req.body.username;
