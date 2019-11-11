@@ -10,28 +10,22 @@ var Logo = require("../models").Logo;
 var Banner = require("../models").Banner;
 var config = require("../my_modules/config");
 router.get("/", async function(req, res) {
-  var courses, studyAreas, populars, institutions, banners;
-  Query.Course.findAll().then(data => {
-    courses = data;
-    Query.StudyArea.findAll().then(data => {
-      studyAreas = data;
-      Query.Course.findByPopular().then(data => {
-        populars = data;
-        Query.Institution.findAll().then(schools => {
-          institutions = schools;
-          Query.Banner.activeBanners().then(function(banner) {
-            res.render("index", {
-              banner: banner,
-              courses: courses.length,
-              institutions: institutions.length,
-              schools: institutions,
-              faculties: studyAreas.length,
-              data: populars
-            });
-          });
-        });
-      });
-    });
+  let courses = await Query.Course.findAll();
+ 
+  let studyAreas = await Query.StudyArea.findAll();
+
+  let populars = await Query.Course.findByPopular();
+
+  let institutions = await Query.Institution.findAll();
+
+  let banner = await Query.Banner.activeBanners();
+  res.render("index", {
+    banner: banner,
+    courses: courses.length,
+    institutions: institutions.length,
+    schools: institutions,
+    faculties: studyAreas.length,
+    data: populars
   });
 });
 
@@ -70,6 +64,49 @@ router.get("/schools", async (req, res) => {
     data: schoolArray
   });
 });
+router.post("/getCoursesByFaculty", async (req, res) => {
+  let schoolId = req.body.schoolId;
+  let facultyId = req.body.facultyId;
+  let coursesByFaculty = await Query.Course.findByFacultyId(
+    facultyId,
+    schoolId
+  );
+  return res.send({
+    success: true,
+    data: coursesByFaculty
+  });
+});
+router.get("/schoolsMobile", async (req, res) => {
+  var schoolArray = [];
+  var schools = await Query.Institution.findAll();
+  var fac = [];
+  for (var i = 0; i < schools.length; i++) {
+    let course = await Query.Course.findByInstitutionId(schools[i].id);
+
+    for (var j = 0; j < course.length; j++) {
+      fac.push(course[j].StudyArea.id);
+    }
+    let filterIds = uniq(fac);
+    fac = [];
+    for (var u = 0; u < filterIds.length; u++) {
+      let getById = await Query.StudyArea.findById(filterIds[u]);
+      let coursesByFaculty = await Query.Course.findByFacultyId(
+        getById.id,
+        schools[i].id
+      );
+      fac.push({ fac: getById, num: coursesByFaculty.length });
+    }
+    schoolArray.push({ uni: schools[i], faculty: fac });
+    fac = [];
+  }
+
+  return res.send({
+    auth: false,
+    token: null,
+    error: false,
+    data: schoolArray
+  });
+});
 
 router.get("/schools", function(req, res) {
   Query.Course.findByPopular().then(function(populars) {
@@ -78,27 +115,21 @@ router.get("/schools", function(req, res) {
     });
   });
 });
-router.get("/compare-fees", function(req, res) {
-  var populars, schools, courses;
-  Query.Course.findByPopular().then(function(populars) {
-    Query.Course.findAll().then(function(courses) {
-      res.render("compare", {
-        courses: courses,
-        data: populars
-      });
-    });
+router.get("/compare-fees", async function(req, res) {
+  let populars = await Query.Course.findByPopular();
+  let courses = await Query.Course.findAll();
+  res.render("compare", {
+    courses: courses,
+    data: populars
   });
 });
 
-router.get("/courses", function(req, res) {
-  var populars, schools, courses;
-  Query.Course.findByPopular().then(function(populars) {
-    Query.Course.findAll().then(function(courses) {
-      res.render("course", {
-        courses: courses,
-        data: populars
-      });
-    });
+router.get("/courses", async function(req, res) {
+  let populars = await Query.Course.findByPopular();
+  let courses = await Query.Course.findAll();
+  res.render("course", {
+    courses: courses,
+    data: populars
   });
 });
 
@@ -170,26 +201,23 @@ router.get("/about", function(req, res) {
     res.render("about", { data: populars });
   });
 });
-router.get("/pre-departure", function(req, res) {
+router.get("/pre-departure", async function(req, res) {
   let desc = "Pre-Departure Guideline";
-  Query.Course.findByPopular().then(function(populars) {
-    Query.Departure.findAll().then(function(departure) {
-      res.render("richTextTemp", {
-        app: departure[0],
-        description: desc,
-        data: populars
-      });
-    });
+  let populars = await Query.Course.findByPopular();
+  let departure = await Query.Departure.findAll();
+  res.render("richTextTemp", {
+    app: departure[0],
+    description: desc,
+    data: populars
   });
 });
+
 router.get("/visa-application-guideline", function(req, res) {
   let desc = "Visa Application Guideline";
-  Query.Course.findByPopular().then(function(populars) {
-    Query.Guideline.findAll().then(function(guide) {
-      res.render("richTextTemp", {
-        app: guide[0],
-        description: desc
-      });
+  Query.Guideline.findAll().then(function(guide) {
+    res.render("richTextTemp", {
+      app: guide[0],
+      description: desc
     });
   });
 });
@@ -212,30 +240,27 @@ router.get("/about-scotland", (req, res) => {
   });
 });
 
-router.get("/detail/:school/:course/:id", (req, res) => {
+router.get("/detail/:school/:course/:id", async (req, res) => {
   let id = req.params.id;
-  Query.Course.findByPopular().then(function(populars) {
-    Query.Course.findById(id).then(function(course) {
-      res.render("course_detail", {
-        data: populars,
-        course: course
-      });
-    });
+  let populars = await Query.Course.findByPopular();
+  let course = await Query.Course.findById(id);
+  res.render("course_detail", {
+    data: populars,
+    course: course
   });
 });
 
-router.get("/school-courses/:name/:_id", function(req, res, next) {
+router.get("/school-courses/:name/:_id", async function(req, res, next) {
   let populars, institutions;
   let Schoolname = req.params.name;
   let id = req.params._id;
 
-  Query.Course.findByPopular().then(function(populars) {
-    Query.Course.findByInstitutionId(id).then(function(courseByInstitution) {});
-    res.render("schoolCourses", {
-      courses: courseByInstitution,
-      name: Schoolname,
-      data: populars
-    });
+  let populars = await Query.Course.findByPopular();
+  let courseByInstitution = await Query.Course.findByInstitutionId(id);
+  res.render("schoolCourses", {
+    courses: courseByInstitution,
+    name: Schoolname,
+    data: populars
   });
 });
 

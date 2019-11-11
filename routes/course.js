@@ -94,8 +94,8 @@ router.post("/convert", async (req, res) => {
       school,
       name
     );
-
-    var newCourse = {
+    if(getCourseImage !== undefined){
+		var newCourse = {
       name: name,
       requirement: requirement,
       fee: fees,
@@ -113,6 +113,12 @@ router.post("/convert", async (req, res) => {
     } else {
       let add = await Query.Course.create(newCourse);
     }
+	}else{
+		console.log("------------ERROORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR--------------");
+		console.log(`${i}    ${name} `);
+		console.log("------------ERROORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR--------------");
+	}
+    
   }
   console.log(courseArray);
   return res.send({

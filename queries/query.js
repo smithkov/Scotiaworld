@@ -138,6 +138,11 @@ module.exports = {
     },
     delete: function(id) {
       return Country.destroy({ where: { id: id } });
+    },
+    findByName: function(name) {
+      return Country.findOne({
+        where: { name: name }
+      }).then(data=> {return data.id});
     }
   },
   Qualification: {
@@ -349,7 +354,9 @@ module.exports = {
       return StudyArea.create(obj);
     },
     findById: function(id) {
-      return StudyArea.findByPk(id);
+      return StudyArea.findByPk(id, {
+        include: [{ all: true }]
+      });
     },
     update: function(obj, id) {
       return StudyArea.update(obj, { where: { id: id } });

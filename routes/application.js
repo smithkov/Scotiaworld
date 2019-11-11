@@ -14,6 +14,11 @@ const url = require("url");
 const entityName = "application";
 const year = [];
 
+function apiMsg(isError) {
+  return isError
+    ? "Application could not be saved successfully!"
+    : "Application was saved successfully!";
+}
 function getYear() {
   var d = new Date();
   var y = d.getFullYear();
@@ -22,163 +27,147 @@ function getYear() {
   }
   return year;
 }
+router.post("/mobileStep1", async function(req, res, next) {
+  let currentUserId = req.body.userId;
+  let application = await Application.findByUser(currentUserId);
+  let quali = await Qualification.findAll();
+  let course = await Course.findAll();
+  let city = await City.findAll();
+  let institution = await Institution.findAll();
+  let country = await Country.findAll();
 
-router.get("/step1", ensureAuthenticated, function(req, res, next) {
-  //if(req.user.roleId){
-  let currentUserId = req.user.id;
-
-  Application.findByUser(currentUserId).then(application => {
-    Qualification.findAll().then(quali => {
-      Course.findAll().then(course => {
-        City.findAll().then(city => {
-          Institution.findAll().then(institution => {
-            Country.findAll().then(country => {
-              if (application && application.hasSubmitted)
-                res.redirect("/dashboard");
-              else {
-                res.render("step1", {
-                  layout: "layoutDashboard.handlebars",
-                  courses: course,
-                  quali: quali,
-                  year: getYear(),
-                  cities: city,
-                  institutions: institution,
-                  countries: country,
-                  app: application,
-                  user: req.user
-                });
-              }
-            });
-          });
-        });
-      });
-    });
+  return res.send({
+    courses: course,
+    quali: quali,
+    cities: city,
+    institutions: institution,
+    countries: country,
+    app: application,
+    user: req.user
   });
 });
 
-router.get("/step2", ensureAuthenticated, function(req, res, next) {
+router.get("/step1", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
-  Application.findByUser(currentUserId).then(application => {
-    Qualification.findAll().then(quali => {
-      Course.findAll().then(course => {
-        City.findAll().then(city => {
-          Institution.findAll().then(institution => {
-            Country.findAll().then(country => {
-              if (application && application.hasSubmitted)
-                res.redirect("/dashboard");
-              else
-                res.render("step2", {
-                  layout: "layoutDashboard.handlebars",
-                  courses: course,
-                  quali: quali,
-                  year: getYear(),
-                  cities: city,
-                  institutions: institution,
-                  countries: country,
-                  app: application,
-                  user: req.user
-                });
-            });
-          });
-        });
-      });
+
+  let application = await Application.findByUser(currentUserId);
+  let quali = await Qualification.findAll();
+  let course = await Course.findAll();
+  let city = await City.findAll();
+  let institution = await Institution.findAll();
+  let country = await Country.findAll();
+  if (application && application.hasSubmitted) res.redirect("/dashboard");
+  else {
+    res.render("step1", {
+      layout: "layoutDashboard.handlebars",
+      courses: course,
+      quali: quali,
+      year: getYear(),
+      cities: city,
+      institutions: institution,
+      countries: country,
+      app: application,
+      user: req.user
     });
-  });
+  }
 });
 
-router.get("/step3", ensureAuthenticated, function(req, res, next) {
+router.get("/step2", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
-  Application.findByUser(currentUserId).then(application => {
-    Qualification.findAll().then(quali => {
-      Course.findAll().then(course => {
-        City.findAll().then(city => {
-          Institution.findAll().then(institution => {
-            Country.findAll().then(country => {
-              if (application && application.hasSubmitted)
-                res.redirect("/dashboard");
-              else {
-                res.render("step3", {
-                  layout: "layoutDashboard.handlebars",
-                  courses: course,
-                  quali: quali,
-                  year: getYear(),
-                  cities: city,
-                  institutions: institution,
-                  countries: country,
-                  app: application,
-                  user: req.user
-                });
-              }
-            });
-          });
-        });
-      });
+  let application = await Application.findByUser(currentUserId);
+  let quali = await Qualification.findAll();
+  let course = await Course.findAll();
+  let city = await City.findAll();
+  let institution = await Institution.findAll();
+  let country = await Country.findAll();
+  if (application && application.hasSubmitted) res.redirect("/dashboard");
+  else
+    res.render("step2", {
+      layout: "layoutDashboard.handlebars",
+      courses: course,
+      quali: quali,
+      year: getYear(),
+      cities: city,
+      institutions: institution,
+      countries: country,
+      app: application,
+      user: req.user
     });
-  });
 });
 
-router.get("/step4", ensureAuthenticated, function(req, res, next) {
+router.get("/step3", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
-  Application.findByUser(currentUserId).then(application => {
-    Qualification.findAll().then(quali => {
-      Course.findAll().then(course => {
-        City.findAll().then(city => {
-          Institution.findAll().then(institution => {
-            Country.findAll().then(country => {
-              if (application && application.hasSubmitted)
-                res.redirect("/dashboard");
-              else
-                res.render("step4", {
-                  layout: "layoutDashboard.handlebars",
-                  courses: course,
-                  quali: quali,
-                  year: getYear(),
-                  cities: city,
-                  institutions: institution,
-                  countries: country,
-                  app: application,
-                  user: req.user
-                });
-            });
-          });
-        });
-      });
+  let application = await Application.findByUser(currentUserId);
+  let quali = await Qualification.findAll();
+  let course = await Course.findAll();
+  let city = await City.findAll();
+  let institution = await Institution.findAll();
+  let country = await Country.findAll();
+  if (application && application.hasSubmitted) res.redirect("/dashboard");
+  else {
+    res.render("step3", {
+      layout: "layoutDashboard.handlebars",
+      courses: course,
+      quali: quali,
+      year: getYear(),
+      cities: city,
+      institutions: institution,
+      countries: country,
+      app: application,
+      user: req.user
     });
-  });
+  }
 });
 
-router.get("/step5", ensureAuthenticated, function(req, res, next) {
+router.get("/step4", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
-  Application.findByUser(currentUserId).then(application => {
-    Qualification.findAll().then(quali => {
-      Course.findAll().then(course => {
-        City.findAll().then(city => {
-          Institution.findAll().then(institution => {
-            Country.findAll().then(country => {
-              if (application && application.hasSubmitted)
-                res.redirect("/dashboard");
-              else
-                res.render("step5", {
-                  layout: "layoutDashboard.handlebars",
-                  courses: course,
-                  quali: quali,
-                  year: getYear(),
-                  cities: city,
-                  institutions: institution,
-                  countries: country,
-                  app: application,
-                  user: req.user
-                });
-            });
-          });
-        });
-      });
+  let application = await Application.findByUser(currentUserId);
+  let quali = await Qualification.findAll();
+  let course = await Course.findAll();
+  let city = await City.findAll();
+  let institution = await Institution.findAll();
+  let country = await Country.findAll();
+  if (application && application.hasSubmitted) res.redirect("/dashboard");
+  else
+    res.render("step4", {
+      layout: "layoutDashboard.handlebars",
+      courses: course,
+      quali: quali,
+      year: getYear(),
+      cities: city,
+      institutions: institution,
+      countries: country,
+      app: application,
+      user: req.user
     });
-  });
+});
+
+router.get("/step5", ensureAuthenticated, async function(req, res, next) {
+  //if(req.user.roleId){
+  let currentUserId = req.user.id;
+  let application = await Application.findByUser(currentUserId);
+  let quali = await Qualification.findAll();
+  let course = await Course.findAll();
+  let city = await City.findAll();
+  let institution = await Institution.findAll();
+  let country = await Country.findAll();
+  if (application && application.hasSubmitted) res.redirect("/dashboard");
+  else
+    res.render("step5", {
+      layout: "layoutDashboard.handlebars",
+      courses: course,
+      quali: quali,
+      year: getYear(),
+      cities: city,
+      institutions: institution,
+      countries: country,
+      app: application,
+      user: req.user
+    });
 });
 
 router.get("/applicationByUser/:id", ensureAuthenticated, function(
@@ -373,7 +362,7 @@ router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function(
 
 router.post("/decision", function(req, res, next) {
   let applicationId = req.body.id;
-  let userId = req.body.userId;
+  //let userId = req.body.userId;
   var decision = req.body.decision;
   var reason = req.body.reason;
 
@@ -430,15 +419,55 @@ router.post("/form1", function(req, res, next) {
   //req.flash('success_msg', 'Application save successfully');
   res.redirect("/application/step2");
 });
+
+router.post("/mobileForm1", async function(req, res, next) {
+  var firstname = req.body.firstname;
+  var middlename = req.body.middlename;
+  var lastname = req.body.lastname;
+
+  var dob = req.body.dob;
+  var gender = req.body.gender;
+  var marital = req.body.marital;
+
+  let applicationId = req.body.id;
+  let isError = false;
+
+  var countryId = await Country.findByName(req.body.countryId);
+
+  var newApplication = {
+    firstname: firstname,
+    userId: req.body.userId,
+    middlename: middlename,
+    lastname: lastname,
+    countryId: countryId,
+    dob: dob,
+    marital: marital,
+    gender: gender
+  };
+
+  if (applicationId) {
+    Application.update(newApplication, applicationId)
+      .then(application => {})
+      .catch(error => (isError = true));
+  } else {
+    Application.create(newApplication)
+      .then(data => {})
+      .catch(error => (isError = true));
+  }
+  //req.flash('success_msg', 'Application save successfully');
+  return res.send({ error: isError, message: apiMsg(isError) });
+});
+
 router.post("/form2", ensureAuthenticated, function(req, res, next) {
   var homeAddress = req.body.homeAddress;
   var postalAddress = req.body.postalAddress;
   var phone = req.body.phone;
   var applicationId = req.body.id;
 
+  let isError = false;
+
   var newApplication = {
     userId: req.user.id,
-
     homeAddress: homeAddress,
     postalAddress: postalAddress,
     phone: phone
@@ -446,18 +475,61 @@ router.post("/form2", ensureAuthenticated, function(req, res, next) {
 
   if (applicationId) {
     newApplication.id = applicationId;
-    Application.update(newApplication, applicationId).then(application => {
-      // req.flash('error_msg', 'Something went wrong trying to save the data');
-      // res.render("step2");
-    });
+    Application.update(newApplication, applicationId)
+      .then(application => {
+        // req.flash('error_msg', 'Something went wrong trying to save the data');
+        // res.render("step2");
+      })
+      .catch(error => {
+        isError = true;
+      });
   } else {
-    Application.create(newApplication).then(data => {
-      // req.flash('error_msg', 'Something went wrong trying to save the data');
-      // res.render("/application/step2");
-    });
+    Application.create(newApplication)
+      .then(data => {
+        // req.flash('error_msg', 'Something went wrong trying to save the data');
+        // res.render("/application/step2");
+      })
+      .catch(error => {
+        isError = true;
+      });
   }
+  if (!isError) {
+    res.redirect("/application/step3");
+  } else {
+    new Error("Something went wrong");
+  }
+});
 
-  res.redirect("/application/step3");
+router.post("/mobileForm2", function(req, res, next) {
+  var homeAddress = req.body.homeAddress;
+  var postalAddress = req.body.postalAddress;
+  var phone = req.body.phone;
+  var applicationId = req.body.id;
+
+  let isError = false;
+
+  var newApplication = {
+    userId: req.body.userId,
+    homeAddress: homeAddress,
+    postalAddress: postalAddress,
+    phone: phone
+  };
+
+  if (applicationId) {
+    newApplication.id = applicationId;
+    Application.update(newApplication, applicationId)
+      .then(application => {})
+      .catch(error => {
+        isError = true;
+      });
+  } else {
+    Application.create(newApplication)
+      .then(data => {})
+      .catch(error => {
+        isError = true;
+      });
+  }
+  return res.send({ error: isError, message: apiMsg(isError) });
 });
 
 router.post("/form3", ensureAuthenticated, function(req, res, next) {
@@ -504,6 +576,54 @@ router.post("/form3", ensureAuthenticated, function(req, res, next) {
   res.redirect("/application/step4");
 });
 
+router.post("/mobileForm3", function(req, res, next) {
+  var applicationId = req.body.id;
+  let isError = false;
+  var hQualification = req.body.hQualification;
+  var hGrade = req.body.hGrade;
+  var hSchoolName = req.body.hSchoolName;
+  var hCompleted = req.body.hCompleted;
+  var hProgrammeYear = req.body.hProgrammeYear;
+  var pQualification = req.body.pQualification;
+  var pGrade = req.body.pGrade;
+  var pSchoolName = req.body.pSchoolName;
+  var pCompleted = req.body.pCompleted;
+  var pProgrammeYear = req.body.pProgrammeYear;
+  var highSchoolName = req.body.highSchoolName;
+  var completionYr = req.body.completionYr;
+  var englishTest = req.body.englishTest;
+
+  var newApplication = {
+    userId: req.body.userId,
+    hQualification: hQualification,
+    hGrade: hGrade,
+    hSchoolName: hSchoolName,
+    hCompleted: hCompleted,
+    hProgrammeYear: hProgrammeYear,
+    pQualification: pQualification,
+    pGrade: pGrade,
+    pSchoolName: pSchoolName,
+    pCompleted: pCompleted,
+    pProgrammeYear: pProgrammeYear,
+    highSchoolName: highSchoolName,
+    completionYr: completionYr,
+    englishTest: englishTest
+  };
+
+  if (applicationId) {
+    newApplication.id = applicationId;
+
+    Application.update(newApplication, applicationId)
+      .then(application => {})
+      .catch(error => (isError = true));
+  } else {
+    Application.create(newApplication)
+      .then(data => {})
+      .catch(error => (isError = true));
+  }
+  return res.send({ error: isError, message: apiMsg(isError) });
+});
+
 router.post("/form4", ensureAuthenticated, function(req, res, next) {
   var applicationId = req.body.id;
 
@@ -542,6 +662,98 @@ router.post("/form4", ensureAuthenticated, function(req, res, next) {
   res.redirect("/application/step5");
 });
 
+router.post("/mobileForm4", function(req, res, next) {
+  var applicationId = req.body.id;
+
+  var course1 = req.body.course1;
+  var course2 = req.body.course2;
+  var level = req.body.level;
+  var cityOfChoice = req.body.cityOfChoice;
+  var schoolWish1 = req.body.schoolWish1;
+  var schoolWish2 = req.body.schoolWish2;
+  var sponsor = req.body.sponsor;
+  var sponsorName = req.body.sponsorName;
+  var sponsorOccupation = req.body.sponsorOccupation;
+  var budget = req.body.budget;
+  let isError = false;
+
+  var newApplication = {
+    userId: req.body.userId,
+    course2: course2,
+    course1: course1,
+    level: level,
+    cityId: cityOfChoice,
+    schoolWish1: schoolWish1,
+    schoolWish2: schoolWish2,
+    sponsor: sponsor,
+    sponsorName: sponsorName,
+    sponsorOccupation: sponsorOccupation,
+    budget: budget
+  };
+
+  if (applicationId) {
+    newApplication.id = applicationId;
+    Application.update(newApplication, applicationId)
+      .then(image => {})
+      .catch(error => (isError = true));
+  } else {
+    Application.create(newApplication)
+      .then(data => {})
+      .catch(error => (isError = true));
+  }
+
+  return res.send({ error: isError, message: apiMsg(isError) });
+});
+router.post("/mobileForm6", config.cpUpload2, function(req, res, next) {
+  let isError = false;
+  let applicationId = req.body.id;
+  let userId = req.body.userId;
+
+  let img =
+    req.files["credential"] === undefined
+      ? ""
+      : req.files["credential"][0].filename;
+  let newApplication = {
+    userId: userId,
+    credential: img
+  };
+  if (applicationId) {
+    newApplication.id = applicationId;
+    Application.update(newApplication, applicationId)
+      .then(image => {})
+      .catch(error => (isError = true));
+  } else {
+    Application.create(newApplication)
+      .then(data => {})
+      .catch(error => (isError = true));
+  }
+
+  return res.send({ error: isError, message: apiMsg(isError) });
+});
+
+router.post("/mobileSubmission", function(req, res, next) {
+  let isError = false;
+  let applicationId = req.body.id;
+  let userId = req.body.userId;
+
+  let newApplication = {
+    userId: userId,
+    id: applicationId,
+    hasSubmitted: true,
+    decision: "PENDING"
+  };
+  if (applicationId) {
+    newApplication.id = applicationId;
+    Application.update(newApplication, applicationId)
+      .then(image => {})
+      .catch(error => (isError = true));
+  } else {
+    isError = true;
+  }
+
+  return res.send({ error: isError, message: apiMsg(isError) });
+});
+
 router.post("/form5", config.cpUpload2, ensureAuthenticated, function(
   req,
   res,
@@ -575,6 +787,39 @@ router.post("/form5", config.cpUpload2, ensureAuthenticated, function(
   }
 
   res.redirect("/application/finish");
+});
+
+router.post("/mobileForm5", function(req, res) {
+  let applicationId = req.body.id;
+  let hasApplied = req.body.hasApplied;
+  let purpose = req.body.purpose;
+  let reasonOfRefusal = req.body.reasonOfRefusal;
+  let isError = false;
+  let moreInfo = req.body.moreInfo;
+
+  let newApplication = {
+    userId: req.body.userId,
+    hasApplied: hasApplied,
+    purpose: purpose,
+    reasonOfRefusal: reasonOfRefusal,
+    moreInfo: moreInfo
+    //hasSubmitted: true,
+    //decision: "PENDING"
+  };
+
+  if (applicationId) {
+    newApplication.id = applicationId;
+
+    Application.update(newApplication, applicationId)
+      .then()
+      .catch(error => (isError = true));
+  } else {
+    Application.create(newApplication)
+      .then()
+      .catch(error => (isError = true));
+  }
+
+  return res.send({ error: isError, message: apiMsg(isError) });
 });
 
 function ensureAuthenticated(req, res, next) {

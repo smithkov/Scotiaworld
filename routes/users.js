@@ -7,9 +7,9 @@ var mongoose = require("mongoose").Schema;
 var config = require("../my_modules/config");
 var bcrypt = require("bcryptjs");
 var Query = require("../queries/query");
-let jwt = require('jsonwebtoken');
-require('dotenv').config();
-let middleware = require('../middleware');
+let jwt = require("jsonwebtoken");
+require("dotenv").config();
+let middleware = require("../middleware");
 
 var Recaptcha = require("express-recaptcha").Recaptcha;
 var recaptcha = new Recaptcha(
@@ -82,36 +82,118 @@ router.post(
   }
 );
 
-router.post("/mobileLogin",function(req, res) {
+router.post("/mobileLogin", function(req, res) {
   let username = req.body.username;
   let password = req.body.password;
   User.findOne({ where: { username: username } }).then(user => {
     if (user) {
       var passwordIsValid = bcrypt.compareSync(password, user.password);
-      if(passwordIsValid){
-        let token = jwt.sign({username: username},
-            process.env.secret,
-            { expiresIn: '24h' // expires in 24 hours
-            }
-        );
+      if (passwordIsValid) {
+        let token = jwt.sign({ username: username }, process.env.secret, {
+          expiresIn: "24h" // expires in 24 hours
+        });
         res.json({
           success: true,
-          message: 'Authentication successful!',
+          user: user,
+          message: "Authentication successful!",
           token: token
         });
-      }
-      else{
+      } else {
         res.json({
           success: false,
-          message: 'Authentication failes!',
+          user: null,
+          message: "Authentication failed!",
           token: null
         });
       }
     }
   });
-  }
-);
+});
+router.post("/mobileRegister", async function(req, res) {
+  var email = req.body.email;
+  var username = req.body.username;
+  var password = req.body.password;
 
+  var newUser = {
+    email: email,
+    username: username,
+    password: password,
+    roleId: false
+  };
+  //checking for email and username are already taken
+  let mailExist = await User.findOne({ where: { email: email } });
+  let userExist = await User.findOne({ where: { username: username } });
+  if (!mailExist && !userExist) {
+    bcrypt.genSalt(4, function(err, salt) {
+      bcrypt.hash(newUser.password, salt, function(err, hash) {
+        newUser.password = hash;
+        // create that user as no one by that username exists
+        User.create(newUser).then(function(user) {
+          if (user) {
+            let token = jwt.sign({ username: username }, process.env.secret, {
+              expiresIn: "24h" // expires in 24 hours
+            });
+            res.json({
+              success: true,
+              message: "Registration Successful!",
+              token: token
+            });
+          }
+        });
+      });
+    });
+  } else {
+    // there's already someone with that username
+    res.json({
+      success: false,
+      message: "Registration failed!",
+      token: null
+    });
+  }
+});
+router.post("/mobileChangePassword", async function(req, res) {
+  let isError = false;
+  let username = req.body.username;
+  let oldPassword = req.body.oldPassword;
+  let newPassword = req.body.newPassword;
+
+  //checking for email and username are already taken
+  let userExist = await User.findOne({ where: { username: username } });
+  if (userExist) {
+    let passwordIsValid = bcrypt.compareSync(oldPassword, userExist.password);
+    if (passwordIsValid) {
+      bcrypt.genSalt(4, function(err, salt) {
+        bcrypt.hash(newPassword, salt, function(err, hash) {
+          var newUser = {
+            id: userExist.id,
+            username: userExist.username,
+            password: hash,
+            roleId: false
+          };
+
+          Query.User.update(newUser, newUser.id).then(update => {
+            res.json(response(isError));
+          });
+        });
+      });
+    } else {
+      isError = true;
+      res.json(response(isError));
+    }
+  } else {
+    isError = true;
+    res.json(response(isError));
+  }
+});
+function response(isError) {
+  return {
+    error: isError,
+    message: isError
+      ? "Old password did not match"
+      : "Password was changed successfully.",
+    token: null
+  };
+}
 router.post("/register", async function(req, res) {
   var email = req.body.email;
   var username = req.body.username;
