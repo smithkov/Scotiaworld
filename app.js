@@ -10,7 +10,7 @@ var LocalStrategy = require("passport-local").Strategy;
 var mongo = require("mongodb");
 var mongoose = require("mongoose");
 var favicon = require("serve-favicon");
-
+var Handlebars = require("handlebars");
 
 var routes = require("./routes/index");
 var users = require("./routes/users");
@@ -30,8 +30,8 @@ var departure = require("./routes/departure");
 var guideline = require("./routes/guideline");
 
 // Init App
-var cors = require('cors');
-require('dotenv').config();
+var cors = require("cors");
+require("dotenv").config();
 var app = express();
 app.use(cors());
 
@@ -97,7 +97,14 @@ app.use("/enquiry", enquiry);
 app.get("*", function(req, res) {
   res.render("error-404");
 });
+Handlebars.registerHelper("each_upto", function(ary, max, options) {
+  if (!ary || ary.length == 0) return options.inverse(this);
 
+  var result = [];
+  for (var i = 0; i < max && i < ary.length; ++i)
+    result.push(options.fn(ary[i]));
+  return result.join("");
+});
 // Set Port
 app.set("port", process.env.PORT || 3000);
 

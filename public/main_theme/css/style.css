@@ -666,9 +666,9 @@ header .icon .btn-primary:active:hover{
 	margin:50px 0 0;
 }
 .aboutweek .box{
-	border:1px solid #000;
-	padding:39px 49px;
-	min-height:170px;
+	border:0px solid #000;
+	padding:2px 5px;
+	height:100px;
 }
 .aboutweek .box .caption{
 	float:left;

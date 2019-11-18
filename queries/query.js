@@ -16,6 +16,7 @@ var Qualification = Model.Qualification;
 var FacultyImage = Model.FacultyImage;
 var FeeRange = Model.FeeRange;
 var Enquiry = Model.Enquiry;
+var Scholarship = Model.Scholarship;
 var bcrypt = require("bcryptjs");
 //Courses queries
 
@@ -142,7 +143,9 @@ module.exports = {
     findByName: function(name) {
       return Country.findOne({
         where: { name: name }
-      }).then(data=> {return data.id});
+      }).then(data => {
+        return data.id;
+      });
     }
   },
   Qualification: {
@@ -194,6 +197,23 @@ module.exports = {
     },
     delete: function(id) {
       return City.destroy({ where: { id: id } });
+    }
+  },
+  Scholarship: {
+    findAll: function() {
+      return Scholarship.findAll();
+    },
+    create: function(obj) {
+      return Scholarship.create(obj);
+    },
+    findById: function(id) {
+      return Scholarship.findByPk(id);
+    },
+    update: function(obj, id) {
+      return Scholarship.update(obj, { where: { id: id } });
+    },
+    delete: function(id) {
+      return Scholarship.destroy({ where: { id: id } });
     }
   },
   Logo: {
@@ -250,7 +270,7 @@ module.exports = {
 
       return Course.findAll({
         where: { isPopular: true },
-        limit: 4,
+        limit: 20,
         offset: randNum,
         include: { all: true }
       });

@@ -9,12 +9,14 @@ var Query = require("../queries/query");
 var Logo = require("../models").Logo;
 var Banner = require("../models").Banner;
 var config = require("../my_modules/config");
+const bestSelling = "BEST SELLING COURSES";
 router.get("/", async function(req, res) {
   let courses = await Query.Course.findAll();
- 
+
   let studyAreas = await Query.StudyArea.findAll();
 
   let populars = await Query.Course.findByPopular();
+  let cities = await Query.City.findAll();
 
   let institutions = await Query.Institution.findAll();
 
@@ -25,6 +27,8 @@ router.get("/", async function(req, res) {
     institutions: institutions.length,
     schools: institutions,
     faculties: studyAreas.length,
+    city: cities.length,
+    best: bestSelling,
     data: populars
   });
 });
@@ -120,16 +124,25 @@ router.get("/compare-fees", async function(req, res) {
   let courses = await Query.Course.findAll();
   res.render("compare", {
     courses: courses,
-    data: populars
+    best: bestSelling,
+    data: reduceArray(populars)
   });
 });
 
+function reduceArray(arr) {
+  let newArr = [];
+  for (let i = 0; i < 4; i++) {
+    newArr.push(arr[i]);
+  }
+  return newArr;
+}
 router.get("/courses", async function(req, res) {
   let populars = await Query.Course.findByPopular();
   let courses = await Query.Course.findAll();
   res.render("course", {
     courses: courses,
-    data: populars
+    best: bestSelling,
+    data: reduceArray(populars)
   });
 });
 
@@ -198,9 +211,10 @@ router.post("/compareFeeSingle", async function(req, res) {
 
 router.get("/about", function(req, res) {
   Query.Course.findByPopular().then(function(populars) {
-    res.render("about", { data: populars });
+    res.render("about", { data: reduceArray(populars), best: bestSelling });
   });
 });
+
 router.get("/pre-departure", async function(req, res) {
   let desc = "Pre-Departure Guideline";
   let populars = await Query.Course.findByPopular();
@@ -208,7 +222,8 @@ router.get("/pre-departure", async function(req, res) {
   res.render("richTextTemp", {
     app: departure[0],
     description: desc,
-    data: populars
+    best: bestSelling,
+    data: reduceArray(populars)
   });
 });
 
@@ -224,19 +239,31 @@ router.get("/visa-application-guideline", function(req, res) {
 
 router.get("/why-us", (req, res) => {
   Query.Course.findByPopular().then(function(populars) {
-    res.render("whyChoose", { data: populars });
+    res.render("whyChoose", { data: reduceArray(populars), best: bestSelling });
   });
 });
 
 router.get("/contact-us", (req, res) => {
   Query.Course.findByPopular().then(function(populars) {
-    res.render("contactUs", { data: populars });
+    res.render("contactUs", { data: reduceArray(populars), best: bestSelling });
+  });
+});
+
+router.get("/scholarship", (req, res) => {
+  Query.Course.findByPopular().then(function(populars) {
+    res.render("scholarship", {
+      data: reduceArray(populars),
+      best: bestSelling
+    });
   });
 });
 
 router.get("/about-scotland", (req, res) => {
   Query.Course.findByPopular().then(function(populars) {
-    res.render("aboutScotland", { data: populars });
+    res.render("aboutScotland", {
+      data: reduceArray(populars),
+      best: bestSelling
+    });
   });
 });
 
@@ -245,7 +272,8 @@ router.get("/detail/:school/:course/:id", async (req, res) => {
   let populars = await Query.Course.findByPopular();
   let course = await Query.Course.findById(id);
   res.render("course_detail", {
-    data: populars,
+    data: reduceArray(populars),
+    best: bestSelling,
     course: course
   });
 });
@@ -260,7 +288,8 @@ router.get("/school-courses/:name/:_id", async function(req, res, next) {
   res.render("schoolCourses", {
     courses: courseByInstitution,
     name: Schoolname,
-    data: populars
+    data: reduceArray(populars),
+    best: bestSelling
   });
 });
 
@@ -292,7 +321,8 @@ router.get("/school-faculties/:name/:_id", async function(req, res, next) {
     res.render("search_faculty", {
       faculties: facultyCourse,
       name: facultyName,
-      data: populars,
+      data: reduceArray(populars),
+      best: bestSelling,
       school: InstitutionById
     });
   });
@@ -336,11 +366,13 @@ router.get("/faculty/:_id/:schoolId", async (req, res) => {
 
   res.render("faculty", {
     facultyName: courseByFaculty[0].StudyArea.name,
-    data: populars,
+    data: reduceArray(populars),
+    best: bestSelling,
     school: courseByFaculty[0].Institution.name,
     courses: courseByFaculty
   });
 });
+
 router.get("/dashboard", ensureAuthenticated, async function(req, res) {
   let courses = await Query.Course.findAll();
   let institutions = await Query.Institution.findAll();

@@ -5,26 +5,10 @@
 		<div style="height:350px" class="item">
 			<img src="/uploads/{{this.path}}" alt="banner" title="banner" class="img-responsive" />
 		</div>
-		<!-- <div style="height:350px"  class="item">
-			<img src="/main_theme/images/banner.jpg" alt="banner" title="banner" class="img-responsive"/>
-		</div>
-		<div style="height:350px"  class="item">
-			<img src="/main_theme/images/banner.jpg" alt="banner" title="banner" class="img-responsive"/>
-		</div> -->
+
 		{{/each}}
 	</div>
-	<!-- slide-detail start here -->
-	<!-- <div class="slide-detail">
-		<div  class="container">
-			<div class="matter">
 
-				<h4 style="font-size:32px">THE SIMPLEST WAY TO APPLY, ENROL & SETTLE FOR STUDY IN SCOTLAND</h4>
-				<p class="des">Our all-in-one platform helps you monitor and secure admission, guides you through visa processes and settles your accommodation.</p>
-			</div>
-
-		</div>
-	</div> -->
-	<!-- slide-detail end here -->
 </div>
 <!-- slider end here -->
 
@@ -36,7 +20,7 @@
 			<div class="aboutweek">
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-12">
+						<div class="col-sm-12" style="border:1px solid #000; background-color:rgb(193, 193, 212)">
 							<div style="text-align:center" class="box">
 								<div class="row">
 									<div class="col-lg-3"></div>
@@ -59,17 +43,18 @@
 			<hr>
 
 			<a href="/user/register">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-sm-2 col-xs-2 box text-center">
 					<div class="icons">
 						<div class="icon">
-							<img src="/main_theme/images/user_awake.png" class="img-responsive" alt="icon" title="icon" />
+							<img src="/main_theme/images/user_awake.png" class="img-responsive" alt="icon"
+								title="icon" />
 						</div>
 					</div>
 					<h4>Create your account</h4>
 				</div>
 			</a>
-			<a href="/schools">
-				<div class="col-sm-2 col-xs-12 box text-center">
+			<a href="/courses">
+				<div class="col-sm-2 col-xs-2 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/notepad.png" class="img-responsive" alt="icon" title="icon" />
@@ -79,7 +64,7 @@
 				</div>
 			</a>
 			<a href="/dashboard">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-sm-2 col-xs-2 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/binoculars2.png" class="img-responsive" alt="icon"
@@ -90,7 +75,7 @@
 				</div>
 			</a>
 			<a href="/visa-application-guideline">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-sm-2 col-xs-2 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/support.png" class="img-responsive" alt="icon" title="icon" />
@@ -100,7 +85,7 @@
 				</div>
 			</a>
 			<a href="/pre-departure">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-sm-2 col-xs-2 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/paper_plane.png" class="img-responsive" alt="icon"
@@ -111,7 +96,7 @@
 				</div>
 			</a>
 			<a href="/about-scotland">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-sm-2 col-xs-2 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/world_asia.png" class="img-responsive" alt="icon"
@@ -130,52 +115,12 @@
 <div class="about">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-8 col-xs-12">
-				<div class="commontop text-left">
-					<h2>About us</h2>
-					<p>Scotia-World is an innovative business venture set-up to help international students with
-						intentions of studying and living in Scotland achieve their dreams through a
-						seamless-technological process.</p>
-					<hr>
+			<div class="col-sm-12 col-xs-12">
+				<div style="height: 100px;" class="slider">
+					{{#each schools}}
+					<div><img src="/uploads/{{this.banner}}" title="{{this.name}}"></div>
+					{{/each}}
 				</div>
-				<p class="des">We are committed to helping international students choose perfect courses to suit their
-					careers, as well as providing a range of top ranked academic institutions in Scotland to put them on
-					a right path. We are associated with the best universities in Scotland to help secure admission
-					easily and monitor your enrolment process through our seamless technology... <a href="/about">View
-						more</a></p>
-				<div class="image">
-					<img src="/main_theme/images/home-group2.jpg" class="img-responsive" alt="img" title="img" />
-					<div class="icon">
-						<div class="ico"><a href="#"><i class="icofont icofont-ui-play"></i></a></div>
-					</div>
-				</div>
-
-			</div>
-			<div class="col-sm-4 col-xs-12 feature">
-				<div class="commontop text-left">
-					<h2>Why choose us?</h2>
-					<p>Our business directors and staff are alumni of prestigious universities in Scotland. Therefore,
-						our services are embedded in Scottish educational system,</p>
-					<hr>
-				</div>
-				<p class="des">culture and heritage as well as working closely with all Scottish institutions in order
-					<a href="/why-us">View more</a> </p>
-
-				<!-- <div class="box">
-					<img src="/main_theme/images/icon01.png" class="img-responsive" alt="icon" title="icon" />
-					<p>Learn Courses online</p>
-					<a href="#">View more</a>
-				</div>
-				<div class="box">
-					<img src="/main_theme/images/icon02.png" class="img-responsive" alt="icon" title="icon" />
-					<p>Online Library Store</p>
-					<a href="#">View more</a>
-				</div> -->
-				<img src="/main_theme/images/home-img.jpg" class="img-responsive" />
-				<!-- <p class="des">sure international students feel warmly accepted into Scottish environment. Our Mobile app is designed through our first-hand experience in providing solutions to international students’ concerns in terms of application for admission, acceptance, visa application, pre-departure as well as enrolment.
-
-					</p> -->
-
 			</div>
 		</div>
 	</div>
@@ -188,7 +133,7 @@
 		<div class="row">
 			<div class="col-sm-12 col-xs-12">
 				<div class="commontop text-center">
-					<h2>our best popular courses for you</h2>
+					<h2>{{best}}s</h2>
 					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
 					<hr>
 				</div>
@@ -235,8 +180,44 @@
 </div>
 <!-- courses end here -->
 
+<div class="course">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-xs-12">
+				<div class="commontop text-center">
+					<h2>Testimonials</h2>
+					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
+					<hr>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+
+			<div class="col-sm-12 col-xs-12">
+				<div class="col-lg-3 col-xs-12">
+					<iframe height="315" src="https://www.youtube.com/embed/Tlyz-FOoOL0">
+					</iframe>
+				</div>
+				<div class="col-lg-3 col-xs-12">
+					<iframe height="315" src="https://www.youtube.com/embed/OLTBbhdGi-w">
+					</iframe>
+				</div>
+				<div class="col-lg-3 col-xs-12">
+					<iframe height="315" src="https://www.youtube.com/embed/dYqEDeP4LYc">
+					</iframe>
+				</div>
+				<div class="col-lg-3 col-xs-12">
+					<iframe height="315" src="https://www.youtube.com/embed/oRadXHLKwTY">
+					</iframe>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
 <!-- featured start here -->
 <div class="featured">
+	<div class="clearfix"></div>
 	<div class="image">
 		<img src="/main_theme/images/features/bg.jpg" class="img-responsive" alt="bg" title="bg" />
 	</div>
@@ -265,8 +246,8 @@
 											alt="image" title="image" />
 									</div>
 								</div>
-								<h4>User Registers</h4>
-								<p>2k</p>
+								<h4>Cities</h4>
+								<p>{{city}}</p>
 							</div>
 						</li>
 						<li>
@@ -299,16 +280,126 @@
 		</div>
 	</div>
 </div>
-<script>
-// $(document).ready(function() {
-// 	$("#owl-home").owlCarousel({
-// 		navigation : false
-// 	});
-// } );
-</script>
-<!-- <script>
-$(function(){
-	alert("jjejje")
 
-})
-</script> -->
+<div class="course">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-xs-12">
+				<div class="commontop text-center">
+					<h2>Sponsors</h2>
+					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
+					<hr>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="courses owl-carousel">
+				<div class="item">
+					<div class="col-sm-12 col-xs-12">
+						<div class="product-thumb">
+							<div class="image">
+								<a href="#">
+
+									<img style="height:190px" src="/sponsors/31418_Navitas_logo_633x177.jpg"
+										class="img-responsive img-thumbnail" alt="img" title="img" />
+
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="item">
+					<div class="col-sm-12 col-xs-12">
+						<div class="product-thumb">
+							<div class="image">
+								<a href="#">
+
+									<img style="height:190px"
+										src="/sponsors/british-high-commission-nicosia-logo-120160517124722_l.jpg"
+										class="img-responsive img-thumbnail" alt="img" title="img" />
+
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="item">
+					<div class="col-sm-12 col-xs-12">
+						<div class="product-thumb">
+							<div class="image">
+								<a href="#">
+
+									<img style="height:190px" src="/sponsors/canadian.jpg"
+										class="img-responsive img-thumbnail" alt="img" title="img" />
+
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="item">
+					<div class="col-sm-12 col-xs-12">
+						<div class="product-thumb">
+							<div class="image">
+								<a href="#">
+
+									<img style="height:190px" src="/sponsors/logo-aussie.png"
+										class="img-responsive img-thumbnail" alt="img" title="img" />
+
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="item">
+					<div class="col-sm-12 col-xs-12">
+						<div class="product-thumb">
+							<div class="image">
+								<a href="#">
+
+									<img style="height:190px" src="/sponsors/US-Embassy-Logo.jpg"
+										class="img-responsive img-thumbnail" alt="img" title="img" />
+
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{#each schools}}
+				<div class="item">
+					<div class="col-sm-12 col-xs-12">
+						<div class="product-thumb">
+							<div class="image">
+								<a href="#">
+									{{#if this.path}}
+									<img style="height:190px" src="/uploads/{{this.path}}" class="img-responsive"
+										alt="img" title="img" />
+									{{else}}
+									<img style="height:190px" src="/main_theme/images/course.png"
+										class="img-responsive img-thumbnail" alt="img" title="img" />
+									{{/if}}
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$('.slider').bxSlider({
+			auto: true,
+			autoControls: true,
+			stopAutoOnClick: true,
+			pager: true,
+			adaptiveHeight: true,
+			infiniteLoop: true,
+			captions: true
+		});
+	});
+</script>
