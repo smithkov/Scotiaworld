@@ -1,0 +1,123 @@
+<title>Scotiaworld | All-Institutions</title>
+<link href="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.js"></script>
+
+<!-- bread-crumb start here -->
+<div class="bread-crumb">
+	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
+	<div class="container">
+		<div class="matter">
+			<h2>ALL HIGHER INSTITUTIONS IN SCOTLAND</h2>
+			<ul class="list-inline">
+				<li>
+					<a href="/">Home</a>
+				</li>
+				<li>
+					<a href="#">Current Page</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- bread-crumb end here -->
+
+<!-- coures start here -->
+<div class="coures">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 col-xs-12 hidden-xs">
+				<div class="left">
+					<h4>{{best}}</h4>
+					<div class="popular">
+						{{#each data }}
+						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
+							<div class="box">
+								<img style="height:150px" width="100%" src="/uploads/{{this.path}}"
+									class="img-thumbnail" alt="img" title="img" />
+								<p><strong>{{this.Institution.name}}</strong></p>
+								<p>{{this.name}}</p>
+								<span>{{this.fee}}</span>
+							</div>
+						</a>
+						{{/each}}
+						<hr>
+						<h5 style="text-align: center;"><a href="/popular-Courses">View more ...</a></h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9 col-xs-12">
+				<div style="text-align: center;" class="col-sm-12 sort">
+					<h2><strong>ALL INSTITUTIONS</strong></h2>
+				</div>
+				<div class="row feeCompareContainer">
+					<div class="col-lg-12">
+						<h4><strong id="schoolName1"></strong></h4>
+
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th scope="col"></th>
+									<th scope="col">Institutions</th>
+									<th scope="col">Cities</th>
+									<th scope="col"></th>
+								</tr>
+							</thead>
+							<tbody id="schoolWrapper">
+								<tr>
+									<td></td>
+									<td></td>
+									<td><img style="width:20px; length:20px" src="/loader.gif" /></td>
+									<td></td>
+									<td></td>
+
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(function () {
+			let wrapper1 = $("#schoolWrapper");
+			let searchSpinner = $(".spinner");
+			function template(data) {
+				return (`<tr>
+					    <td><img style="height:70px; width:100px" src="/uploads/${data.uni.path}"   class="img-thumbnail" /></td>
+						<td><a href="/school-faculties/${data.uni.name}/${data.uni.id}">${data.uni.name}</a> <span title="Total number of faculties under ${data.uni.name}" class="badge badge-primary">${data.faculty.length} </span></td>
+						<td>${data.uni.City.name}</td>
+						<td><a href=/faculty/${data.faculty[0].id}/${data.uni.id}></a></td>
+						<td><img style="height:70px; width:200px" src="/uploads/${data.uni.banner}" class="img-thumbnail" /></td>
+						</tr>`)
+			}
+
+
+			function ajaxRequest() {
+				$.ajax({
+					type: "GET",
+					url: "/schools",
+					dataType: "json",
+					success: function (result) {
+
+						let data = result.data;
+						wrapper1.empty();
+						data.forEach(data => {
+							wrapper1.append(template(data));
+						})
+
+					},
+					error: function (er) {
+
+					}
+				});
+			}
+			ajaxRequest();
+		});
+	</script>
+	<!-- coures end here -->
+
+
+	<!-- coures end here -->

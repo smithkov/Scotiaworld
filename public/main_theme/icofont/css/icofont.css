@@ -1665,7 +1665,12 @@
 .icofont-bubble-down:before {
 	content: "\eb21";
 }
-
+.icofont-bubble-left:before {
+	content: "\eb22";
+}
+.icofont-bubble-right:before {
+	content: "\eb23";
+}
 .icofont-bubble-up:before {
 	content: "\eb24";
 }
@@ -1858,8 +1863,12 @@
 .icofont-scroll-bubble-down:before {
 	content: "\eb63";
 }
-
-
+.icofont-scroll-bubble-left:before {
+	content: "\eb64";
+}
+.icofont-scroll-bubble-right:before {
+	content: "\eb65";
+}
 .icofont-scroll-bubble-up:before {
 	content: "\eb66";
 }

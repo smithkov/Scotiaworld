@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     StudyArea.hasMany(models.Course);
     StudyArea.hasMany(models.FacultyImage);
+    StudyArea.hasMany(models.surrogateFaculty);
     StudyArea.belongsTo(models.Institution);
     StudyArea.hasMany(models.FeeRange);
   };

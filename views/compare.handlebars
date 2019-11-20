@@ -1,4 +1,4 @@
-<title>Scotiaworld | Compare Fees</title>
+<title>Scotiaworld | Compare</title>
 <link href="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.js"></script>
@@ -7,7 +7,17 @@
 <div class="bread-crumb">
 	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
 	<div class="container">
-		<div class="matter">Compare</div>
+		<div class="matter">
+			<h2>COMPARE</h2>
+			<ul class="list-inline">
+				<li>
+					<a href="/">Home</a>
+				</li>
+				<li>
+					<a href="#">Current Page</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 </div>
 <!-- bread-crumb end here -->
@@ -23,13 +33,16 @@
 						{{#each data }}
 						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
 							<div class="box">
-								<img style="height:150px" src="/uploads/{{this.path}}" class="img-responsive" alt="img"
-									title="img" />
+								<img style="height:150px" width="100%" src="/uploads/{{this.path}}"
+									class="img-thumbnail" alt="img" title="img" />
+								<p><strong>{{this.Institution.name}}</strong></p>
 								<p>{{this.name}}</p>
-								<span>£{{this.fee}}</span>
+								<span>{{this.fee}}</span>
 							</div>
 						</a>
 						{{/each}}
+						<hr>
+						<h5 style="text-align: center;"><a href="/popular-Courses">View more ...</a></h5>
 					</div>
 				</div>
 			</div>

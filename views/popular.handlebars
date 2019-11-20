@@ -1,10 +1,10 @@
-<title>Scotiaworld | Find-Course</title>
+<title>Scotiaworld | Popular-Course</title>
 <!-- bread-crumb start here -->
 <div class="bread-crumb">
 	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
 	<div class="container">
 		<div class="matter">
-			<h2>COURSES</h2>
+			<h2>POPULAR COURSES</h2>
 			<ul class="list-inline">
 				<li>
 					<a href="/">Home</a>
@@ -22,29 +22,10 @@
 <div class="coures">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-3 col-xs-12 hidden-xs">
-				<div class="left">
-					<h4>{{best}}</h4>
-					<div class="popular">
-						{{#each data }}
-						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
-							<div class="box">
-								<img style="height:150px" width="100%" src="/uploads/{{this.path}}"
-									class="img-thumbnail" alt="img" title="img" />
-								<p><strong>{{this.Institution.name}}</strong></p>
-								<p>{{this.name}}</p>
-								<span>{{this.fee}}</span>
-							</div>
-						</a>
-						{{/each}}
-						<hr>
-						<h5 style="text-align: center;"><a href="/popular-Courses">View more ...</a></h5>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9 col-xs-12">
+
+			<div class="col-sm-12 col-xs-12">
 				<div class="col-sm-12 sort">
-					<h3 style="text-align:center"><strong>Search for Courses</strong></h3>
+					<h3 style="text-align:center"><strong>Popular Courses</strong></h3>
 				</div>
 				<div ng-controller="school" class="col-sm-12 sort">
 					<div class="row">
@@ -65,7 +46,7 @@
 						</div>
 						<div class="col-lg-4">
 							<select id="institution" class="form-control">
-								<option value="0">--Select Institutions--</option>
+								<option value="0">--Select Institution--</option>
 								<option value="0">All</option>
 								<option value="{[{u.id}]}" ng-repeat="u in drop.institutions">{[{u.name}]}</option>
 							</select>
@@ -82,10 +63,10 @@
 								<th></th>
 								<th>Course Name</th>
 								<th>Tuition Fee</th>
+								<th>Scholarship Amt.</th>
 								<th>Faculty</th>
 								<th>Degree</th>
 								<th>Institution</th>
-
 							</tr>
 						</thead>
 					</table>
@@ -121,7 +102,7 @@
 
 			$('#example').DataTable({
 				"ajax": {
-					"url": "/courseSearch",
+					"url": "/popular",
 					"type": "POST",
 					"data": { degreeId: degree, facultyId: faculty, institutionId: institution },
 					"dataSrc": "data"
@@ -133,7 +114,7 @@
 						"data": "path",
 						"render": function (data, type, row, meta) {
 
-							data = `<img style="height:85px; width:280px" src="/uploads/${row.path}"   class="img-thumbnail" />`;
+							data = `<img style="height:85px; width:220px" src="/uploads/${row.path}"   class="img-thumbnail" />`;
 
 							return data;
 						}
@@ -149,6 +130,13 @@
 					},
 					{
 						"data": "fee"
+					},
+					{
+						"data": "scholarshipAmount",
+						"render": function (data, type, row, meta) {
+							data = `£ ${row.scholarshipAmount}`;
+							return data;
+						}
 					},
 					{
 						"data": "DegreeType.name"

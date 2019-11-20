@@ -17,6 +17,7 @@ var FacultyImage = Model.FacultyImage;
 var FeeRange = Model.FeeRange;
 var Enquiry = Model.Enquiry;
 var Scholarship = Model.Scholarship;
+var SurrogateFaculty = Model.surrogateFaculty;
 var bcrypt = require("bcryptjs");
 //Courses queries
 
@@ -65,6 +66,26 @@ module.exports = {
     },
     update: function(obj, id) {
       return FeeRange.update(obj, { where: { id: id } });
+    }
+  },
+  SurrogateFaculty: {
+    create: function(obj) {
+      return SurrogateFaculty.create(obj);
+    },
+    findById: function(id) {
+      return SurrogateFaculty.findByPk(id);
+    },
+    findByInstitution: function(id) {
+      return SurrogateFaculty.findAll({
+        where: { institutionId: id },
+        include: [{ all: true }]
+      });
+    },
+    findAll: function() {
+      return SurrogateFaculty.findAll({ include: [{ all: true }] });
+    },
+    update: function(obj, id) {
+      return SurrogateFaculty.update(obj, { where: { id: id } });
     }
   },
   Departure: {
@@ -275,6 +296,7 @@ module.exports = {
         include: { all: true }
       });
     },
+
     findNameByInstitutionId: function(id, name) {
       return Course.findOne({
         where: { institutionId: id, name: name },
@@ -325,18 +347,43 @@ module.exports = {
         include: ["StudyArea", "DegreeType", "Institution"]
       });
     },
-    courseSearch: function(degreeTypeId, facultyId, cityId) {
+    findPopular: function(degreeTypeId, facultyId, institutionId) {
       let paramObj = {
         degreeTypeId: degreeTypeId,
         studyAreaId: facultyId,
-        cityId: cityId
+        institutionId: institutionId,
+        isPopular: true
+      };
+
+      let isReturnAll = false;
+      if (degreeTypeId == 0) delete paramObj.degreeTypeId;
+      if (facultyId == 0) delete paramObj.studyAreaId;
+      if (institutionId == 0) delete paramObj.institutionId;
+
+      if (degreeTypeId == 0 && facultyId == 0 && institutionId == 0)
+        isReturnAll = true;
+
+      return isReturnAll
+        ? Course.findAll({
+            where: { isPopular: true },
+            include: [{ all: true }]
+          })
+        : Course.findAll({
+            where: paramObj,
+            include: [{ all: true }]
+          });
+    },
+    courseSearch: function(degreeTypeId, facultyId, institutionId) {
+      let paramObj = {
+        degreeTypeId: degreeTypeId,
+        studyAreaId: facultyId,
+        institutionId: institutionId
       };
       let isReturnAll = false;
       if (degreeTypeId == 0) delete paramObj.degreeTypeId;
       if (facultyId == 0) delete paramObj.studyAreaId;
-      if (cityId == 0) delete paramObj.cityId;
-
-      if (degreeTypeId == 0 && facultyId == 0 && cityId == 0)
+      if (institutionId == 0) delete paramObj.institutionId;
+      if (degreeTypeId == 0 && facultyId == 0 && institutionId == 0)
         isReturnAll = true;
 
       return isReturnAll

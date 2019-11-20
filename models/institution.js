@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     //Institution.hasMany(models.Application);
     Institution.belongsTo(models.InstitutionType);
     Institution.hasMany(models.FeeRange);
+    Institution.hasMany(models.surrogateFaculty);
     Institution.belongsTo(models.City);
   };
   return Institution;

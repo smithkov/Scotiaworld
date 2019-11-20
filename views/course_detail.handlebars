@@ -1,3 +1,4 @@
+<title>Scotiaworld | Course-Detail</title>
 <!-- bread-crumb start here -->
 <div class="bread-crumb">
 	<img src="/main_theme/images/banner-top.jpg" class="img-responsive" alt="banner-top" title="banner-top">
@@ -21,24 +22,27 @@
 <!-- bread-crumb end here -->
 
 <!-- eventview start here -->
-<title>Scotiaworld | Course-Detail</title>
+
 <div class="eventview">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-3 col-xs-12 hidden-xs">
 				<div class="left">
-					<h4>POPULAR COURSES</h4>
+					<h4>{{best}}</h4>
 					<div class="popular">
-						{{#each data}}
+						{{#each data }}
 						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
 							<div class="box">
-								<img style="height:150px" src="/uploads/{{this.path}}" class="img-responsive" alt="img"
-									title="img" />
+								<img style="height:150px" width="100%" src="/uploads/{{this.path}}"
+									class="img-thumbnail" alt="img" title="img" />
+								<p><strong>{{this.Institution.name}}</strong></p>
 								<p>{{this.name}}</p>
-								<span>£{{this.fee}}</span>
+								<span>{{this.fee}}</span>
 							</div>
 						</a>
 						{{/each}}
+						<hr>
+						<h5 style="text-align: center;"><a href="/popular-Courses">View more ...</a></h5>
 					</div>
 				</div>
 			</div>

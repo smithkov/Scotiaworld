@@ -82,6 +82,7 @@ router.post("/convert", async (req, res) => {
     let intake = rows[i][7];
     let degree = rows[i][8];
     let popular = rows[i][9];
+    let scholarshipAmount = rows[i][10];
 
     let getFacultyImage = await Query.FacultyImage.findByStudyArea(studyArea);
     let randId = Math.floor(Math.random() * getFacultyImage.length) + 1;
@@ -94,31 +95,35 @@ router.post("/convert", async (req, res) => {
       school,
       name
     );
-    if(getCourseImage !== undefined){
-		var newCourse = {
-      name: name,
-      requirement: requirement,
-      fee: fees,
-      path: getCourseImage.path,
-      duration: duration,
-      intake: intake,
-      isPopular: popular == "Popular" ? 1 : 0,
-      institutionId: school,
-      studyAreaId: studyArea,
-      degreeTypeId: degree
-    };
-    if (checkNameExist) {
-      newCourse.id = checkNameExist.id;
-      let update = await Query.Course.update(newCourse, checkNameExist.id);
+    if (getCourseImage !== undefined) {
+      var newCourse = {
+        name: name,
+        requirement: requirement,
+        fee: fees,
+        path: getCourseImage.path,
+        duration: duration,
+        intake: intake,
+        isPopular: popular == "Popular" ? 1 : 0,
+        institutionId: school,
+        studyAreaId: studyArea,
+        degreeTypeId: degree,
+        scholarshipAmount: scholarshipAmount
+      };
+      if (checkNameExist) {
+        newCourse.id = checkNameExist.id;
+        let update = await Query.Course.update(newCourse, checkNameExist.id);
+      } else {
+        let add = await Query.Course.create(newCourse);
+      }
     } else {
-      let add = await Query.Course.create(newCourse);
+      console.log(
+        "------------ERROORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR--------------"
+      );
+      console.log(`${i}    ${name} `);
+      console.log(
+        "------------ERROORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR--------------"
+      );
     }
-	}else{
-		console.log("------------ERROORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR--------------");
-		console.log(`${i}    ${name} `);
-		console.log("------------ERROORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR--------------");
-	}
-    
   }
   console.log(courseArray);
   return res.send({
@@ -130,7 +135,6 @@ router.post("/convert", async (req, res) => {
 router.get("/listing", ensureAuthenticated, function(req, res, next) {
   //  if(req.user.roleId){
   Query.Course.findAll().then(course => {
-    console.log(course);
     res.render("list", {
       layout: "layoutDashboard.handlebars",
       user: req.user,

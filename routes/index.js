@@ -45,19 +45,38 @@ router.get("/schools", async (req, res) => {
   var schoolArray = [];
   var schools = await Query.Institution.findAll();
   var fac = [];
-  for (var i = 0; i < schools.length; i++) {
-    let course = await Query.Course.findByInstitutionId(schools[i].id);
 
-    for (var j = 0; j < course.length; j++) {
-      fac.push(course[j].StudyArea.id);
+  for (var i = 0; i < schools.length; i++) {
+    let getSurrogateFaculty = await Query.SurrogateFaculty.findByInstitution(
+      schools[i].id
+    );
+    if (getSurrogateFaculty.length > 0) {
+      getSurrogateFaculty.forEach(school => {
+        fac.push(school.StudyArea);
+      });
+      schoolArray.push({ uni: schools[i], faculty: fac });
+    } else {
+      let course = await Query.Course.findByInstitutionId(schools[i].id);
+
+      for (var j = 0; j < course.length; j++) {
+        fac.push(course[j].StudyArea.id);
+      }
+      let filterIds = uniq(fac);
+      fac = [];
+      for (var u = 0; u < filterIds.length; u++) {
+        let getById = await Query.StudyArea.findById(filterIds[u]);
+        fac.push(getById);
+        let surrogate = {
+          facultyId: getById.id,
+          name: getById.name,
+          studyAreaId: getById.id,
+          institutionId: schools[i].id
+        };
+        let surrogateCFaculty = await Query.SurrogateFaculty.create(surrogate);
+      }
+      schoolArray.push({ uni: schools[i], faculty: fac });
     }
-    let filterIds = uniq(fac);
-    fac = [];
-    for (var u = 0; u < filterIds.length; u++) {
-      let getById = await Query.StudyArea.findById(filterIds[u]);
-      fac.push(getById);
-    }
-    schoolArray.push({ uni: schools[i], faculty: fac });
+
     fac = [];
   }
 
@@ -80,6 +99,7 @@ router.post("/getCoursesByFaculty", async (req, res) => {
     data: coursesByFaculty
   });
 });
+
 router.get("/schoolsMobile", async (req, res) => {
   var schoolArray = [];
   var schools = await Query.Institution.findAll();
@@ -112,13 +132,25 @@ router.get("/schoolsMobile", async (req, res) => {
   });
 });
 
-router.get("/schools", function(req, res) {
+// router.get("/schools", function(req, res) {
+//   Query.Course.findByPopular().then(function(populars) {
+//     Query.Course.findAll().then(function(course) {
+//       res.render("search", { data: populars });
+//     });
+//   });
+// });
+
+router.get("/institutions", function(req, res) {
   Query.Course.findByPopular().then(function(populars) {
     Query.Course.findAll().then(function(course) {
-      res.render("search", { data: populars });
+      res.render("institutions", {
+        data: reduceArray(populars),
+        best: bestSelling
+      });
     });
   });
 });
+
 router.get("/compare-fees", async function(req, res) {
   let populars = await Query.Course.findByPopular();
   let courses = await Query.Course.findAll();
@@ -157,22 +189,49 @@ router.get("/dropDown", async function(req, res) {
   let faculty = await Query.StudyArea.findAll();
   let degreeTypes = await Query.DegreeType.findAll();
   let cities = await Query.City.findAll();
+  let institutions = await Query.Institution.findAll();
   return res.send({
-    data: { faculty: faculty, degree: degreeTypes, cities: cities }
+    data: {
+      faculty: faculty,
+      degree: degreeTypes,
+      cities: cities,
+      institutions: institutions
+    }
   });
 });
 
 router.post("/courseSearch", async function(req, res) {
   let degreeId = req.body.degreeId;
   let facultyId = req.body.facultyId;
-  let cityId = req.body.cityId;
+  let institutionId = req.body.institutionId;
 
-  let course = await Query.Course.courseSearch(degreeId, facultyId, cityId);
+  let course = await Query.Course.courseSearch(
+    degreeId,
+    facultyId,
+    institutionId
+  );
   return res.send({
     data: course
   });
 });
 
+router.post("/popular", async function(req, res) {
+  let degreeId = req.body.degreeId;
+  let facultyId = req.body.facultyId;
+  let institutionId = req.body.institutionId;
+  let popular = await Query.Course.findPopular(
+    degreeId,
+    facultyId,
+    institutionId
+  );
+  return res.send({
+    data: popular
+  });
+});
+
+router.get("/popular-Courses", async function(req, res) {
+  res.render("popular");
+});
 router.post("/compareFee", async function(req, res) {
   let institutionId = req.body.institutionId1;
   let institutionId2 = req.body.institutionId2;
@@ -209,10 +268,20 @@ router.post("/compareFeeSingle", async function(req, res) {
   });
 });
 
-router.get("/about", function(req, res) {
-  Query.Course.findByPopular().then(function(populars) {
-    res.render("about", { data: reduceArray(populars), best: bestSelling });
-  });
+router.get("/about", async function(req, res) {
+  // let course = await Query.Course.findAll();
+  // for (var i = 0; i < course.length; i++) {
+  //   console.log("--------------------------------");
+  //   console.log(i);
+  //   let amount = course[i].scholarshipAmount;
+
+  //   let update = await Query.Course.update(
+  //     { scholarshipAmount: amount.substr(0, 1) + "," + amount.substr(1) },
+  //     course[i].id
+  //   );
+  // }
+  let populars = await Query.Course.findByPopular();
+  res.render("about", { data: reduceArray(populars), best: bestSelling });
 });
 
 router.get("/pre-departure", async function(req, res) {
@@ -368,7 +437,7 @@ router.get("/faculty/:_id/:schoolId", async (req, res) => {
     facultyName: courseByFaculty[0].StudyArea.name,
     data: reduceArray(populars),
     best: bestSelling,
-    school: courseByFaculty[0].Institution.name,
+    school: courseByFaculty[0].Institution,
     courses: courseByFaculty
   });
 });

@@ -21,7 +21,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12" style="border:1px solid #000; background-color:rgb(193, 193, 212)">
-							<div style="text-align:center" class="box">
+							<div style="text-align:center">
 								<div class="row">
 									<div class="col-lg-3"></div>
 									<div class="col-lg-6">
@@ -29,7 +29,8 @@
 										</h1>"... take full charge of your future"
 									</div>
 									<div class="col-lg-3">
-										<button onclick="window.location.href = '/user/login';" id="btnReg"
+										<button style="margin-top:15%" class="btn btn-primary"
+											onclick="window.location.href = '/user/login';" id="btnReg"
 											type="button">APPLY
 											NOW</button>
 									</div>
@@ -43,7 +44,7 @@
 			<hr>
 
 			<a href="/user/register">
-				<div class="col-sm-2 col-xs-2 box text-center">
+				<div class="col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/user_awake.png" class="img-responsive" alt="icon"
@@ -54,7 +55,7 @@
 				</div>
 			</a>
 			<a href="/courses">
-				<div class="col-sm-2 col-xs-2 box text-center">
+				<div class="col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/notepad.png" class="img-responsive" alt="icon" title="icon" />
@@ -64,7 +65,7 @@
 				</div>
 			</a>
 			<a href="/dashboard">
-				<div class="col-sm-2 col-xs-2 box text-center">
+				<div class="col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/binoculars2.png" class="img-responsive" alt="icon"
@@ -75,7 +76,7 @@
 				</div>
 			</a>
 			<a href="/visa-application-guideline">
-				<div class="col-sm-2 col-xs-2 box text-center">
+				<div class="col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/support.png" class="img-responsive" alt="icon" title="icon" />
@@ -85,7 +86,7 @@
 				</div>
 			</a>
 			<a href="/pre-departure">
-				<div class="col-sm-2 col-xs-2 box text-center">
+				<div class="col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/paper_plane.png" class="img-responsive" alt="icon"
@@ -96,7 +97,7 @@
 				</div>
 			</a>
 			<a href="/about-scotland">
-				<div class="col-sm-2 col-xs-2 box text-center">
+				<div class="col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/world_asia.png" class="img-responsive" alt="icon"
@@ -112,11 +113,11 @@
 <!-- service end here -->
 
 <!-- about start here -->
-<div class="about">
+<div class="course">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12 col-xs-12">
-				<div style="height: 100px;" class="slider">
+				<div class="slider">
 					{{#each schools}}
 					<div><img src="/uploads/{{this.banner}}" title="{{this.name}}"></div>
 					{{/each}}
@@ -133,7 +134,7 @@
 		<div class="row">
 			<div class="col-sm-12 col-xs-12">
 				<div class="commontop text-center">
-					<h2>{{best}}s</h2>
+					<h2>{{best}}</h2>
 					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
 					<hr>
 				</div>
@@ -230,7 +231,7 @@
 							<div class="box">
 								<div class="icon">
 									<div class="icons">
-										<img src="/main_theme/images/features/icon1.png" class="img-responsive"
+										<img src="/main_theme/images/features/school.png" class="img-responsive"
 											alt="image" title="image" />
 									</div>
 								</div>
@@ -242,7 +243,7 @@
 							<div class="box">
 								<div class="icon">
 									<div class="icons">
-										<img src="/main_theme/images/features/icon2.png" class="img-responsive"
+										<img src="/main_theme/images/features/building.png" class="img-responsive"
 											alt="image" title="image" />
 									</div>
 								</div>
@@ -254,7 +255,7 @@
 							<div class="box">
 								<div class="icon">
 									<div class="icons">
-										<img src="/main_theme/images/features/icon3.png" class="img-responsive"
+										<img src="/main_theme/images/features/faculty.png" class="img-responsive"
 											alt="image" title="image" />
 									</div>
 								</div>
@@ -266,7 +267,7 @@
 							<div class="box">
 								<div class="icon">
 									<div class="icons">
-										<img src="/main_theme/images/features/icon4.png" class="img-responsive"
+										<img src="/main_theme/images/features/course.png" class="img-responsive"
 											alt="image" title="image" />
 									</div>
 								</div>
@@ -281,7 +282,7 @@
 	</div>
 </div>
 
-<div class="course">
+{{!-- <div class="course">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12 col-xs-12">
@@ -299,8 +300,8 @@
 							<div class="image">
 								<a href="#">
 
-									<img style="height:190px" src="/sponsors/31418_Navitas_logo_633x177.jpg"
-										class="img-responsive img-thumbnail" alt="img" title="img" />
+									<img style="height:102px" src="/sponsors/31418_Navitas_logo_633x177.jpg"
+										class="img-thumbnail" alt="img" title="img" />
 
 								</a>
 							</div>
@@ -312,10 +313,9 @@
 						<div class="product-thumb">
 							<div class="image">
 								<a href="#">
-
-									<img style="height:190px"
+									<img style="height:102px"
 										src="/sponsors/british-high-commission-nicosia-logo-120160517124722_l.jpg"
-										class="img-responsive img-thumbnail" alt="img" title="img" />
+										class="img-thumbnail img-responsive" alt="img" title="img" />
 
 								</a>
 							</div>
@@ -328,8 +328,8 @@
 							<div class="image">
 								<a href="#">
 
-									<img style="height:190px" src="/sponsors/canadian.jpg"
-										class="img-responsive img-thumbnail" alt="img" title="img" />
+									<img style="height:102px" src="/sponsors/canadian.jpg" class="img-thumbnail"
+										alt="img" title="img" />
 
 								</a>
 							</div>
@@ -342,8 +342,8 @@
 							<div class="image">
 								<a href="#">
 
-									<img style="height:190px" src="/sponsors/logo-aussie.png"
-										class="img-responsive img-thumbnail" alt="img" title="img" />
+									<img style="height:102px" src="/sponsors/logo-aussie.png" class="img-thumbnail"
+										alt="img" title="img" />
 
 								</a>
 							</div>
@@ -356,8 +356,8 @@
 							<div class="image">
 								<a href="#">
 
-									<img style="height:190px" src="/sponsors/US-Embassy-Logo.jpg"
-										class="img-responsive img-thumbnail" alt="img" title="img" />
+									<img style="height:102px" src="/sponsors/US-Embassy-Logo.jpg" class=" img-thumbnail"
+										alt="img" title="img" />
 
 								</a>
 							</div>
@@ -371,10 +371,10 @@
 							<div class="image">
 								<a href="#">
 									{{#if this.path}}
-									<img style="height:190px" src="/uploads/{{this.path}}" class="img-responsive"
+									<img style="height:102px" src="/uploads/{{this.path}}" class="img-thumbnail"
 										alt="img" title="img" />
 									{{else}}
-									<img style="height:190px" src="/main_theme/images/course.png"
+									<img style="height:102px" src="/main_theme/images/course.png"
 										class="img-responsive img-thumbnail" alt="img" title="img" />
 									{{/if}}
 								</a>
@@ -386,7 +386,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
 
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>

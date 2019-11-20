@@ -13,7 +13,7 @@
 				{{else}}
 				<img class="img-circle" src="/noLogo.png" style="height:100px; width:100px" />
 				{{/if}}
-				All Faculties at <strong><span style="">{{name}}</span></strong></h2>
+				All Faculties in <strong><span style="">{{school.name}}</span></strong></h2>
 
 		</div>
 	</div>
@@ -26,31 +26,34 @@
 		<div class="row">
 			<div class="col-sm-3 col-xs-12 hidden-xs">
 				<div class="left">
-					<h4>POPULAR COURSES</h4>
+					<h4>{{best}}</h4>
 					<div class="popular">
-						{{#each data}}
+						{{#each data }}
 						<a href="/detail/{{this.Institution.name}}/{{this.name}}/{{this.id}}">
 							<div class="box">
-								<img style="height:150px" src="/uploads/{{this.path}}" class="img-responsive" alt="img"
-									title="img" />
+								<img style="height:150px" width="100%" src="/uploads/{{this.path}}"
+									class="img-thumbnail" alt="img" title="img" />
+								<p><strong>{{this.Institution.name}}</strong></p>
 								<p>{{this.name}}</p>
-								<span>£{{this.fee}}</span>
+								<span>{{this.fee}}</span>
 							</div>
 						</a>
 						{{/each}}
+						<hr>
+						<h5 style="text-align: center;"><a href="/popular-Courses">View more ...</a></h5>
 					</div>
 				</div>
 			</div>
 			<div class="col-sm-9 col-xs-12 mainpage">
 
-				<h1>{{school}}</h1>
+				<h1>{{school.name}}</h1>
 
 				<div id="course" class="row">
 
 					<hr>
 					<ul class="list-group">
 						<li class="list-group-item active">ALL COURSES UNDER THE SCHOOL OF
-							<strong>{{facultyName}}</strong>
+							<strong>{{school.name}}</strong>
 						</li>
 
 						<li class="list-group-item">
