@@ -11,15 +11,14 @@ let transporter = nodemailer.createTransport({
   },
   auth: {
     user: "info@thescotiaworld.co.uk",
-    pass: "D^cu6)!T5,xT"
+    pass: "2000years@BC"
   }
 });
 
 module.exports.send = function(mailOptions) {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return console.log(error);
-    } else return true;
+    }
   });
 };
 

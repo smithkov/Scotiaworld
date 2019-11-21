@@ -26,7 +26,7 @@
 <div class="coures">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-3 col-xs-12 hidden-xs">
+			{{!-- <div class="col-sm-3 col-xs-12 hidden-xs">
 				<div class="left">
 					<h4>{{best}}</h4>
 					<div class="popular">
@@ -45,8 +45,8 @@
 						<h5 style="text-align: center;"><a href="/popular-Courses">View more ...</a></h5>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-9 col-xs-12">
+			</div> --}}
+			<div class="col-sm-12 col-xs-12">
 
 				<div class="col-sm-12 sort">
 					<h3 style="text-align:center">Compare</h3>
@@ -134,61 +134,82 @@
 
 				<div class="row feeCompareContainer">
 					<div class="col-lg-6">
-						<h4><strong id="schoolName1"></strong></h4>
-						<div class="form-group has-feedback has-search">
-							<span class="glyphicon glyphicon-search form-control-feedback"></span>
-							<input type="text" class="form-control" placeholder="Search">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<strong id="schoolName1"></strong>
+							</div>
+							<div class="panel-body">
+								<div class="form-group has-feedback has-search">
+									<span class="glyphicon glyphicon-search form-control-feedback"></span>
+									<input type="text" placeholder="Search course names, faculties and fees"
+										id="firstSearchbar" class="form-control" placeholder="Search">
+								</div>
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th scope="col">Course</th>
+											<th scope="col">Faculty</th>
+											<th scope="col">Fee</th>
+											<th scope="col">Scholarship</th>
+										</tr>
+									</thead>
+									<tbody id="course1Wrapper">
+
+									</tbody>
+								</table>
+
+							</div>
+							<div class="panel-footer">
+								<button id="btnBack" type="button">
+									<< Back</button> <button id="btnNext" class="pull-right" type="button">Next >>
+								</button>
+							</div>
+							<div>
+								<h5 id="pageOneCaption" style="padding: 10px;" class="pull-right"> </h5>
+							</div>
 						</div>
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th scope="col">Course</th>
-									<th scope="col">Faculty</th>
-									<th scope="col">Fee</th>
-								</tr>
-							</thead>
-							<tbody id="course1Wrapper">
-								<tr>
-									<td></td>
-									<td><img style="width:20px; length:20px" src="/loader.gif" /></td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-						<hr>
-						<button id="btnBack" type="button">
-							<< Back</button> <button id="btnNext" class="pull-right" type="button">Next >>
-						</button>
-						<hr>
+
 					</div>
+
 					<div class="col-lg-6">
-						<h4><strong id="schoolName2"></strong></h4>
-						<div class="form-group has-feedback has-search">
-							<span class="glyphicon glyphicon-search form-control-feedback"></span>
-							<input type="text" class="form-control" placeholder="Search">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<strong id="schoolName2"></strong>
+							</div>
+							<div class="panel-body">
+								<div class="form-group has-feedback has-search">
+									<span class="glyphicon glyphicon-search form-control-feedback"></span>
+									<input id="secondSearchbar" placeholder="Search course names, faculties and fees"
+										type="text" class="form-control" placeholder="Search">
+								</div>
+								<table style="" class="table table-striped">
+									<thead>
+										<tr>
+											<th scope="col">Course</th>
+											<th scope="col">Faculty</th>
+											<th scope="col">Fee</th>
+											<th scope="col">Scholarship</th>
+										</tr>
+									</thead>
+									<tbody style="min-height: 400px;" id="course2Wrapper">
+
+									</tbody>
+								</table>
+
+							</div>
+							<div class="panel-footer">
+								<button id="btnBack2" type="button">
+									<< Back</button> <button id="btnNext2" class="pull-right" type="button">Next >>
+								</button>
+							</div>
+							<div>
+								<h5 id="pageTwoCaption" style="padding: 10px;" class="pull-right"> </h5>
+							</div>
 						</div>
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th scope="col">Course</th>
-									<th scope="col">Faculty</th>
-									<th scope="col">Fee</th>
-								</tr>
-							</thead>
-							<tbody id="course2Wrapper">
-								<tr>
-									<td></td>
-									<td><img style="width:20px; length:20px" src="/loader.gif" /></td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-						<hr>
-						<button id="btnBack2" type="button">
-							<< Back</button> <button id="btnNext2" class="pull-right" type="button">Next >>
-						</button>
-						<hr>
+
 					</div>
+
+
 
 					<hr>
 				</div>
@@ -198,12 +219,13 @@
 	</div>
 	<script>
 		$(function () {
+			const ten = 10;
 			let enquiryContainer = $(".enquiryContainer");
 			let feeCompareContainer = $(".feeCompareContainer");
 			let btnSearch = document.getElementById("btnSearch");
-			let cboUni1 = document.getElementById("uni1");
-			let cboUni2 = document.getElementById("uni2");
-			let cboFaculty = document.getElementById("faculty");
+			let cboUni1 = $("#uni1");
+			let cboUni2 = $("#uni2");
+			let cboFaculty = $("#faculty");
 			let wrapper1 = $("#course1Wrapper");
 			let wrapper2 = $("#course2Wrapper");
 			let name1 = $("#schoolName1");
@@ -212,9 +234,15 @@
 			let cboSearchType = $("#cboSearchType");
 			let btnBack = $("#btnBack");
 			let btnNext = $("#btnNext");
+			let secondSearchBar = $("#secondSearchbar");
+			let firstSearchBar = $("#firstSearchbar");
+			let pageOneCaption = $("#pageOneCaption");
+			let pageTwoCaption = $("#pageTwoCaption");
 
 			let btnBack2 = $("#btnBack2");
 			let btnNext2 = $("#btnNext2");
+			let tableOneDataStore = [];
+			let tableTwoDataStore = [];
 			let allData = [];
 			let renderData = [];
 			let allData2 = [];
@@ -222,7 +250,7 @@
 			let totalData1 = 0;
 			let totalData2 = 0;
 			let paginationObject = {
-				limit: 10,
+				limit: ten,
 				nextPage: 0,
 				nextPage2: 0,
 				total: 0,
@@ -231,14 +259,103 @@
 				url2: "/compareFee"
 			}
 
-			var limit1 = 10;
-			var limit2 = 10;
-			var pageNext1 = 10;
-			let pagePrevious1 = 0;
-			var pageNext2 = 10;
-			let pagePrevious2 = 0;
+			var limit1, limit2, pageNext1, pagePrevious1, pageNext2, pagePrevious2;
 
+			function initializeParams() {
+				limit1 = ten;
+				limit2 = ten;
+				pageNext1 = ten;
+				pageNext2 = ten;
+				pagePrevious1 = 0;
+				pagePrevious2 = 0
+			}
 
+			function paginationCaption(currentPage, totalPage, container, limit) {
+				return container.empty().append(`<strong>page ${Math.floor(currentPage / limit)} of ${Math.floor(totalPage / limit)}</strong>`)
+			}
+			firstSearchBar.keyup(function () {
+
+				let searchString = $(this).val().toUpperCase().trim();
+
+				renderData = [];
+
+				tableOneDataStore.forEach(data => {
+
+					//console.log(`original name: ${convertedName} name searched: ${searchString}`)
+					if (data.name.toUpperCase().startsWith(searchString) || data.StudyArea.name.toUpperCase().startsWith(searchString) || data.fee.substring(1).startsWith(searchString) || data.scholarshipAmount.startsWith(searchString)) {
+						renderData.push(data);
+					}
+				})
+				//updates alldata with renderData incase of pagination
+				allData = renderData;
+				renderData = renderData.slice(0, limit1)
+				wrapper1.empty();
+				if (renderData.length === 0) {
+					wrapper1.append(template({ hasData: true, data: undefined }));
+				}
+				renderData.forEach(course => {
+					wrapper1.append(template({ hasData: true, data: course }));
+				})
+
+			})
+			secondSearchBar.keyup(function () {
+
+				let searchString = $(this).val().toUpperCase().trim();
+
+				renderData2 = [];
+				tableTwoDataStore.forEach(data => {
+
+					//console.log(`original name: ${convertedName} name searched: ${searchString}`)
+					if (data.name.toUpperCase().startsWith(searchString) || data.StudyArea.name.toUpperCase().startsWith(searchString) || data.fee.substring(1).startsWith(searchString) || data.scholarshipAmount.startsWith(searchString)) {
+						renderData2.push(data);
+					}
+				})
+				//updates alldata with renderData incase of pagination
+				allData2 = renderData2;
+				renderData2 = renderData2.slice(0, limit2)
+
+				wrapper2.empty();
+				if (renderData2.length === 0) {
+					wrapper2.append(template({ hasData: true, data: undefined }));
+				}
+				renderData2.forEach(course => {
+					wrapper2.append(template({ hasData: true, data: course }));
+				})
+			})
+			function template(obj) {
+
+				if (typeof obj === "object") {
+
+					if ("hasData" in obj && obj.hasData && (obj.data !== undefined)) {
+						console.log("A");
+						return (`<tr>
+						<td>${obj.data.name}</td>
+						<td>${obj.data.StudyArea.name}</td>
+						<td>${obj.data.fee}</td>
+						<td>£ ${obj.data.scholarshipAmount}</td>
+						</tr>`)
+					} else if (("data" in obj) && (obj.data === undefined) && (obj.hasData === true)) {
+						console.log("B");
+						return (`<tr>
+							<td></td>
+							<td></td>
+							<td><strong>No Result Found</strong></td>
+							<td></td>
+						</tr>`)
+					} else {
+						console.log("C " + "hasData" in obj);
+						return (`<tr>
+							<td></td>
+							<td></td>
+							<td><img style="width:20px; length:20px" src="/loader.gif" /></td>
+							<td></td>
+						</tr>`)
+					}
+
+				} else {
+					console.log("Argument requires an object")
+				}
+			}
 			btnBack.click(function (e) {
 				if (pagePrevious1 == 0) {
 					$(this).attr("disabled", true);
@@ -251,10 +368,11 @@
 					renderData = allData.slice(pagePrevious1, pageNext1);
 					wrapper1.empty();
 					renderData.forEach(course => {
-						wrapper1.append(template(course));
+						wrapper1.append(template({ hasData: true, data: course }));
 					})
 
 					paginationControl();
+					paginationCaption((pageNext1), totalData1, pageOneCaption, limit1);
 				}
 			})
 			btnBack2.click(function (e) {
@@ -269,9 +387,11 @@
 					renderData2 = allData2.slice(pagePrevious2, pageNext2);
 					wrapper2.empty();
 					renderData2.forEach(course => {
-						wrapper2.append(template(course));
+						wrapper2.append(template({ hasData: true, data: course }));
 					})
 					paginationControl();
+					paginationCaption((pageNext2), totalData2, pageTwoCaption, limit2);
+
 				}
 			})
 
@@ -282,10 +402,11 @@
 				renderData = allData.slice(pagePrevious1, pageNext1);
 				wrapper1.empty();
 				renderData.forEach(course => {
-					wrapper1.append(template(course));
+					wrapper1.append(template({ hasData: true, data: course }));
 				})
 
 				paginationControl();
+				paginationCaption(pageNext1, totalData1, pageOneCaption, limit1);
 
 
 			})
@@ -297,12 +418,11 @@
 				renderData2 = allData2.slice(pagePrevious2, pageNext2);
 				wrapper2.empty();
 				renderData2.forEach(course => {
-					wrapper2.append(template(course));
-				})
+					wrapper2.append(template({ hasData: true, data: course }));
+				});
+				//adding the first parameter as pagePrevious initial value is zero 
 				paginationControl();
-
-
-
+				paginationCaption(pageNext2, totalData2, pageTwoCaption, limit2);
 			})
 			function paginationControl() {
 				//alert(totalData2)
@@ -330,9 +450,7 @@
 			}
 			displayContainer(cboSearchType);
 			cboSearchType.change(function () {
-
 				displayContainer($(this));
-
 			})
 			function displayContainer(input) {
 				let val = input.children("option:selected").val();
@@ -348,43 +466,51 @@
 
 			function getIputs() {
 				return {
-					uni1: cboUni1.options[cboUni1.selectedIndex],
-					uni2: cboUni2.options[cboUni2.selectedIndex],
-					faculty: cboFaculty.options[cboFaculty.selectedIndex]
+					uni1: cboUni1,
+					uni2: cboUni2,
+					faculty: cboFaculty
 				}
 			}
-			function template(data) {
-				return (`<tr>
-						<td>${data.name}</td>
-						<td>${data.StudyArea.name}</td>
-						<td>${data.fee}</td>
-						</tr>`)
-			}
 
-			function nullTemplate() {
-				return (`<tr><td></td><td>No record found </td><td></td></tr>`)
-			}
+
+
 			function ajaxRequest(uni1, uni2, faculty) {
-				if (uni1.value != 0)
-					name1.empty().append(uni1.text)
+
+				let firstUniText = uni1.find(":selected").text().trim();
+				let firstUniVal = uni1.val().trim();
+
+				let secondUniText = uni2.find(":selected").text().trim();
+				let secondUniVal = uni2.val().trim();
+
+				let facultyText = faculty.find(":selected").text().trim();
+				let facultyVal = faculty.val().trim();
+
+				//alert(uni2.text().trim())
+				searchSpinner.show();
+				if (firstUniVal != 0)
+					name1.empty().append(firstUniText)
 				else
 					name1.empty().append("All Institutions")
-				if (uni2.value != 0)
-					name2.empty().append(uni2.text)
+				if (secondUniVal != 0)
+					name2.empty().append(secondUniText)
 				else
-					name2.empty().append("All Institutions")
+					name2.empty().append("All Institutions");
+
+				wrapper1.empty().append(template({}))
+				wrapper2.empty().append(template({}))
 
 				$.ajax({
 					type: "POST",
 					url: "/compareFee",
-					data: { institutionId1: uni1.value, institutionId2: uni2.value, facultyId: faculty.value },
+					data: { institutionId1: firstUniVal, institutionId2: secondUniVal, facultyId: facultyVal },
 					dataType: "json",
 					success: function (result) {
+						initializeParams();
 						searchSpinner.hide();
 						let course1 = result.data.course1;
 						let course2 = result.data.course2;
-						allData = course1;
-						allData2 = course2;
+						allData = tableOneDataStore = course1;
+						allData2 = tableTwoDataStore = course2;
 
 						renderData = allData.slice(0, limit1);
 						renderData2 = allData2.slice(0, limit2);
@@ -397,17 +523,19 @@
 						wrapper2.empty();
 
 						if (course1.length == 0)
-							wrapper1.append(nullTemplate())
+							wrapper1.append(template({ hasData: false }))
 
 						if (course2.length == 0)
-							wrapper2.append(nullTemplate())
+							wrapper2.append(template({ hasData: false }))
 
 						renderData.forEach(course => {
-							wrapper1.append(template(course));
+							wrapper1.append(template({ hasData: true, data: course }));
 						})
 						renderData2.forEach(course => {
-							wrapper2.append(template(course));
+							wrapper2.append(template({ hasData: true, data: course }));
 						})
+						paginationCaption(limit1, totalData1, pageOneCaption, limit1);
+						paginationCaption(limit2, totalData2, pageTwoCaption, limit2);
 					},
 					error: function (er) {
 
@@ -416,10 +544,14 @@
 			}
 			ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty);
 			btnSearch.addEventListener("click", function () {
-				searchSpinner.show();
-
 				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty);
 			});
+			cboUni1.change(function () {
+				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty);
+			})
+			cboUni2.change(function () {
+				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty);
+			})
 
 			function alertBoxTemplate(message, isError) {
 				let classVal = isError ? "alert alert-danger" : "alert alert-success";
