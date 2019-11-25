@@ -22,7 +22,7 @@
 <div class="coures">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-3 col-xs-12 hidden-xs">
+			<div class="col-lg-3 col-md-3 hidden-sm  hidden-xs">
 				<div class="left">
 					<h4>{{best}}</h4>
 					<div class="popular">
@@ -42,13 +42,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-9 col-xs-12">
-				<div class="col-sm-12 sort">
+			<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+				<div class="col-lg-12 col-md-12 col-sm-12 sort">
 					<h3 style="text-align:center"><strong>Search for Courses</strong></h3>
 				</div>
 				<div ng-controller="school" class="col-sm-12 sort">
 					<div class="row">
 						<div class="col-lg-3">
+
 							<select id="degree" class="form-control">
 								<option value="0">--Select Degree--</option>
 								<option value="0">All</option>
@@ -56,21 +57,24 @@
 
 							</select>
 						</div>
-						<div class="col-lg-4">
-							<select id="faculty" class="form-control">
+						<div class="col-lg-4 col-md-4">
+							<hr>
+							<select style="padding-top: 5px;" id="faculty" class="form-control">
 								<option value="0">--Select Faculty--</option>
 								<option value="0">All</option>
 								<option value="{[{u.id}]}" ng-repeat="u in drop.faculty">{[{u.name}]}</option>
 							</select>
 						</div>
-						<div class="col-lg-4">
+						<div class="col-lg-4 col-md-4">
+							<hr>
 							<select id="institution" class="form-control">
 								<option value="0">--Select Institutions--</option>
 								<option value="0">All</option>
 								<option value="{[{u.id}]}" ng-repeat="u in drop.institutions">{[{u.name}]}</option>
 							</select>
 						</div>
-						<div class="col-lg-1">
+						<div class="col-lg-1 col-md-1">
+							<hr>
 							<button id="btnSearch" class="btn btn-primary"> <i class="fa fa-search"></i></button>
 						</div>
 					</div>
@@ -132,17 +136,17 @@
 					{
 						"data": "path",
 						"render": function (data, type, row, meta) {
-
-							data = `<img style="height:85px; width:280px" src="/uploads/${row.path}"   class="img-thumbnail" />`;
+							var url = "/uploads/" + row.path;
+							data = '<img style="height:85px; width:280px" src="' + url + '" class="img-thumbnail"/>';
 
 							return data;
 						}
 					},
 					{
-						"data": "Institution.name",
+						"data": "name",
 						"render": function (data, type, row, meta) {
 							if (type === 'display') {
-								data = `<a href=" detail/${row.Institution.name}/${row.name}/ ${row.id}" >${row.name}</a>`;
+								data = "<a href='detail/'" + row.Institution.name + "'/'" + row.name + "'/'" + row.id + "' >" + row.name + "</a>";
 							}
 							return data;
 						}

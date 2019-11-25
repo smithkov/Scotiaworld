@@ -154,9 +154,15 @@ router.get("/institutions", function(req, res) {
 router.get("/compare-fees", async function(req, res) {
   let populars = await Query.Course.findByPopular();
   let courses = await Query.Course.findAll();
+  let degreeTypes = await Query.DegreeType.findAll();
+  let institution = await Query.Institution.findAll();
+  let faculty = await Query.StudyArea.findAll();
   res.render("compare", {
     courses: courses,
     best: bestSelling,
+    institution: institution,
+    faculty: faculty,
+    degreeType: degreeTypes,
     data: reduceArray(populars)
   });
 });
@@ -236,14 +242,17 @@ router.post("/compareFee", async function(req, res) {
   let institutionId = req.body.institutionId1;
   let institutionId2 = req.body.institutionId2;
   let facultyId = req.body.facultyId;
+  let degreeTypeId = req.body.degreeTypeId;
 
   let courseForInstitution1 = await Query.Course.findByInstitutionIdSearch(
     institutionId,
-    facultyId
+    facultyId,
+    degreeTypeId
   );
   let courseForInstitution2 = await Query.Course.findByInstitutionIdSearch(
     institutionId2,
-    facultyId
+    facultyId,
+    degreeTypeId
   );
   return res.send({
     data: { course1: courseForInstitution1, course2: courseForInstitution2 }
@@ -269,17 +278,15 @@ router.post("/compareFeeSingle", async function(req, res) {
 });
 
 router.get("/about", async function(req, res) {
-  // let course = await Query.Course.findAll();
-  // for (var i = 0; i < course.length; i++) {
-  //   console.log("--------------------------------");
-  //   console.log(i);
-  //   let amount = course[i].scholarshipAmount;
+  let course = await Query.Course.findAll();
+  for (var i = 0; i < course.length; i++) {
+    console.log(i);
+    let path = course[i].path + ".png";
+    console.log("--------------------------------");
+    console.log(path);
 
-  //   let update = await Query.Course.update(
-  //     { scholarshipAmount: amount.substr(0, 1) + "," + amount.substr(1) },
-  //     course[i].id
-  //   );
-  // }
+    let update = await Query.Course.update({ path: path }, course[i].id);
+  }
   let populars = await Query.Course.findByPopular();
   res.render("about", { data: reduceArray(populars), best: bestSelling });
 });

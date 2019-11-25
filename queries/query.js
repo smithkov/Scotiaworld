@@ -315,10 +315,11 @@ module.exports = {
         include: [{ all: true }]
       });
     },
-    findByInstitutionIdSearch: function(schoolId, facultyId) {
+    findByInstitutionIdSearch: function(schoolId, facultyId, degreeTypeId) {
       let dataObj = {
         institutionId: schoolId,
-        studyAreaId: facultyId
+        studyAreaId: facultyId,
+        degreeTypeId: degreeTypeId
       };
       let hasValues = true;
 
@@ -328,8 +329,12 @@ module.exports = {
       if (schoolId == 0) {
         delete dataObj.institutionId;
       }
+      if (degreeTypeId == 0) {
+        delete dataObj.degreeTypeId;
+      }
 
-      if (schoolId == 0 && facultyId == 0) hasValues = false;
+      if (schoolId == 0 && facultyId == 0 && degreeTypeId == 0)
+        hasValues = false;
 
       return hasValues
         ? Course.findAll({

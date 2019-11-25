@@ -20,6 +20,9 @@ module.exports = {
       banner: {
         type: Sequelize.STRING
       },
+      sellingPoint: {
+        type: Sequelize.STRING
+      },
       institutionTypeId: {
         type: Sequelize.INTEGER
       },

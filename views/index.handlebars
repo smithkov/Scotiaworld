@@ -20,15 +20,16 @@
 			<div class="aboutweek">
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-12" style="border:1px solid #000; background-color:rgb(193, 193, 212)">
+						<div class="col-lg-12 col-md-12 col-sm-12"
+							style="border:1px solid #000; background-color:rgb(193, 193, 212)">
 							<div style="text-align:center">
 								<div class="row">
-									<div class="col-lg-3"></div>
-									<div class="col-lg-6">
+									<div class="col-lg-3 col-md-3"></div>
+									<div class="col-lg-6 col-md-6">
 										<h1 style="font-size:60px; text-align:center"><strong>Simple Process</strong>
 										</h1>"... take full charge of your future"
 									</div>
-									<div class="col-lg-3">
+									<div class="col-lg-3 col-md-3">
 										<button style="margin-top:15%" class="btn btn-primary"
 											onclick="window.location.href = '/user/login';" id="btnReg"
 											type="button">APPLY
@@ -44,7 +45,7 @@
 			<hr>
 
 			<a href="/user/register">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/user_awake.png" class="img-responsive" alt="icon"
@@ -55,7 +56,7 @@
 				</div>
 			</a>
 			<a href="/courses">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/notepad.png" class="img-responsive" alt="icon" title="icon" />
@@ -65,7 +66,7 @@
 				</div>
 			</a>
 			<a href="/dashboard">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/binoculars2.png" class="img-responsive" alt="icon"
@@ -76,7 +77,7 @@
 				</div>
 			</a>
 			<a href="/visa-application-guideline">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/support.png" class="img-responsive" alt="icon" title="icon" />
@@ -86,7 +87,7 @@
 				</div>
 			</a>
 			<a href="/pre-departure">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/paper_plane.png" class="img-responsive" alt="icon"
@@ -97,7 +98,7 @@
 				</div>
 			</a>
 			<a href="/about-scotland">
-				<div class="col-sm-2 col-xs-12 box text-center">
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
 					<div class="icons">
 						<div class="icon">
 							<img src="/main_theme/images/world_asia.png" class="img-responsive" alt="icon"
@@ -116,12 +117,39 @@
 <div class="course">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-12 col-xs-12">
-				<div class="slider">
-					{{#each schools}}
-					<div><img src="/uploads/{{this.banner}}" title="{{this.name}}"></div>
-					{{/each}}
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+					<div class="carousel-inner">
+						<div class="item active">
+							<img class="d-block w-100"
+								src="/uploads/banner_1568105957635_800px-New_Strathclyde_Business_School_.jpg">
+							<div class="carousel-caption">
+								<h3 style="background-color:#000">University of Strathclyde</h3>
+								<p style="background-color:#000">University of Strathclyde wins the Queen’s
+									Anniversary
+									Prize for quality & innovation in
+									higher education and training. UniStrathclyde is a 5-star QS Star rated university,
+									Top
+									20 UK university for research, and No1 in the UK in seven subjects.</p>
+							</div>
+						</div>
+						{{#each schools}}
+						<div class="item">
+							<img class="d-block w-100" src="/uploads/{{this.banner}}">
+							<div class="carousel-caption">
+								<h3 style="background-color:#000">{{this.name}}</h3>
+								<p style="background-color:#000">{{this.sellingPoint}}</p>
+							</div>
+						</div>
+						{{/each}}
+
+					</div>
 				</div>
+				{{!-- <div class="slider">
+					{{#each schools}}
+					<div><img src="/uploads/{{this.banner}}" title="{{this.sellingPoint}}"></div>
+					{{/each}}
+				</div> --}}
 			</div>
 		</div>
 	</div>
@@ -132,7 +160,7 @@
 <div class="course">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-12 col-xs-12">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="commontop text-center">
 					<h2>{{best}}</h2>
 					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
@@ -194,19 +222,19 @@
 			<div class="clearfix"></div>
 
 			<div class="col-sm-12 col-xs-12">
-				<div class="col-lg-3 col-xs-12">
+				<div class="col-lg-3 col-xs-3">
 					<iframe height="315" src="https://www.youtube.com/embed/Tlyz-FOoOL0">
 					</iframe>
 				</div>
-				<div class="col-lg-3 col-xs-12">
+				<div class="col-lg-3 col-xs-3">
 					<iframe height="315" src="https://www.youtube.com/embed/OLTBbhdGi-w">
 					</iframe>
 				</div>
-				<div class="col-lg-3 col-xs-12">
+				<div class="col-lg-3 col-xs-3">
 					<iframe height="315" src="https://www.youtube.com/embed/dYqEDeP4LYc">
 					</iframe>
 				</div>
-				<div class="col-lg-3 col-xs-12">
+				<div class="col-lg-3 col-xs-3">
 					<iframe height="315" src="https://www.youtube.com/embed/oRadXHLKwTY">
 					</iframe>
 				</div>
@@ -225,7 +253,7 @@
 	<div class="inner">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-12">
+				<div class="col-lg-12 col-md-12 col-sm-12">
 					<ul class="list-inline">
 						<li>
 							<div class="box">
@@ -392,14 +420,8 @@
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <script>
 	$(document).ready(function () {
-		$('.slider').bxSlider({
-			auto: true,
-			autoControls: true,
-			stopAutoOnClick: true,
-			pager: true,
-			adaptiveHeight: true,
-			infiniteLoop: true,
-			captions: true
-		});
+		$('.carousel').carousel({
+			interval: 8000
+		})
 	});
 </script>
