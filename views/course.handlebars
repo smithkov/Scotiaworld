@@ -47,9 +47,9 @@
 					<h3 style="text-align:center"><strong>Search for Courses</strong></h3>
 				</div>
 				<div ng-controller="school" class="col-sm-12 sort">
-					<div class="row">
+					<div style="padding: 10px;" class="row">
 						<div class="col-lg-3">
-
+							<hr>
 							<select id="degree" class="form-control">
 								<option value="0">--Select Degree--</option>
 								<option value="0">All</option>
@@ -80,19 +80,24 @@
 					</div>
 				</div>
 				<div class="row">
-					<table id="example" class="display" style="width:100%">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Course Name</th>
-								<th>Tuition Fee</th>
-								<th>Faculty</th>
-								<th>Degree</th>
-								<th>Institution</th>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="table-responsive">
+							<table id="example" class="display" style="width:100%">
+								<thead>
+									<tr>
+										<th>Course Logo</th>
+										<th>Course Name</th>
+										<th>Tuition Fee</th>
+										<th>Faculty</th>
+										<th>Degree</th>
+										<th>Institution</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
 
-							</tr>
-						</thead>
-					</table>
+
 				</div>
 				<hr>
 
@@ -137,7 +142,7 @@
 						"data": "path",
 						"render": function (data, type, row, meta) {
 							var url = "/uploads/" + row.path;
-							data = '<img style="height:85px; width:280px" src="' + url + '" class="img-thumbnail"/>';
+							data = '<img style="height:85px; width:280px" src="' + url + '" class="img-responsive"/>';
 
 							return data;
 						}

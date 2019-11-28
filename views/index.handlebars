@@ -1,13 +1,54 @@
 <!-- slider start here -->
-<div class="slide">
-	<div id="owl-home" class="slideshow owl-carousel">
-		{{#each banner}}
-		<div style="height:350px" class="item">
-			<img src="/uploads/{{this.path}}" alt="banner" title="banner" class="img-responsive" />
-		</div>
+<style>
+	.video-responsive {
+		overflow: hidden;
+		padding-bottom: 56.25%;
+		position: relative;
+		height: 0;
+	}
 
-		{{/each}}
+	.video-responsive iframe {
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		position: absolute;
+	}
+
+	.tales {
+		width: 100%;
+	}
+
+	.carousel-inner {
+		width: 100%;
+		max-height: 350px !important;
+	}
+</style>
+<div class="course">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div id="carouselSlidesOnly" class="carouselBanner slide" data-ride="carousel">
+					<div class="carousel-inner">
+						<div class="item active">
+							<img class="d-block w-100" src="/uploads/banner_heriot-watt.jpg">
+						</div>
+						{{#each banner}}
+						<div class="item">
+							<img class="d-block w-100" src="/uploads/{{this.path}}">
+							<div class="carousel-caption">
+								{{!-- <h3 style="background-color:#000">{{this.name}}</h3>
+					<p style="background-color:#000">{{this.sellingPoint}}</p> --}}
+							</div>
+						</div>
+						{{/each}}
+
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+</div>
 
 </div>
 <!-- slider end here -->
@@ -26,11 +67,12 @@
 								<div class="row">
 									<div class="col-lg-3 col-md-3"></div>
 									<div class="col-lg-6 col-md-6">
-										<h1 style="font-size:60px; text-align:center"><strong>Simple Process</strong>
+										<h1 style="font-size:60px; text-align:center"><strong>Simple
+												Process</strong>
 										</h1>"... take full charge of your future"
 									</div>
 									<div class="col-lg-3 col-md-3">
-										<button style="margin-top:15%" class="btn btn-primary"
+										<button style="margin:15%" class="btn btn-primary"
 											onclick="window.location.href = '/user/login';" id="btnReg"
 											type="button">APPLY
 											NOW</button>
@@ -43,71 +85,81 @@
 				</div>
 			</div>
 			<hr>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+					<a href="/user/register">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box text-center">
+							<div class="icons">
+								<div class="icon">
+									<img src="/main_theme/images/user_awake.png" class="img-responsive" alt="icon"
+										title="icon" />
+								</div>
+							</div>
+							<h4>Create your account</h4>
+						</div>
+					</a>
+					<a href="/courses">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box text-center">
+							<div class="icons">
+								<div class="icon">
+									<img src="/main_theme/images/notepad.png" class="img-responsive" alt="icon"
+										title="icon" />
+								</div>
+							</div>
+							<h4>Apply to preferred institution</h4>
+						</div>
+					</a>
+					<a href="/dashboard">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box text-center">
+							<div class="icons">
+								<div class="icon">
+									<img src="/main_theme/images/binoculars2.png" class="img-responsive" alt="icon"
+										title="icon" />
+								</div>
+							</div>
+							<h4>Monitor your application</h4>
+						</div>
+					</a>
 
-			<a href="/user/register">
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
-					<div class="icons">
-						<div class="icon">
-							<img src="/main_theme/images/user_awake.png" class="img-responsive" alt="icon"
-								title="icon" />
-						</div>
-					</div>
-					<h4>Create your account</h4>
 				</div>
-			</a>
-			<a href="/courses">
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
-					<div class="icons">
-						<div class="icon">
-							<img src="/main_theme/images/notepad.png" class="img-responsive" alt="icon" title="icon" />
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+					<a href="/visa-application-guideline">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box text-center">
+							<div class="icons">
+								<div class="icon">
+									<img src="/main_theme/images/support.png" class="img-responsive" alt="icon"
+										title="icon" />
+								</div>
+							</div>
+							<h4>Visa guidance & application</h4>
 						</div>
-					</div>
-					<h4>Apply to preferred institution</h4>
-				</div>
-			</a>
-			<a href="/dashboard">
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
-					<div class="icons">
-						<div class="icon">
-							<img src="/main_theme/images/binoculars2.png" class="img-responsive" alt="icon"
-								title="icon" />
+					</a>
+					<a href="/pre-departure">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box text-center">
+							<div class="icons">
+								<div class="icon">
+									<img src="/main_theme/images/paper_plane.png" class="img-responsive" alt="icon"
+										title="icon" />
+								</div>
+							</div>
+							<h4>Pre-departure</h4>
 						</div>
-					</div>
-					<h4>Monitor your application</h4>
-				</div>
-			</a>
-			<a href="/visa-application-guideline">
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
-					<div class="icons">
-						<div class="icon">
-							<img src="/main_theme/images/support.png" class="img-responsive" alt="icon" title="icon" />
+					</a>
+					<a href="/about-scotland">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box text-center">
+							<div class="icons">
+								<div class="icon">
+									<img src="/main_theme/images/world_asia.png" class="img-responsive" alt="icon"
+										title="icon" />
+								</div>
+							</div>
+							<h4>Settle in Scotland</h4>
 						</div>
-					</div>
-					<h4>Visa guidance & application</h4>
+					</a>
 				</div>
-			</a>
-			<a href="/pre-departure">
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
-					<div class="icons">
-						<div class="icon">
-							<img src="/main_theme/images/paper_plane.png" class="img-responsive" alt="icon"
-								title="icon" />
-						</div>
-					</div>
-					<h4>Pre-departure</h4>
-				</div>
-			</a>
-			<a href="/about-scotland">
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 box text-center">
-					<div class="icons">
-						<div class="icon">
-							<img src="/main_theme/images/world_asia.png" class="img-responsive" alt="icon"
-								title="icon" />
-						</div>
-					</div>
-					<h4>Settle in Scotland</h4>
-				</div>
-			</a>
+			</div>
+
+
 		</div>
 	</div>
 </div>
@@ -121,16 +173,9 @@
 				<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
 					<div class="carousel-inner">
 						<div class="item active">
-							<img class="d-block w-100"
-								src="/uploads/banner_1568105957635_800px-New_Strathclyde_Business_School_.jpg">
+							<img class="d-block w-100" src="/uploads/first_slider.jpg">
 							<div class="carousel-caption">
-								<h3 style="background-color:#000">University of Strathclyde</h3>
-								<p style="background-color:#000">University of Strathclyde wins the Queen’s
-									Anniversary
-									Prize for quality & innovation in
-									higher education and training. UniStrathclyde is a 5-star QS Star rated university,
-									Top
-									20 UK university for research, and No1 in the UK in seven subjects.</p>
+
 							</div>
 						</div>
 						{{#each schools}}
@@ -203,6 +248,26 @@
 					</div>
 				</div>
 				{{/each}}
+				<div class="item">
+					<div class="col-sm-12 col-xs-12">
+						<div class="product-thumb">
+							<div class="image">
+								<a href="/popular-Courses">
+
+									<img style="height:190px" src="/uploads/blank.jpg" class="img-responsive" alt="img"
+										title="img" />
+								</a>
+							</div>
+							<div class="caption">
+								<h3><a href="/popular-Courses">See More Best Selling Course ...</a>
+								</h3>
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -222,21 +287,33 @@
 			<div class="clearfix"></div>
 
 			<div class="col-sm-12 col-xs-12">
-				<div class="col-lg-3 col-xs-3">
-					<iframe height="315" src="https://www.youtube.com/embed/Tlyz-FOoOL0">
-					</iframe>
+
+				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+					<div class="video-responsive">
+						<iframe height="315" src="https://www.youtube.com/embed/Tlyz-FOoOL0">
+						</iframe>
+					</div>
 				</div>
-				<div class="col-lg-3 col-xs-3">
-					<iframe height="315" src="https://www.youtube.com/embed/OLTBbhdGi-w">
-					</iframe>
+
+				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+					<div class="video-responsive">
+						<iframe height="315" src="https://www.youtube.com/embed/OLTBbhdGi-w">
+						</iframe>
+					</div>
 				</div>
-				<div class="col-lg-3 col-xs-3">
-					<iframe height="315" src="https://www.youtube.com/embed/dYqEDeP4LYc">
-					</iframe>
+				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+					<div class="video-responsive">
+						<iframe height="315" src="https://www.youtube.com/embed/dYqEDeP4LYc">
+						</iframe>
+					</div>
+
 				</div>
-				<div class="col-lg-3 col-xs-3">
-					<iframe height="315" src="https://www.youtube.com/embed/oRadXHLKwTY">
-					</iframe>
+				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+					<div class="video-responsive">
+						<iframe height="315" src="https://www.youtube.com/embed/oRadXHLKwTY">
+						</iframe>
+					</div>
+
 				</div>
 			</div>
 
@@ -256,7 +333,7 @@
 				<div class="col-lg-12 col-md-12 col-sm-12">
 					<ul class="list-inline">
 						<li>
-							<div class="box">
+							<div class="box col-lg-3 col-md-3 col-sm-3">
 								<div class="icon">
 									<div class="icons">
 										<img src="/main_theme/images/features/school.png" class="img-responsive"
@@ -268,7 +345,7 @@
 							</div>
 						</li>
 						<li>
-							<div class="box">
+							<div class="box col-lg-3 col-md-3 col-sm-3">
 								<div class="icon">
 									<div class="icons">
 										<img src="/main_theme/images/features/building.png" class="img-responsive"
@@ -280,7 +357,7 @@
 							</div>
 						</li>
 						<li>
-							<div class="box">
+							<div class="box col-lg-3 col-md-3 col-sm-3">
 								<div class="icon">
 									<div class="icons">
 										<img src="/main_theme/images/features/faculty.png" class="img-responsive"
@@ -292,7 +369,7 @@
 							</div>
 						</li>
 						<li>
-							<div class="box">
+							<div class="box col-lg-3 col-md-3 col-sm-3">
 								<div class="icon">
 									<div class="icons">
 										<img src="/main_theme/images/features/course.png" class="img-responsive"
@@ -420,8 +497,12 @@
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <script>
 	$(document).ready(function () {
+
 		$('.carousel').carousel({
-			interval: 8000
+			interval: 10000
+		})
+		$('.carouselBanner').carousel({
+			interval: 6000
 		})
 	});
 </script>

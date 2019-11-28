@@ -32,6 +32,24 @@
                             <button type="submit" class="btn btn-primary m-t-15 waves-effect">UPDATE</button>
                         </form>
                         {{/if}}
+                        {{#if entity.degreeType}}
+                        <form method="post" action="{{entity.url}}update">
+                            <label for="password">Name</label>
+                            <input type="hidden" value="{{data.id}}" name="id" id="text" class="form-control">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input required type="text" value="{{data.name}}" name="name" id="text"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-line">
+                                <textarea rows="4" class="form-control no-resize richText" name="requirements"
+                                    placeholder="Enter about">{{data.requirements}}
+                                </textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary m-t-15 waves-effect">UPDATE</button>
+                        </form>
+                        {{/if}}
                         {{#if entity.studyArea}}
                         <form method="post" action="{{entity.url}}update">
                             <label for="password">Name</label>

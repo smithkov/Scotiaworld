@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       isPopular: DataTypes.BOOLEAN,
       studyAreaId: DataTypes.INTEGER,
       institutionId: DataTypes.INTEGER,
+      requirementId: DataTypes.INTEGER,
       degreeTypeId: DataTypes.INTEGER,
       feeRangeId: DataTypes.INTEGER,
       time: DataTypes.STRING,
@@ -25,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Course.belongsTo(models.Institution);
     Course.belongsTo(models.DegreeType);
+    Course.belongsTo(models.Requirement);
     Course.belongsTo(models.StudyArea);
     Course.belongsTo(models.FeeRange);
   };

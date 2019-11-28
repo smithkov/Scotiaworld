@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
-<!-- Mirrored from ocsolutions.co.in/html/education/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 10 Feb 2019 23:20:38 GMT -->
-
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -73,6 +71,7 @@
 			$http.get("/schools")
 				.then(function (response) {
 					$scope.menu = response.data.data;
+					localStorage.setItem("menu", response.data.data)
 				});
 
 			$http.get("/dropDown")
@@ -123,7 +122,7 @@
 									</li>
 								</ul>
 							</li>
-							<li><a href="/institutions">INSTITUTIONS
+							<li><a id="schoolId" href="/institutions">INSTITUTIONS
 									<span class="drop-icon">▾</span>
 									<label title="Toggle Drop-down" class="drop-icon" for="sm1">▾</label>
 								</a>
@@ -163,6 +162,7 @@
 
 						</ul>
 					</nav>
+
 				</div>
 
 			</div>
@@ -173,66 +173,121 @@
 	<!-- footer start here -->
 	<footer>
 		<div class="container">
-			<div class="row inner">
-				<div class="col-sm-3">
-					<img src="/main_theme/images/logo4.png" class="img-responsive img" title="logo" alt="logo">
-					<p class="des">OUR ALL-IN-ONE PLATFORM HELPS YOU MONITOR AND SECURE ADMISSION, GUIDES YOU THROUGH
-						VISA PROCESSES AND SETTLES YOUR ACCOMMODATION.</p>
-					<button type="button"><a href="/application/step1">apply to preferred school</a></button>
-				</div>
-				<div class="col-sm-3 links1">
-					<h5>contact us</h5>
-					<hr>
-					<!-- <p class="des1">Nunc quis viverra nibh. Etiam mauris leo, consequat ut tincidunt ac, lobortis consequat ligula.</p> -->
-					<ul class="list-unstyled contact">
-						<li>
-							<i class="icofont icofont-home"></i> Address :Room D74, 10 Colinton Road, Edinburgh, EH10
-							5DT
-						</li>
-						<li>
-							<i class="icofont icofont-phone"></i>UK Whatsapp contact: +44 758 677 0652
-						</li>
-						<li>
-							<i class="icofont icofont-phone"></i>Nigeria Whatsapp contact: +234 802 666 8008
-						</li>
-						<li>
-							<i class="icofont icofont-globe"></i> <a href="#">Email:info@scotstudy.co.uk</a><br><a
-								href="#">Website:www.scotiaworld.com</a>
-						</li>
-					</ul>
-				</div>
-				<div class="col-sm-3 links2">
-					<a class="twitter-timeline" href="https://twitter.com/ScotStudy?ref_src=twsrc%5Etfw">Tweets by
-						ScotStudy</a>
-					<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-				</div>
-				<div class="col-sm-3 links1">
-					<h5>quick links</h5>
-					<hr>
-					<ul class="list-unstyled">
-						<li>
-							<a href="/courses"><i class="fa fa-link"></i>All Courses</a>
-						</li>
-						<li>
-							<a href="/institutions"><i class="fa fa-chain-broken"></i>All Schools</a>
-						</li>
-						{{!-- <li>
-							<a href="#"><i class="fa fa-link"></i>Tour</a>
-						</li> --}}
-						<li>
-							<a href="/visa-application-guideline"><i class="fa fa-link"></i>Visa Guidance</a>
-						</li>
-						<li>
-							<a href="/about-scotland"><i class="fa fa-link"></i>Settle in Scotland</a>
-						</li>
+			<!-- Modal -->
+			<div ng-controller="school" class="modal fade" id="menuModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">INSTITUTIONS</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="panel-group" id="accordionMain" role="tablist" aria-multiselectable="true">
 
-						<li>
-							<a href="/pre-departure"><i class="fa fa-link"></i>Pre-Departure</a>
-						</li>
+								<div ng-repeat="u in menu" class="panel panel-primary">
+									<div class="panel-heading" role="tab" id="heading{[{u.uni.id}]}">
+										<h4 class="panel-title">
+											<a role="button" data-toggle="collapse" data-parent="#accordion"
+												href="#collapse{[{u.uni.id}]}" aria-expanded="true"
+												aria-controls="collapse{[{u.uni.id}]}">
+												<i class="more-less glyphicon glyphicon-plus"></i>
 
-					</ul>
+												<strong ng-bind="u.uni.name"></strong>
+											</a>
+										</h4>
+									</div>
+									<div id="collapse{[{u.uni.id}]}" class="panel-collapse collapse" role="tabpanel"
+										aria-labelledby="headingOne">
+										<h4 ng-repeat="f in u.faculty"></h4>
+
+										<ul class="list-group">
+											<li class="list-group-item active"><a style="color: white;"
+													href="/school-faculties/{[{u.uni.name}]}/{[{u.uni.id}]}"
+													ng-bind="u.uni.name"></a>
+											</li>
+
+											<li ng-repeat="f in u.faculty" class="list-group-item"><a
+													href="/faculty/{[{f.id}]}/{[{u.uni.id}]}" ng-bind="f.name"></a>
+											</li>
+
+
+										</ul>
+									</div>
+
+
+								</div>
+							</div>
+
+
+						</div><!-- panel-group -->
+					</div>
 				</div>
 			</div>
+		</div>
+		<div class="row inner">
+			<div class="col-sm-4">
+
+				<p class="des">OUR ALL-IN-ONE PLATFORM HELPS YOU MONITOR AND SECURE ADMISSION, GUIDES YOU THROUGH
+					VISA PROCESSES AND SETTLES YOUR ACCOMMODATION.</p>
+				<button type="button"><a href="/application/step1">apply to preferred school</a></button>
+			</div>
+			{{!-- <div class="col-sm-3 links1">
+				<h5>contact us</h5>
+				<hr>
+				<!-- <p class="des1">Nunc quis viverra nibh. Etiam mauris leo, consequat ut tincidunt ac, lobortis consequat ligula.</p> -->
+				<ul class="list-unstyled contact">
+					<li>
+						<i class="icofont icofont-home"></i> Address :Room D74, 10 Colinton Road, Edinburgh, EH10
+						5DT
+					</li>
+					<li>
+						<i class="icofont icofont-phone"></i>UK Whatsapp contact: +44 758 677 0652
+					</li>
+					<li>
+						<i class="icofont icofont-phone"></i>Nigeria Whatsapp contact: +234 802 666 8008
+					</li>
+					<li>
+						<i class="icofont icofont-globe"></i> <a href="#">Email: info@scotstudy.co.uk</a><br><a
+							href="#">Website:www.scotiaworld.com</a>
+					</li>
+				</ul>
+			</div> --}}
+			<div style="height: 100%;" class="col-sm-4 links2">
+				<a class="twitter-timeline" data-height="100%"
+					href="https://twitter.com/ScotStudy?ref_src=twsrc%5Etfw">Tweets by
+					ScotStudy</a>
+				<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+			</div>
+			<div class="col-sm-4 links1">
+				<h5>quick links</h5>
+				<hr>
+				<ul class="list-unstyled">
+					<li>
+						<a href="/courses"><i class="fa fa-link"></i>All Courses</a>
+					</li>
+					<li>
+						<a href="/institutions"><i class="fa fa-chain-broken"></i>All Schools</a>
+					</li>
+					{{!-- <li>
+							<a href="#"><i class="fa fa-link"></i>Tour</a>
+						</li> --}}
+					<li>
+						<a href="/visa-application-guideline"><i class="fa fa-link"></i>Visa Guidance</a>
+					</li>
+					<li>
+						<a href="/about-scotland"><i class="fa fa-link"></i>Settle in Scotland</a>
+					</li>
+
+					<li>
+						<a href="/pre-departure"><i class="fa fa-link"></i>Pre-Departure</a>
+					</li>
+
+				</ul>
+			</div>
+		</div>
 		</div>
 		<div class="social">
 			<div class="container">
@@ -308,6 +363,8 @@
 			</div>
 		</div>
 	</footer>
+
+
 	<!-- footer end here -->
 
 
@@ -324,9 +381,14 @@
 
 
 	<script>
-
-
 		$(document).ready(function () {
+			if ($(window).width() < 768) {
+				$("#schoolId").click(function (e) {
+					e.preventDefault();
+					$('#menuModal').modal()
+				})
+				// do something for small screens
+			}
 			$('#example').DataTable();
 
 		});

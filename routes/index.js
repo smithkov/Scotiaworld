@@ -278,15 +278,18 @@ router.post("/compareFeeSingle", async function(req, res) {
 });
 
 router.get("/about", async function(req, res) {
-  let course = await Query.Course.findAll();
-  for (var i = 0; i < course.length; i++) {
-    console.log(i);
-    let path = course[i].path + ".png";
-    console.log("--------------------------------");
-    console.log(path);
+  // let course = await Query.Course.findAll();
+  // for (var i = 0; i < course.length; i++) {
+  //   console.log(i);
+  //   let path = course[i].path.split(".");
+  //   path.pop();
+  //   path.pop();
+  //   path = path + ".png";
+  //   console.log("--------------------------------");
+  //   console.log(path);
 
-    let update = await Query.Course.update({ path: path }, course[i].id);
-  }
+  //   let update = await Query.Course.update({ path: path }, course[i].id);
+  // }
   let populars = await Query.Course.findByPopular();
   res.render("about", { data: reduceArray(populars), best: bestSelling });
 });

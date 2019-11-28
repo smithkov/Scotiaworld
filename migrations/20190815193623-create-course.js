@@ -41,6 +41,9 @@ module.exports = {
       institutionId: {
         type: Sequelize.INTEGER
       },
+      requirementId: {
+        type: Sequelize.INTEGER
+      },
       degreeTypeId: {
         type: Sequelize.INTEGER
       },

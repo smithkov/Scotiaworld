@@ -42,6 +42,31 @@
                                     {{/each}}
                                 </tbody>
                                 {{/if}}
+                                {{#if entity.degreeType}}
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {{#each data}}
+                                    <tr>
+                                        <td>{{this.name}}</td>
+
+                                        <td><a href="{{entity.url}}update/{{this.id}}"><img
+                                                    style="height:25px; width:25px" src="/fancy_buttons/edit.ico" /></a>
+                                        </td>
+                                        <td><a href="{{entity.url}}delete/{{this.id}}"><img
+                                                    style="height:25px; width:25px"
+                                                    src="/fancy_buttons/delete.ico" /></a></td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                                {{/if}}
                                 {{#if entity.studyArea}}
                                 <thead>
                                     <tr>

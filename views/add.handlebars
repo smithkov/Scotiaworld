@@ -1,48 +1,66 @@
-
 <section class="content">
-       <div class="container-fluid">
-           <div class="block-header">
-               <h2>{{entity.name}}</h2>
-           </div>
-           <!-- Vertical Layout -->
-           <div class="row clearfix">
-               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                   <div class="card">
+  <div class="container-fluid">
+    <div class="block-header">
+      <h2>{{entity.name}}</h2>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
 
-                       <div class="body">
+          <div class="body">
 
-                               {{#if entity.basic}}
-                                <form method="post" action="{{entity.url}}add">
-                                {{#each entity.form}}
-                                    {{#if this.visible}}
-                                        <label for="password">{{this.display}}</label>
-                                       <div class="form-group">
-                                           <div class="form-line">
-                                               <input type="{{this.type}}" name="{{this.name}}" id="text" class="form-control" placeholder="Enter {{this.name}}">
-                                           </div>
-                                       </div>
-                                      {{/if}}
-                                   {{/each}}
-                                   <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
-                                   </form>
-                                   {{/if}}
-                                   {{#if entity.richText}}
-                                    <form method="post" action="{{entity.url}}add">
-                                      <div class="form-group">
-                                          <div class="form-line">
-                                            <textarea id="edit" rows="4" class="form-control no-resize richText" name="name" placeholder="Enter about">{{data.name}}</textarea>
-                                          </div>
-                                      </div>
-                                      <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
-                                      <hr>
-                                      <div id="name"></div>
-                                      <input value="{{data.name}}" id="edit" type="hidden"/>
+            {{#if entity.basic}}
+            <form method="post" action="{{entity.url}}add">
+              {{#each entity.form}}
+              {{#if this.visible}}
+              <label for="password">{{this.display}}</label>
+              <div class="form-group">
+                <div class="form-line">
+                  <input type="{{this.type}}" name="{{this.name}}" id="text" class="form-control"
+                    placeholder="Enter {{this.name}}">
+                </div>
+              </div>
+              {{/if}}
+              {{/each}}
+              <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+            </form>
+            {{/if}}
+            {{#if entity.richText}}
+            <form method="post" action="{{entity.url}}add">
+              <div class="form-group">
+                <div class="form-line">
+                  <textarea id="edit" rows="4" class="form-control no-resize richText" name="name"
+                    placeholder="Enter about">{{data.name}}</textarea>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+              <hr>
+              <div id="name"></div>
+              <input value="{{data.name}}" id="edit" type="hidden" />
 
-                                       </form>
-                                       {{/if}}
-                                    {{#if entity.studyArea}}
-                                     <form method="post" action="{{entity.url}}add">
-                                       <!-- <div class="form-group">
+            </form>
+            {{/if}}
+            {{#if entity.degreeType}}
+            <form method="post" action="{{entity.url}}update">
+              <label for="password">Name</label>
+
+              <div class="form-group">
+                <div class="form-line">
+                  <input required type="text" name="name" id="text" class="form-control">
+                </div>
+              </div>
+              <div class="form-line">
+                <textarea rows="4" class="form-control no-resize richText" name="requirements"
+                  placeholder="Enter about">
+                                </textarea>
+              </div>
+              <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+            </form>
+            {{/if}}
+            {{#if entity.studyArea}}
+            <form method="post" action="{{entity.url}}add">
+              <!-- <div class="form-group">
                                            <select required name="institution" class="form-control">
                                               <option value="">-- Please select institution --</option>
                                                {{#each institution}}
@@ -50,54 +68,56 @@
                                                {{/each}}
                                            </select>
                                        </div> -->
-                                       <div class="form-group">
-                                           <div class="form-line">
-                                               <input required type="text" name="name" id="text" class="form-control" placeholder="Enter name">
-                                           </div>
-                                       </div>
-                                       <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
-                                  </form>
-                                  {{/if}}
-                                  {{#if entity.facultyImage}}
-                                      {{#if success_msg}}
-                                        <hr>
-                                          <div class="alert alert-success">{{success_msg}}  <a class="pull-right" style="color: white" href="/facultyImage/listing">  View image list</a></div>
-                                        {{/if}}
+              <div class="form-group">
+                <div class="form-line">
+                  <input required type="text" name="name" id="text" class="form-control" placeholder="Enter name">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+            </form>
+            {{/if}}
+            {{#if entity.facultyImage}}
+            {{#if success_msg}}
+            <hr>
+            <div class="alert alert-success">{{success_msg}} <a class="pull-right" style="color: white"
+                href="/facultyImage/listing"> View image list</a></div>
+            {{/if}}
 
-                                   
-                                      <form method="post" enctype="multipart/form-data" action="{{entity.url}}add">
-                                        <div class="form-group">
-                                            <select required name="studyAreaId" class="form-control">
-                                              <option value="">-- Please select Faculty --</option>
-                                                {{#each studyArea}}
-                                                  <option value="{{this.id}}">{{this.name}}</option>
-                                                {{/each}}
-                                            </select>
-                                        </div>
-                                        <hr>
-                                        <label for="password">Upload faculty related image</label>
-                                        <div class="form-group">
-                                          <input class="form-control"  type="file" name="file"></input>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
-                                  </form>
-                                  {{/if}}
-                                   <!-- Institution Form begins here-->
-                                   {{#if entity.institution}}
-                                    <form method="post" enctype="multipart/form-data" action="{{entity.url}}add">
-                                    <label for="password">Name</label>
-                                     <div class="form-group">
-                                         <div class="form-line">
-                                             <input required type="text" name="name" id="text" class="form-control" placeholder="Enter name">
-                                         </div>
-                                     </div>
-                                    <label for="password">About</label>
-                                     <div class="form-group">
-                                         <div class="form-line">
-                                           <textarea rows="4" class="form-control no-resize richText" name="about" placeholder="Enter about"></textarea>
-                                         </div>
-                                     </div>
-                                      <!-- <label for="password">School Type</label>
+
+            <form method="post" enctype="multipart/form-data" action="{{entity.url}}add">
+              <div class="form-group">
+                <select required name="studyAreaId" class="form-control">
+                  <option value="">-- Please select Faculty --</option>
+                  {{#each studyArea}}
+                  <option value="{{this.id}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <hr>
+              <label for="password">Upload faculty related image</label>
+              <div class="form-group">
+                <input class="form-control" type="file" name="file"></input>
+              </div>
+              <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+            </form>
+            {{/if}}
+            <!-- Institution Form begins here-->
+            {{#if entity.institution}}
+            <form method="post" enctype="multipart/form-data" action="{{entity.url}}add">
+              <label for="password">Name</label>
+              <div class="form-group">
+                <div class="form-line">
+                  <input required type="text" name="name" id="text" class="form-control" placeholder="Enter name">
+                </div>
+              </div>
+              <label for="password">About</label>
+              <div class="form-group">
+                <div class="form-line">
+                  <textarea rows="4" class="form-control no-resize richText" name="about"
+                    placeholder="Enter about"></textarea>
+                </div>
+              </div>
+              <!-- <label for="password">School Type</label>
                                       <div class="form-group">
                                           <select required name="type" class="form-control show-tick">
                                              <option value="">-- Please select type --</option>
@@ -106,7 +126,7 @@
                                               {{/each}}
                                           </select>
                                     </div> -->
-                                    <!-- <div class="form-group">
+              <!-- <div class="form-group">
                                        <select name="country" class="form-control">
                                           <option value="">-- Please select country --</option>
                                            {{#each country}}
@@ -114,116 +134,119 @@
                                            {{/each}}
                                        </select>
                                    </div> -->
-                                    <label for="password">City</label>
-                                     <div class="form-group">
-                                        <select required name="city" class="form-control">
-                                           <option value="">-- Please select city --</option>
-                                            {{#each city}}
-                                              <option value="{{this.id}}">{{this.name}}</option>
-                                            {{/each}}
-                                        </select>
-                                    </div><hr>
-                                    <label for="password">Logo</label>
-                                    <div class="form-group">
-                                       <input class="form-control"  type="file" name="logo"></input>
-                                    </div>
+              <label for="password">City</label>
+              <div class="form-group">
+                <select required name="city" class="form-control">
+                  <option value="">-- Please select city --</option>
+                  {{#each city}}
+                  <option value="{{this.id}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <hr>
+              <label for="password">Logo</label>
+              <div class="form-group">
+                <input class="form-control" type="file" name="logo"></input>
+              </div>
 
-                                    <label for="password">Banner</label>
-                                    <div class="form-group">
-                                       <input class="form-control"  type="file" name="banner"></input>
-                                    </div>
+              <label for="password">Banner</label>
+              <div class="form-group">
+                <input class="form-control" type="file" name="banner"></input>
+              </div>
 
-                                  <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
-                             </form>
-                            {{/if}}
-
-
-                              {{#if entity.course}}
-                                <form enctype="multipart/form-data" method="post" action="{{entity.url}}add">
-                               <label for="password">Name</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input required type="text" name="name" id="text" class="form-control" placeholder="Enter name">
-                                    </div>
-                                </div>
-                               <label for="password">Requirement</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                      <textarea rows="4" class="form-control no-resize richText" name="requirement" placeholder="Enter about"></textarea>
-
-                                    </div>
-                                </div>
-                                <label for="password">Fee</label>
-                                 <div class="form-group">
-                                     <div class="form-line">
-                                         <input required type="text" name="fee" id="text" class="form-control" placeholder="Enter tuition fee">
-                                     </div>
-                                 </div>
-                                 <label for="password">Duration</label>
-                                  <div class="form-group">
-                                      <div class="form-line">
-                                          <input required type="text" name="duration" id="text" class="form-control" placeholder="Enter duration">
-                                      </div>
-                                  </div>
-                                   <label for="password">Season</label>
-                                  <div class="form-group">
-                                    <select required name="time" class="form-control show-tick">
-                                       <option value="">-- Please select time --</option>
-                                       <option value="Full-Time">Full-Time</option>
-                                       <option value="Part-Time">Part-Time</option>
-                                      <option value="Both">Both</option>
-                                    </select>
-                                </div>
-                                <label for="password">Institution</label>
-                                 <div class="form-group">
-                                     <select id="cboSchool" required name="institution" class="form-control show-tick">
-                                        <option value="">-- Please select institution --</option>
-                                         {{#each inst}}
-                                           <option value="{{this.id}}">{{this.name}}</option>
-                                         {{/each}}
-                                     </select>
-                               </div>
-                                 <label for="password">Study Area/Faculty</label>
-                               <div id="studyContainer" class="form-group">
-
-                                  <select id="studyWrapper" required name="studyArea" class="form-control">
-                                    <option value="">-- Please select study area --</option>
-                                    {{#each studyAreaData}}
-                                      <option value="{{this.id}}">{{this.name}}</option>
-                                    {{/each}}
-                                  </select>
-                              </div>
-                                <label for="password">Degree</label>
-                               <div class="form-group">
-                                  <select required name="degreeType" class="form-control">
-                                     <option value="">-- Please select degree --</option>
-                                      {{#each degreeTypeData}}
-                                        <option value="{{this.id}}">{{this.name}}</option>
-                                      {{/each}}
-                                  </select>
-                              </div>
+              <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+            </form>
+            {{/if}}
 
 
-                             </br>
-                               <label for="password">Course related image</label>
-                               <div class="form-group">
-                                  <input class="form-control"  type="file" name="logo" ></input>
-                               </div>
+            {{#if entity.course}}
+            <form enctype="multipart/form-data" method="post" action="{{entity.url}}add">
+              <label for="password">Name</label>
+              <div class="form-group">
+                <div class="form-line">
+                  <input required type="text" name="name" id="text" class="form-control" placeholder="Enter name">
+                </div>
+              </div>
+              <label for="password">Requirement</label>
+              <div class="form-group">
+                <div class="form-line">
+                  <textarea rows="4" class="form-control no-resize richText" name="requirement"
+                    placeholder="Enter about"></textarea>
 
-                            <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
-                       </form>
-                       {{/if}}
+                </div>
+              </div>
+              <label for="password">Fee</label>
+              <div class="form-group">
+                <div class="form-line">
+                  <input required type="text" name="fee" id="text" class="form-control" placeholder="Enter tuition fee">
+                </div>
+              </div>
+              <label for="password">Duration</label>
+              <div class="form-group">
+                <div class="form-line">
+                  <input required type="text" name="duration" id="text" class="form-control"
+                    placeholder="Enter duration">
+                </div>
+              </div>
+              <label for="password">Season</label>
+              <div class="form-group">
+                <select required name="time" class="form-control show-tick">
+                  <option value="">-- Please select time --</option>
+                  <option value="Full-Time">Full-Time</option>
+                  <option value="Part-Time">Part-Time</option>
+                  <option value="Both">Both</option>
+                </select>
+              </div>
+              <label for="password">Institution</label>
+              <div class="form-group">
+                <select id="cboSchool" required name="institution" class="form-control show-tick">
+                  <option value="">-- Please select institution --</option>
+                  {{#each inst}}
+                  <option value="{{this.id}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <label for="password">Study Area/Faculty</label>
+              <div id="studyContainer" class="form-group">
+
+                <select id="studyWrapper" required name="studyArea" class="form-control">
+                  <option value="">-- Please select study area --</option>
+                  {{#each studyAreaData}}
+                  <option value="{{this.id}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <label for="password">Degree</label>
+              <div class="form-group">
+                <select required name="degreeType" class="form-control">
+                  <option value="">-- Please select degree --</option>
+                  {{#each degreeTypeData}}
+                  <option value="{{this.id}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
 
 
-                       </div>
-                   </div>
-               </div>
-           </div>
+              </br>
+              <label for="password">Course related image</label>
+              <div class="form-group">
+                <input class="form-control" type="file" name="logo"></input>
+              </div>
 
-           <!-- #END# Vertical Layout -->
-       </div>
-   </section>
- <script>
+              <button type="submit" class="btn btn-primary m-t-15 waves-effect">SAVE</button>
+            </form>
+            {{/if}}
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #END# Vertical Layout -->
+  </div>
+</section>
+<script>
  // $(function(){
  //   var cboSchool = $("#cboSchool");
  //   var studyContainer = $("#studyContainer");
@@ -244,75 +267,75 @@
 </script>
 <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
-var text = $("#edit").val();
+  var text = $("#edit").val();
 
-$("#name").html(text);
-tinymce.init({
-  selector: 'textarea.richText',
-  plugins: 'print preview fullpage paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
-  imagetools_cors_hosts: ['picsum.photos'],
-  menubar: 'file edit view insert format tools table help',
-  toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-  toolbar_sticky: true,
-  autosave_ask_before_unload: true,
-  autosave_interval: "30s",
-  autosave_prefix: "{path}{query}-{id}-",
-  autosave_restore_when_empty: false,
-  autosave_retention: "2m",
-  image_advtab: true,
-  content_css: [
-    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-    '//www.tiny.cloud/css/codepen.min.css'
-  ],
-  link_list: [
-    { title: 'My page 1', value: 'http://www.tinymce.com' },
-    { title: 'My page 2', value: 'http://www.moxiecode.com' }
-  ],
-  image_list: [
-    { title: 'My page 1', value: 'http://www.tinymce.com' },
-    { title: 'My page 2', value: 'http://www.moxiecode.com' }
-  ],
-  image_class_list: [
-    { title: 'None', value: '' },
-    { title: 'Some class', value: 'class-name' }
-  ],
-  importcss_append: true,
-  height: 400,
-  file_picker_callback: function (callback, value, meta) {
-    /* Provide file and text for the link dialog */
-    if (meta.filetype === 'file') {
-      callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
-    }
+  $("#name").html(text);
+  tinymce.init({
+    selector: 'textarea.richText',
+    plugins: 'print preview fullpage paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+    imagetools_cors_hosts: ['picsum.photos'],
+    menubar: 'file edit view insert format tools table help',
+    toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+    toolbar_sticky: true,
+    autosave_ask_before_unload: true,
+    autosave_interval: "30s",
+    autosave_prefix: "{path}{query}-{id}-",
+    autosave_restore_when_empty: false,
+    autosave_retention: "2m",
+    image_advtab: true,
+    content_css: [
+      '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+      '//www.tiny.cloud/css/codepen.min.css'
+    ],
+    link_list: [
+      { title: 'My page 1', value: 'http://www.tinymce.com' },
+      { title: 'My page 2', value: 'http://www.moxiecode.com' }
+    ],
+    image_list: [
+      { title: 'My page 1', value: 'http://www.tinymce.com' },
+      { title: 'My page 2', value: 'http://www.moxiecode.com' }
+    ],
+    image_class_list: [
+      { title: 'None', value: '' },
+      { title: 'Some class', value: 'class-name' }
+    ],
+    importcss_append: true,
+    height: 400,
+    file_picker_callback: function (callback, value, meta) {
+      /* Provide file and text for the link dialog */
+      if (meta.filetype === 'file') {
+        callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+      }
 
-    /* Provide image and alt text for the image dialog */
-    if (meta.filetype === 'image') {
-      callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
-    }
+      /* Provide image and alt text for the image dialog */
+      if (meta.filetype === 'image') {
+        callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+      }
 
-    /* Provide alternative source and posted for the media dialog */
-    if (meta.filetype === 'media') {
-      callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
-    }
-  },
-  templates: [
-        { title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
-    { title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
-    { title: 'New list with dates', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
-  ],
-  template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
-  template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
-  height: 600,
-  image_caption: true,
-  quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-  noneditable_noneditable_class: "mceNonEditable",
-  toolbar_drawer: 'sliding',
-  contextmenu: "link image imagetools table",
- });
+      /* Provide alternative source and posted for the media dialog */
+      if (meta.filetype === 'media') {
+        callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+      }
+    },
+    templates: [
+      { title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+      { title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
+      { title: 'New list with dates', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+    ],
+    template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+    template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+    height: 600,
+    image_caption: true,
+    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+    noneditable_noneditable_class: "mceNonEditable",
+    toolbar_drawer: 'sliding',
+    contextmenu: "link image imagetools table",
+  });
 
 
 </script>
 <style>
-#mceu_2.{
+  #mceu_2. {
     height: 24px;
-}
+  }
 </style>
