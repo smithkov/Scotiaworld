@@ -14,6 +14,7 @@ const url = require("url");
 const entityName = "application";
 const year = [];
 
+
 function apiMsg(isError) {
   return isError
     ? "Application could not be saved successfully!"
@@ -27,27 +28,29 @@ function getYear() {
   }
   return year;
 }
-router.post("/mobileStep1", async function(req, res, next) {
+router.post("/mobileStep1", async function (req, res, next) {
   let currentUserId = req.body.userId;
   let application = await Application.findByUser(currentUserId);
   let quali = await Qualification.findAll();
-  let course = await Course.findAll();
+  // let course = await Course.findAll();
   let city = await City.findAll();
-  let institution = await Institution.findAll();
+  //let institution = await Institution.findAll();
   let country = await Country.findAll();
 
+  let getCourse = application ? await Query.Course.findById(application.courseId) : "";
+
   return res.send({
-    courses: course,
+    //courses: course,
     quali: quali,
     cities: city,
-    institutions: institution,
+    course: getCourse,
+    //institutions: institution,
     countries: country,
-    app: application,
-    user: req.user
+    app: application
   });
 });
 
-router.get("/step1", ensureAuthenticated, async function(req, res, next) {
+router.get("/step1", ensureAuthenticated, async function (req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
 
@@ -73,7 +76,7 @@ router.get("/step1", ensureAuthenticated, async function(req, res, next) {
   }
 });
 
-router.get("/step2", ensureAuthenticated, async function(req, res, next) {
+router.get("/step2", ensureAuthenticated, async function (req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let application = await Application.findByUser(currentUserId);
@@ -97,7 +100,7 @@ router.get("/step2", ensureAuthenticated, async function(req, res, next) {
     });
 });
 
-router.get("/step3", ensureAuthenticated, async function(req, res, next) {
+router.get("/step3", ensureAuthenticated, async function (req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let application = await Application.findByUser(currentUserId);
@@ -122,7 +125,7 @@ router.get("/step3", ensureAuthenticated, async function(req, res, next) {
   }
 });
 
-router.get("/step4", ensureAuthenticated, async function(req, res, next) {
+router.get("/step4", ensureAuthenticated, async function (req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let application = await Application.findByUser(currentUserId);
@@ -146,7 +149,7 @@ router.get("/step4", ensureAuthenticated, async function(req, res, next) {
     });
 });
 
-router.get("/step5", ensureAuthenticated, async function(req, res, next) {
+router.get("/step5", ensureAuthenticated, async function (req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let application = await Application.findByUser(currentUserId);
@@ -170,7 +173,7 @@ router.get("/step5", ensureAuthenticated, async function(req, res, next) {
     });
 });
 
-router.get("/applicationByUser/:id", ensureAuthenticated, function(
+router.get("/applicationByUser/:id", ensureAuthenticated, function (
   req,
   res,
   next
@@ -186,7 +189,7 @@ router.get("/applicationByUser/:id", ensureAuthenticated, function(
   });
 });
 
-router.get("/finish", ensureAuthenticated, async function(req, res, next) {
+router.get("/finish", ensureAuthenticated, async function (req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let country = await Country.findAll();
@@ -212,7 +215,7 @@ router.get("/finish", ensureAuthenticated, async function(req, res, next) {
   }
 });
 
-router.get("/applicants", ensureAuthenticated, function(req, res, next) {
+router.get("/applicants", ensureAuthenticated, function (req, res, next) {
   Application.findAll().then(applications => {
     res.render("applicantList", {
       layout: "layoutDashboard.handlebars",
@@ -222,7 +225,7 @@ router.get("/applicants", ensureAuthenticated, function(req, res, next) {
   });
 });
 
-router.get("/Update/:id", ensureAuthenticated, function(req, res, next) {
+router.get("/Update/:id", ensureAuthenticated, function (req, res, next) {
   let id = req.params.id;
   Application.findById(id).then(data => {
     res.render("update", {
@@ -241,14 +244,14 @@ router.get("/Update/:id", ensureAuthenticated, function(req, res, next) {
 //
 // });
 
-router.get("/delete/:id", ensureAuthenticated, function(req, res, next) {
+router.get("/delete/:id", ensureAuthenticated, function (req, res, next) {
   let id = req.params.id;
   Application.delete(id).then(data => {
     res.redirect("/listing");
   });
 });
 
-router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function(
+router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function (
   req,
   res,
   next
@@ -360,16 +363,28 @@ router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function(
   }
 });
 
-router.post("/decision", function(req, res, next) {
+router.post("/decision", function (req, res, next) {
   let applicationId = req.body.id;
   //let userId = req.body.userId;
   var decision = req.body.decision;
   var reason = req.body.reason;
+  let eligibilityCheck = req.body.eligibilityCheck ? true : false;
+  let reqProvision = req.body.reqProvision ? true : false;
+  let hasFinalSubmit = req.body.hasFinalSubmit ? true : false;
+  let hasDecided = decision ? true : false;
+  let hasPaid = req.body.hasPaid ? true : false;
+  let hasCas = req.body.hasCas ? true : false;
 
   Application.findById(applicationId).then(data => {
     var newApplication = {
       id: applicationId,
       decision: decision,
+      reqProvision: reqProvision,
+      hasFinalSubmit: hasFinalSubmit,
+      hasDecided: hasDecided,
+      hasPaid: hasPaid,
+      hasCas: hasCas,
+      eligibilityCheck: eligibilityCheck,
       reasonOfRefusal: reason
     };
 
@@ -380,7 +395,7 @@ router.post("/decision", function(req, res, next) {
     }
   });
 });
-router.post("/form1", function(req, res, next) {
+router.post("/form1", function (req, res, next) {
   var firstname = req.body.firstname;
   var middlename = req.body.middlename;
   var lastname = req.body.lastname;
@@ -420,45 +435,68 @@ router.post("/form1", function(req, res, next) {
   res.redirect("/application/step2");
 });
 
-router.post("/mobileForm1", async function(req, res, next) {
+router.post("/mobileForm1", async function (req, res, next) {
+  var dataObject;
+
+  let isError = false;
+  let userId = req.body.userId;
+
   var firstname = req.body.firstname;
   var middlename = req.body.middlename;
   var lastname = req.body.lastname;
-
+  var courseId = req.body.courseId;
+  var getCourseById = await Query.Course.findById(courseId);
+  var course1 = getCourseById.name;
+  var course2 = getCourseById.name;
+  var level = getCourseById.DegreeType.name;
+  var cityOfChoice = getCourseById.Institution.CityId;
+  var schoolWish1 = getCourseById.Institution.name;
+  var schoolWish2 = getCourseById.Institution.name;
   var dob = req.body.dob;
   var gender = req.body.gender;
   var marital = req.body.marital;
 
   let applicationId = req.body.id;
-  let isError = false;
+
 
   var countryId = await Country.findByName(req.body.countryId);
 
-  var newApplication = {
-    firstname: firstname,
-    userId: req.body.userId,
-    middlename: middlename,
-    lastname: lastname,
-    countryId: countryId,
-    dob: dob,
-    marital: marital,
-    gender: gender
-  };
+  try {
 
-  if (applicationId) {
-    Application.update(newApplication, applicationId)
-      .then(application => {})
-      .catch(error => (isError = true));
-  } else {
-    Application.create(newApplication)
-      .then(data => {})
-      .catch(error => (isError = true));
+
+    var newApplication = {
+      firstname: firstname,
+      userId: userId,
+      middlename: middlename,
+      lastname: lastname,
+      countryId: countryId,
+      dob: dob,
+      course2: course2,
+      course1: course1,
+      level: level,
+      cityId: cityOfChoice,
+      schoolWish1: schoolWish1,
+      schoolWish2: schoolWish2,
+      courseId: courseId,
+      marital: marital,
+      gender: gender
+    };
+    if (applicationId) {
+      dataObject = await Application.update(newApplication, applicationId);
+
+    } else {
+      dataObject = await Application.create(newApplication);
+    }
+  } catch (err) {
+    isError = true;
   }
+
+  let getApplication = await Query.Application.findByUser(userId);
   //req.flash('success_msg', 'Application save successfully');
-  return res.send({ error: isError, message: apiMsg(isError) });
+  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
 });
 
-router.post("/form2", ensureAuthenticated, function(req, res, next) {
+router.post("/form2", ensureAuthenticated, function (req, res, next) {
   var homeAddress = req.body.homeAddress;
   var postalAddress = req.body.postalAddress;
   var phone = req.body.phone;
@@ -500,39 +538,40 @@ router.post("/form2", ensureAuthenticated, function(req, res, next) {
   }
 });
 
-router.post("/mobileForm2", function(req, res, next) {
+router.post("/mobileForm2", async function (req, res, next) {
+  var dataObject;
   var homeAddress = req.body.homeAddress;
   var postalAddress = req.body.postalAddress;
   var phone = req.body.phone;
   var applicationId = req.body.id;
+  let userId = req.body.userId;
 
   let isError = false;
+  try {
+    var newApplication = {
+      userId: userId,
+      homeAddress: homeAddress,
+      postalAddress: postalAddress,
+      phone: phone
+    };
 
-  var newApplication = {
-    userId: req.body.userId,
-    homeAddress: homeAddress,
-    postalAddress: postalAddress,
-    phone: phone
-  };
-
-  if (applicationId) {
-    newApplication.id = applicationId;
-    Application.update(newApplication, applicationId)
-      .then(application => {})
-      .catch(error => {
-        isError = true;
-      });
-  } else {
-    Application.create(newApplication)
-      .then(data => {})
-      .catch(error => {
-        isError = true;
-      });
+    if (applicationId) {
+      newApplication.id = applicationId;
+      dataObject = await Application.update(newApplication, applicationId);
+    } else {
+      dataObject = await Application.create(newApplication);
+    }
   }
-  return res.send({ error: isError, message: apiMsg(isError) });
+  catch (err) {
+    isError = true;
+  }
+  let getApplication = await Query.Application.findByUser(userId);
+  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
 });
 
-router.post("/form3", ensureAuthenticated, function(req, res, next) {
+
+router.post("/form3", ensureAuthenticated, function (req, res, next) {
+
   var applicationId = req.body.id;
 
   var hQualification = req.body.hQualification;
@@ -569,14 +608,15 @@ router.post("/form3", ensureAuthenticated, function(req, res, next) {
   if (applicationId) {
     newApplication.id = applicationId;
 
-    Application.update(newApplication, applicationId).then(application => {});
+    Application.update(newApplication, applicationId).then(application => { });
   } else {
-    Application.create(newApplication).then(data => {});
+    Application.create(newApplication).then(data => { });
   }
   res.redirect("/application/step4");
 });
 
-router.post("/mobileForm3", function(req, res, next) {
+router.post("/mobileForm3", async function (req, res, next) {
+  var dataObject;
   var applicationId = req.body.id;
   let isError = false;
   var hQualification = req.body.hQualification;
@@ -592,47 +632,44 @@ router.post("/mobileForm3", function(req, res, next) {
   var highSchoolName = req.body.highSchoolName;
   var completionYr = req.body.completionYr;
   var englishTest = req.body.englishTest;
+  let userId = req.body.userId;
 
-  var newApplication = {
-    userId: req.body.userId,
-    hQualification: hQualification,
-    hGrade: hGrade,
-    hSchoolName: hSchoolName,
-    hCompleted: hCompleted,
-    hProgrammeYear: hProgrammeYear,
-    pQualification: pQualification,
-    pGrade: pGrade,
-    pSchoolName: pSchoolName,
-    pCompleted: pCompleted,
-    pProgrammeYear: pProgrammeYear,
-    highSchoolName: highSchoolName,
-    completionYr: completionYr,
-    englishTest: englishTest
-  };
+  try {
+    var newApplication = {
+      userId: userId,
+      hQualification: hQualification,
+      hGrade: hGrade,
+      hSchoolName: hSchoolName,
+      hCompleted: hCompleted,
+      hProgrammeYear: hProgrammeYear,
+      pQualification: pQualification,
+      pGrade: pGrade,
+      pSchoolName: pSchoolName,
+      pCompleted: pCompleted,
+      pProgrammeYear: pProgrammeYear,
+      highSchoolName: highSchoolName,
+      completionYr: completionYr,
+      englishTest: englishTest
+    };
 
-  if (applicationId) {
-    newApplication.id = applicationId;
+    if (applicationId) {
+      newApplication.id = applicationId;
 
-    Application.update(newApplication, applicationId)
-      .then(application => {})
-      .catch(error => (isError = true));
-  } else {
-    Application.create(newApplication)
-      .then(data => {})
-      .catch(error => (isError = true));
+      dataObject = await Application.update(newApplication, applicationId);
+    } else {
+      dataObject = Application.create(newApplication);
+    }
+  } catch (err) {
+    isError = true;
   }
-  return res.send({ error: isError, message: apiMsg(isError) });
+  let getApplication = await Query.Application.findByUser(userId);
+  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
 });
 
-router.post("/form4", ensureAuthenticated, function(req, res, next) {
+router.post("/form4", ensureAuthenticated, function (req, res, next) {
   var applicationId = req.body.id;
 
-  var course1 = req.body.course1;
-  var course2 = req.body.course2;
-  var level = req.body.level;
-  var cityOfChoice = req.body.cityOfChoice;
-  var schoolWish1 = req.body.schoolWish1;
-  var schoolWish2 = req.body.schoolWish2;
+
   var sponsor = req.body.sponsor;
   var sponsorName = req.body.sponsorName;
   var sponsorOccupation = req.body.sponsorOccupation;
@@ -640,12 +677,6 @@ router.post("/form4", ensureAuthenticated, function(req, res, next) {
 
   var newApplication = {
     userId: req.user.id,
-    course2: course2,
-    course1: course1,
-    level: level,
-    cityId: cityOfChoice,
-    schoolWish1: schoolWish1,
-    schoolWish2: schoolWish2,
     sponsor: sponsor,
     sponsorName: sponsorName,
     sponsorOccupation: sponsorOccupation,
@@ -654,84 +685,80 @@ router.post("/form4", ensureAuthenticated, function(req, res, next) {
 
   if (applicationId) {
     newApplication.id = applicationId;
-    Application.update(newApplication, applicationId).then(image => {});
+    Application.update(newApplication, applicationId).then(image => { });
   } else {
-    Application.create(newApplication).then(data => {});
+    Application.create(newApplication).then(data => { });
   }
 
   res.redirect("/application/step5");
 });
 
-router.post("/mobileForm4", function(req, res, next) {
+router.post("/mobileForm4", async function (req, res, next) {
+  var dataObject;
   var applicationId = req.body.id;
 
-  var course1 = req.body.course1;
-  var course2 = req.body.course2;
-  var level = req.body.level;
-  var cityOfChoice = req.body.cityOfChoice;
-  var schoolWish1 = req.body.schoolWish1;
-  var schoolWish2 = req.body.schoolWish2;
   var sponsor = req.body.sponsor;
   var sponsorName = req.body.sponsorName;
   var sponsorOccupation = req.body.sponsorOccupation;
   var budget = req.body.budget;
   let isError = false;
+  let userId = req.body.userId;
+  try {
+    var newApplication = {
+      userId: userId,
+      sponsor: sponsor,
+      sponsorName: sponsorName,
+      sponsorOccupation: sponsorOccupation,
+      budget: budget
+    };
 
-  var newApplication = {
-    userId: req.body.userId,
-    course2: course2,
-    course1: course1,
-    level: level,
-    cityId: cityOfChoice,
-    schoolWish1: schoolWish1,
-    schoolWish2: schoolWish2,
-    sponsor: sponsor,
-    sponsorName: sponsorName,
-    sponsorOccupation: sponsorOccupation,
-    budget: budget
-  };
-
-  if (applicationId) {
-    newApplication.id = applicationId;
-    Application.update(newApplication, applicationId)
-      .then(image => {})
-      .catch(error => (isError = true));
-  } else {
-    Application.create(newApplication)
-      .then(data => {})
-      .catch(error => (isError = true));
+    if (applicationId) {
+      newApplication.id = applicationId;
+      dataObject = await Application.update(newApplication, applicationId);
+    } else {
+      dataObject = await Application.create(newApplication);
+    }
   }
+  catch (err) {
+    isError = true;
+  }
+  let getApplication = await Query.Application.findByUser(userId);
 
-  return res.send({ error: isError, message: apiMsg(isError) });
+  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
 });
-router.post("/mobileForm6", config.cpUpload2, function(req, res, next) {
+router.post("/mobileForm6", config.cpUpload2, async function (req, res, next) {
+  var dataObject;
   let isError = false;
   let applicationId = req.body.id;
   let userId = req.body.userId;
+  try {
 
-  let img =
-    req.files["credential"] === undefined
-      ? ""
-      : req.files["credential"][0].filename;
-  let newApplication = {
-    userId: userId,
-    credential: img
-  };
-  if (applicationId) {
-    newApplication.id = applicationId;
-    Application.update(newApplication, applicationId)
-      .then(image => {})
-      .catch(error => (isError = true));
-  } else {
-    Application.create(newApplication)
-      .then(data => {})
-      .catch(error => (isError = true));
+
+    let img =
+      req.files["credential"] === undefined
+        ? ""
+        : req.files["credential"][0].filename;
+    let newApplication = {
+      userId: userId,
+      credential: img
+    };
+    if (applicationId) {
+      newApplication.id = applicationId;
+      dataObject = await Application.update(newApplication, applicationId);
+    } else {
+      dataObject = await Application.create(newApplication);
+    }
   }
+  catch (err) {
+    isError = true;
+  }
+  let getApplication = await Query.Application.findByUser(userId);
 
-  return res.send({ error: isError, message: apiMsg(isError) });
+  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
 });
 
-router.post("/mobileSubmission", function(req, res, next) {
+router.post("/mobileSubmission", async function (req, res, next) {
+  var dataObject;
   let isError = false;
   let applicationId = req.body.id;
   let userId = req.body.userId;
@@ -744,17 +771,15 @@ router.post("/mobileSubmission", function(req, res, next) {
   };
   if (applicationId) {
     newApplication.id = applicationId;
-    Application.update(newApplication, applicationId)
-      .then(image => {})
-      .catch(error => (isError = true));
+    dataObject = await Application.update(newApplication, applicationId);
   } else {
     isError = true;
   }
-
-  return res.send({ error: isError, message: apiMsg(isError) });
+  let getApplication = await Query.Application.findByUser(userId);
+  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
 });
 
-router.post("/form5", config.cpUpload2, ensureAuthenticated, function(
+router.post("/form5", config.cpUpload2, ensureAuthenticated, function (
   req,
   res,
   next
@@ -789,20 +814,38 @@ router.post("/form5", config.cpUpload2, ensureAuthenticated, function(
   res.redirect("/application/finish");
 });
 
-router.post("/mobileForm5", function(req, res) {
+router.post("/mobileForm5", async function (req, res) {
+  var dataObject;
   let applicationId = req.body.id;
   let hasApplied = req.body.hasApplied;
   let purpose = req.body.purpose;
   let reasonOfRefusal = req.body.reasonOfRefusal;
   let isError = false;
   let moreInfo = req.body.moreInfo;
+  let userId = req.body.userId;
+
+  var courseId = req.body.courseId;
+  var getCourseById = await Query.Course.findById(courseId);
+  var course1 = getCourseById.name;
+  var course2 = getCourseById.name;
+  var level = getCourseById.DegreeType.name;
+  var cityOfChoice = getCourseById.Institution.CityId;
+  var schoolWish1 = getCourseById.Institution.name;
+  var schoolWish2 = getCourseById.Institution.name;
 
   let newApplication = {
-    userId: req.body.userId,
+    userId: userId,
     hasApplied: hasApplied,
     purpose: purpose,
     reasonOfRefusal: reasonOfRefusal,
-    moreInfo: moreInfo
+    moreInfo: moreInfo,
+    course2: course2,
+    course1: course1,
+    level: level,
+    cityId: cityOfChoice,
+    schoolWish1: schoolWish1,
+    schoolWish2: schoolWish2,
+    courseId: courseId
     //hasSubmitted: true,
     //decision: "PENDING"
   };
@@ -810,16 +853,14 @@ router.post("/mobileForm5", function(req, res) {
   if (applicationId) {
     newApplication.id = applicationId;
 
-    Application.update(newApplication, applicationId)
-      .then()
-      .catch(error => (isError = true));
+    dataObject = await Application.update(newApplication, applicationId);
   } else {
-    Application.create(newApplication)
-      .then()
-      .catch(error => (isError = true));
+    dataObject = await Application.create(newApplication);
   }
 
-  return res.send({ error: isError, message: apiMsg(isError) });
+  let getApplication = await Query.Application.findByUser(userId);
+
+  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
 });
 
 function ensureAuthenticated(req, res, next) {

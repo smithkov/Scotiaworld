@@ -139,11 +139,32 @@ module.exports = {
       cityId: {
         type: Sequelize.INTEGER
       },
+	  courseId: {
+        type: Sequelize.INTEGER
+      },
       schoolWish1: {
         type: Sequelize.STRING
       },
       schoolWish2: {
         type: Sequelize.STRING
+      },
+      eligibilityCheck: {
+        type: Sequelize.BOOLEAN
+      },
+      reqProvision: {
+        type: Sequelize.BOOLEAN
+      },
+      hasFinalSubmit: {
+        type: Sequelize.BOOLEAN
+      },
+      hasDecided: {
+        type: Sequelize.BOOLEAN
+      },
+      hasPaid: {
+        type: Sequelize.BOOLEAN
+      },
+      hasCas: {
+        type: Sequelize.BOOLEAN
       }
     });
   },

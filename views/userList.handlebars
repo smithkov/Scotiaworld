@@ -1,0 +1,150 @@
+<!-- Waves Effect Css -->
+
+<section class="content">
+    <div class="container-fluid">
+
+        <!-- Exportable Table -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <hr>
+
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            All Users
+                        </h2>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {{#each users}}
+                                    <tr>
+                                        {{!-- <td>
+                                             {{#if this.path}}
+                                                <img style="height:30px; width:30px" class="img-responsive thumbnail" src="/uploads/{{this.path}}">
+                                               {{else}}
+
+                                                 <img style="height:30px; width:30px" class="img-responsive thumbnail" src="/cancel.png">
+                                             {{/if}}
+                                           </td> --}}
+                                        <td>{{this.username}}</td>
+                                        <td>{{this.email}}</td>
+
+                                        <td><a href="{{this.id}}"><img style="height:25px; width:25px"
+                                                    src="/mail.png" /></a></td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <hr>
+                        <form id="sendForm" action="/" method="POST">
+                            <div id="alertContainer"></div>
+                            <div class="form-group form-float">
+                                <label>Subject</label>
+                                <div class="form-line">
+                                    <input id="subject" required type="text" name="subject" placeholder="subject"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <label>Recipient's Username</label>
+                                <div class="form-line">
+                                    <input type="text" required name="recipient" id="username"
+                                        placeholder="recipient's username" class="form-control">
+                                </div>
+                            </div>
+                            <div class="demo-checkbox">
+                                <input type="checkbox" name="isAllUsers" id="basic_checkbox_2"
+                                    class="filled-in allUser" />
+                                <label for="basic_checkbox_2">Send to all users</label>
+
+                            </div>
+                            <div class="form-group form-float">
+                                <label>Message *</label>
+                                <div class="form-line">
+                                    <textarea id="message" required name="message" cols="30" rows="3"
+                                        placeholder="message" class="form-control no-resize"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn bg-primary waves-effect">
+                                <i class="material-icons">arrow_forward</i> <span class="icon-name">Send</span>
+                            </button><img style="width: 20px; heigth:20px" id="enquirySpinner" src="/loader.gif" />
+                        </form>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <!-- #END# Exportable Table -->
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        function alertBoxTemplate(message, isError) {
+            let classVal = isError ? "alert alert-danger" : "alert alert-success";
+            $("#alertContainer")
+                .empty()
+                .html(`<div class="${classVal}">${message}  </div>`)
+                .fadeOut(16000);
+        }
+        var chkbox = $('.allUser');
+        var username = $('#username');
+        var message = $('#message');
+        var subject = $('#subject');
+        chkbox.click(function () {
+            if ($(this).prop("checked") == true) {
+                username.prop("disabled", true)
+            }
+            else if ($(this).prop("checked") == false) {
+                username.prop("disabled", false)
+            }
+        });
+
+        let myform = $("#sendForm");
+        let enquirySpinner = $("#enquirySpinner");
+        let btnSend = $("#btnSend");
+        enquirySpinner.hide();
+        myform.on('submit', function (e) {
+            e.preventDefault();
+            btnSend.attr("disabled", true);
+            enquirySpinner.show();
+            e.preventDefault();
+            $.ajax({
+                type: 'post',
+                url: '/user/sendMessage',
+                data: myform.serialize(),
+                success: function (response) {
+                    btnSend.attr("disabled", false);
+                    if (!response.error)
+                        alertBoxTemplate("Message sent successfully ", false);
+                    else
+                        alertBoxTemplate("Form submission was not successful, please try again later.", true);
+                    enquirySpinner.hide();
+
+                    username.val("");
+                    message.val("");
+                    subject.val("");
+                },
+                error: function (jqXHR, exception) {
+                    btnSend.attr("disabled", false);
+                    alertBoxTemplate("Form submission was not successful, please try again later.", true);
+                    enquirySpinner.hide();
+                }
+            });
+        })
+    });
+</script>
+<!-- Jquery DataTable Plugin Js -->

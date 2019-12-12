@@ -1,3 +1,4 @@
+
 var Model = require("../models");
 var Banner = Model.Banner;
 var Institution = Model.Institution;
@@ -5,6 +6,7 @@ var Course = Model.Course;
 var Departure = Model.Departure;
 var Guideline = Model.Guideline;
 var StudyArea = Model.StudyArea;
+var Mail = Model.Mail;
 var Country = Model.Country;
 var User = Model.User;
 var Application = Model.Application;
@@ -18,6 +20,8 @@ var FeeRange = Model.FeeRange;
 var Enquiry = Model.Enquiry;
 var Scholarship = Model.Scholarship;
 var SurrogateFaculty = Model.surrogateFaculty;
+const Op = require('sequelize').Op;
+
 var bcrypt = require("bcryptjs");
 //Courses queries
 
@@ -26,142 +30,144 @@ var bcrypt = require("bcryptjs");
 //Banners query
 module.exports = {
   Banner: {
-    activeBanners: function() {
+    activeBanners: function () {
       return Banner.findAll({ where: { isActive: true } });
     },
-    create: function(obj) {
+    create: function (obj) {
       return Banner.create(obj);
     },
-    createMany: function(array) {
+    createMany: function (array) {
       return Banner.bulkCreate(array);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Banner.findByPk(id);
     },
-    findAll: function() {
+    findAll: function () {
       return Banner.findAll();
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Banner.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Banner.destroy({ where: { id: id } });
     }
   },
   FeeRange: {
-    create: function(obj) {
+    create: function (obj) {
       return FeeRange.create(obj);
     },
 
-    findById: function(id) {
+    findById: function (id) {
       return FeeRange.findByPk(id);
     },
-    findAll: function() {
+    findAll: function () {
       return FeeRange.findAll({ include: [{ all: true }] });
     },
-    findByFaculty: function(institutionId, studyId) {
+    findByFaculty: function (institutionId, studyId) {
       return FeeRange.findOne({
         where: { studyAreaId: studyId, institutionId: institutionId }
       });
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return FeeRange.update(obj, { where: { id: id } });
     }
   },
   SurrogateFaculty: {
-    create: function(obj) {
+    create: function (obj) {
       return SurrogateFaculty.create(obj);
     },
-    findById: function(id) {
-      return SurrogateFaculty.findByPk(id);
+    findById: function (id) {
+      return SurrogateFaculty.findByPk(id, {
+        include: [{ all: true }]
+      });
     },
-    findByInstitution: function(id) {
+    findByInstitution: function (id) {
       return SurrogateFaculty.findAll({
         where: { institutionId: id },
         include: [{ all: true }]
       });
     },
-    findAll: function() {
+    findAll: function () {
       return SurrogateFaculty.findAll({ include: [{ all: true }] });
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return SurrogateFaculty.update(obj, { where: { id: id } });
     }
   },
   Departure: {
-    create: function(obj) {
+    create: function (obj) {
       return Departure.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Departure.findByPk(id);
     },
-    findAll: function() {
+    findAll: function () {
       return Departure.findAll();
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Departure.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Departure.destroy({ where: { id: id } });
     }
   },
   FacultyImage: {
-    create: function(obj) {
+    create: function (obj) {
       return FacultyImage.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return FacultyImage.findByPk(id, { include: [{ all: true }] });
     },
-    findAll: function() {
+    findAll: function () {
       return FacultyImage.findAll({ include: [{ all: true }] });
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return FacultyImage.update(obj, { where: { id: id } });
     },
-    findByStudyArea: function(id) {
+    findByStudyArea: function (id) {
       return FacultyImage.findAll({
         where: { studyAreaId: id },
         include: [{ all: true }]
       });
     },
-    delete: function(id) {
+    delete: function (id) {
       return FacultyImage.destroy({ where: { id: id } });
     }
   },
   Guideline: {
-    create: function(obj) {
+    create: function (obj) {
       return Guideline.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Guideline.findByPk(id);
     },
-    findAll: function() {
+    findAll: function () {
       return Guideline.findAll();
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Guideline.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Guideline.destroy({ where: { id: id } });
     }
   },
   Country: {
-    create: function(obj) {
+    create: function (obj) {
       return Country.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Country.findByPk(id);
     },
-    findAll: function() {
+    findAll: function () {
       return Country.findAll();
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Country.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Country.destroy({ where: { id: id } });
     },
-    findByName: function(name) {
+    findByName: function (name) {
       return Country.findOne({
         where: { name: name }
       }).then(data => {
@@ -170,116 +176,116 @@ module.exports = {
     }
   },
   Qualification: {
-    create: function(obj) {
+    create: function (obj) {
       return Qualification.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Qualification.findByPk(id);
     },
-    findAll: function() {
+    findAll: function () {
       return Qualification.findAll();
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Qualification.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Qualification.destroy({ where: { id: id } });
     }
   },
   DegreeType: {
-    create: function(obj) {
+    create: function (obj) {
       return DegreeType.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return DegreeType.findByPk(id);
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return DegreeType.update(obj, { where: { id: id } });
     },
-    findAll: function() {
+    findAll: function () {
       return DegreeType.findAll();
     },
-    delete: function(id) {
+    delete: function (id) {
       return DegreeType.destroy({ where: { id: id } });
     }
   },
   City: {
-    findAll: function() {
+    findAll: function () {
       return City.findAll();
     },
-    create: function(obj) {
+    create: function (obj) {
       return City.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return City.findByPk(id);
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return City.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return City.destroy({ where: { id: id } });
     }
   },
   Scholarship: {
-    findAll: function() {
+    findAll: function () {
       return Scholarship.findAll();
     },
-    create: function(obj) {
+    create: function (obj) {
       return Scholarship.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Scholarship.findByPk(id);
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Scholarship.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Scholarship.destroy({ where: { id: id } });
     }
   },
   Logo: {
-    findAll: function() {
+    findAll: function () {
       return Logo.findAll();
     },
-    create: function(obj) {
+    create: function (obj) {
       return Logo.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Logo.findByPk(id);
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Logo.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Logo.destroy({ where: { id: id } });
     }
   },
   Institution: {
-    findAll: function() {
+    findAll: function () {
       return Institution.findAll({
         include: ["Courses", "City"]
       });
     },
-    findById: function(id) {
+    findById: function (id) {
       return Institution.findByPk(id, { include: [{ model: City }] });
     },
-    create: function(obj) {
+    create: function (obj) {
       return Institution.create(obj);
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Institution.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Institution.destroy({ where: { id: id } });
     }
   },
   Course: {
-    findAll: function() {
+    findAll: function () {
       return Course.findAll({
         include: [{ all: true }]
       });
     },
-    findByPopular: async function() {
+    findByPopular: async function () {
       let course = await Course.findAll({
         where: { isPopular: true }
       });
@@ -297,25 +303,25 @@ module.exports = {
       });
     },
 
-    findNameByInstitutionId: function(id, name) {
+    findNameByInstitutionId: function (id, name) {
       return Course.findOne({
         where: { institutionId: id, name: name },
         include: [{ all: true }]
       });
     },
-    findByInstitutionId: function(id) {
+    findByInstitutionId: function (id) {
       return Course.findAll({
         where: { institutionId: id },
         include: [{ all: true }]
       });
     },
-    findByFacultyId: function(id, institutionId) {
+    findByFacultyId: function (id, institutionId) {
       return Course.findAll({
         where: { studyAreaId: id, institutionId: institutionId },
         include: [{ all: true }]
       });
     },
-    findByInstitutionIdSearch: function(schoolId, facultyId, degreeTypeId) {
+    findByInstitutionIdSearch: function (schoolId, facultyId, degreeTypeId) {
       let dataObj = {
         institutionId: schoolId,
         studyAreaId: facultyId,
@@ -338,21 +344,21 @@ module.exports = {
 
       return hasValues
         ? Course.findAll({
-            where: dataObj,
-            include: [{ all: true }]
-          })
+          where: dataObj,
+          include: [{ all: true }]
+        })
         : Course.findAll({
-            include: [{ all: true }]
-          });
+          include: [{ all: true }]
+        });
     },
 
-    findCourseByFacultyAndSchool: function(facultyId, schoolId) {
+    findCourseByFacultyAndSchool: function (facultyId, schoolId) {
       return Course.findAll({
         where: { institutionId: schoolId, studyAreaId: facultyId },
         include: ["StudyArea", "DegreeType", "Institution"]
       });
     },
-    findPopular: function(degreeTypeId, facultyId, institutionId) {
+    findPopular: function (degreeTypeId, facultyId, institutionId) {
       let paramObj = {
         degreeTypeId: degreeTypeId,
         studyAreaId: facultyId,
@@ -370,15 +376,15 @@ module.exports = {
 
       return isReturnAll
         ? Course.findAll({
-            where: { isPopular: true },
-            include: [{ all: true }]
-          })
+          where: { isPopular: true },
+          include: [{ all: true }]
+        })
         : Course.findAll({
-            where: paramObj,
-            include: [{ all: true }]
-          });
+          where: paramObj,
+          include: [{ all: true }]
+        });
     },
-    courseSearch: function(degreeTypeId, facultyId, institutionId) {
+    courseSearch: function (degreeTypeId, facultyId, institutionId) {
       let paramObj = {
         degreeTypeId: degreeTypeId,
         studyAreaId: facultyId,
@@ -393,106 +399,163 @@ module.exports = {
 
       return isReturnAll
         ? Course.findAll({
-            include: [{ all: true }]
-          })
+          include: [{ all: true }]
+        })
         : Course.findAll({
-            where: paramObj,
-            include: [{ all: true }]
-          });
+          where: paramObj,
+          include: [{ all: true }]
+        });
     },
-    create: function(obj) {
+    create: function (obj) {
       return Course.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Course.findByPk(id, {
         include: [{ all: true }]
       });
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Course.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Course.destroy({ where: { id: id } });
     }
   },
   StudyArea: {
-    findAll: function() {
-      return StudyArea.findAll();
+    findAll: function () {
+      return StudyArea.findAll({
+        include: [{ all: true }]
+      });
     },
-    findByInstitutionId: function(id) {
-      return StudyArea.findAll({ where: { institutionId: id } });
+    findByInstitutionId: function (id) {
+      return StudyArea.findAll({
+        where: { institutionId: id },
+        include: [{ all: true }]
+      });
     },
-    create: function(obj) {
+    create: function (obj) {
       return StudyArea.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return StudyArea.findByPk(id, {
         include: [{ all: true }]
       });
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return StudyArea.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return StudyArea.destroy({ where: { id: id } });
     }
   },
+  Mail: {
+    findAll: function () {
+      return Mail.findAll({
+        include: [{ all: true }]
+      });
+    },
+
+    create: function (obj) {
+      return Mail.create(obj);
+    },
+    createMany: function (array) {
+      return Mail.bulkCreate(array);
+    },
+    findById: function (id) {
+      return Mail.findByPk(id, {
+        include: [{ all: true }]
+      });
+    },
+    findByUserId: function (user) {
+      if (user.roleId) {
+        return Mail.findAll({
+          where: { isPublic: false, [Op.not]: { senderId: user.id } },
+          include: [{ all: true }]
+        });
+      } else {
+        return Mail.findAll({
+          where: {
+            [Op.or]: [{ userId: user.id }, { isPublic: true }]
+          },
+          include: [{ all: true }]
+        });
+      }
+    },
+    findSentMessages: function (id) {
+      return Mail.findAll({
+        where: { senderId: id },
+        include: [{ all: true }]
+      });
+    },
+    update: function (obj, id) {
+      return Mail.update(obj, { where: { id: id } });
+    },
+    delete: function (id) {
+      return Mail.destroy({ where: { id: id } });
+    }
+  },
   Enquiry: {
-    findAll: function() {
+    findAll: function () {
       return Enquiry.findAll();
     },
 
-    create: function(obj) {
+    create: function (obj) {
       return Enquiry.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Enquiry.findByPk(id);
     },
 
-    delete: function(id) {
+    delete: function (id) {
       return Enquiry.destroy({ where: { id: id } });
     }
   },
   User: {
-    findAll: function() {
+    findAll: function () {
       return User.findAll();
     },
-    create: function(obj) {
+    create: function (obj) {
       return User.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return User.findByPk(id);
     },
-    update: function(obj, id) {
+    findByUsername: function (username) {
+      return User.findOne({
+        where: { username: username },
+        include: [{ all: true }]
+      });
+    },
+    update: function (obj, id) {
       return User.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return User.destroy({ where: { id: id } });
     }
   },
   Application: {
-    findAll: function() {
+    findAll: function () {
       return Application.findAll({ include: [{ all: true }] });
     },
-    create: function(obj) {
+    create: function (obj) {
       return Application.create(obj);
     },
-    findById: function(id) {
+    findById: function (id) {
       return Application.findByPk(id);
     },
-    update: function(obj, id) {
+    update: function (obj, id) {
       return Application.update(obj, { where: { id: id } });
     },
-    delete: function(id) {
+    delete: function (id) {
       return Application.destroy({ where: { id: id } });
     },
-    findByUser: function(id) {
+    findByUser: function (id) {
       return Application.findOne({
         where: { userId: id },
         include: [{ all: true }]
       });
     },
-    findBySubmitted: function(id) {
+    findBySubmitted: function (id) {
       return Application.findAll({
         where: { hasSubmitted: true },
         include: [{ all: true }]
@@ -500,8 +563,8 @@ module.exports = {
     }
   }
 };
-module.exports.comparePassword = function(candidatePassword, hash, callback) {
-  bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
+module.exports.comparePassword = function (candidatePassword, hash, callback) {
+  bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
     console.log(` the error is: ${err}`);
     //	if(err) throw err;
     callback(null, isMatch);

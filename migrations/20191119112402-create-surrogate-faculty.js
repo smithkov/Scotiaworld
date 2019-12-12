@@ -11,6 +11,12 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+	  facultImage: {
+        type: Sequelize.STRING
+      },
+	  totalCourse: {
+        type: Sequelize.STRING
+      },
       institutionId: {
         type: Sequelize.INTEGER
       },

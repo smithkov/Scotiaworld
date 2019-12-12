@@ -72,6 +72,25 @@ module.exports.institution = function() {
   ];
 };
 
+var photoStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/photos");
+  },
+  filename: (req, file, cb) => {
+    var filetype = "";
+    if (file.mimetype === "image/gif") {
+      filetype = "gif";
+    }
+    if (file.mimetype === "image/png") {
+      filetype = "png";
+    }
+    if (file.mimetype === "image/jpeg") {
+      filetype = "jpg";
+    }
+    cb(null, "photo-" + Date.now() + "." + filetype);
+  }
+});
+
 // To get more info about 'multer'.. you can go through https://www.npmjs.com/package/multer..
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -92,6 +111,9 @@ var storage2 = multer.diskStorage({
 
 var upload = multer({
   storage: storage
+});
+var photo = multer({
+  storage: photoStorage
 });
 var upload2 = multer({
   storage: storage2
@@ -129,7 +151,14 @@ var storageAny = multer.diskStorage({
 var uploadAny = multer({
   storage: storageAny
 });
+
+module.exports.photoChooser = function(photo) {
+  console.log(photo);
+  console.log("--------------------------------------");
+  return photo === "" ? "no_photo.jpg" : photo;
+};
 module.exports.uploadAny = uploadAny;
+module.exports.photo = photo;
 module.exports.cpUpload = upload.fields([{ name: "logo", maxCount: 1 }]);
 module.exports.cpUpload3 = upload.fields([
   { name: "logo", maxCount: 1 },

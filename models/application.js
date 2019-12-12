@@ -44,16 +44,25 @@ module.exports = (sequelize, DataTypes) => {
       course2: DataTypes.STRING,
       level: DataTypes.STRING,
       cityId: DataTypes.INTEGER,
+	  courseId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       schoolWish1: DataTypes.STRING,
-      schoolWish2: DataTypes.STRING
+      schoolWish2: DataTypes.STRING,
+      eligibilityCheck: DataTypes.BOOLEAN,
+      reqProvision: DataTypes.BOOLEAN,
+      hasFinalSubmit: DataTypes.BOOLEAN,
+      hasDecided: DataTypes.BOOLEAN,
+      hasPaid: DataTypes.BOOLEAN,
+      hasCas: DataTypes.BOOLEAN
+
     },
     {}
   );
-  Application.associate = function(models) {
+  Application.associate = function (models) {
     // associations can be defined here
     //Application.belongsTo(models.Institution);
     Application.belongsTo(models.City);
+	Application.belongsTo(models.Course);
     Application.belongsTo(models.Country);
     Application.belongsTo(models.User);
   };

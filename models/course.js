@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     Course.belongsTo(models.Requirement);
     Course.belongsTo(models.StudyArea);
     Course.belongsTo(models.FeeRange);
+	//Course.hasMany(models.Application);
   };
   return Course;
 };

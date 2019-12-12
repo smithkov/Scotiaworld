@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Welcome To | Scotia </title>
+    <title>Scot-Study | Dashboard </title>
     <!-- Favicon-->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
@@ -96,7 +96,11 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="/admin_theme/images/user.png" width="48" height="48" alt="User" />
+                    {{#if user.photo}}
+                    <img src="/photos/{{user.photo}}" width="48" height="48" alt="User" />
+                    {{else}}
+                    <img src="/photos/no_photo.jpg" width="48" height="48" alt="User" />
+                    {{/if}}
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -114,6 +118,12 @@
                         <a href="/dashboard">
                             <i class="material-icons">home</i>
                             <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/user/all">
+                            <i class="material-icons">group</i>
+                            <span>Users</span>
                         </a>
                     </li>
                     {{#if user.roleId}}
@@ -270,7 +280,13 @@
 
                     </li>
                     {{/if}}
+                    <li>
+                        <a href="/user/photo">
+                            <i class="material-icons">photo</i>
+                            <span>Photo</span>
+                        </a>
 
+                    </li>
 
                 </ul>
             </div>

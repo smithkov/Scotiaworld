@@ -1,0 +1,99 @@
+<!-- Waves Effect Css -->
+
+<section class="content">
+    <div class="container-fluid">
+
+        <!-- Exportable Table -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <hr>
+
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            Upload Profile Photo
+                        </h2>
+                    </div>
+                    <div class="body">
+                        <form id="sendForm" enctype="multipart/form-data" action="/" method="POST">
+                            <div id="alertContainer"></div>
+                            <div class="col-lg-12">
+                                <div class="col-lg-10"></div>
+                                <div class="col-lg-2"><img id="img" src="/photos/{{user.photo}}"
+                                        style="width:100px; height:100px" /></div>
+                            </div>
+
+
+                            <input type="hidden" value="{{user.id}}" id="userId">
+
+
+
+                            <div class="form-group form-float">
+                                <label>Upload Profile Photo *</label>
+                                <input required type="file" name="file" id="scene"><br>
+                                <hr>
+                            </div>
+                            <button type="submit" class="btn bg-primary waves-effect">
+                                <i class="material-icons">arrow_forward</i> <span class="icon-name">Send</span>
+                            </button><img style="width: 20px; heigth:20px" id="enquirySpinner" src="/loader.gif" />
+                        </form>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <!-- #END# Exportable Table -->
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        function alertBoxTemplate(message, isError) {
+            let classVal = isError ? "alert alert-danger" : "alert alert-success";
+            $("#alertContainer")
+                .empty()
+                .html(`<div class="${classVal}">${message}  </div>`)
+                .fadeOut(16000);
+        }
+
+        let myform = $("#sendForm");
+        let enquirySpinner = $("#enquirySpinner");
+        let btnSend = $("#btnSend");
+        enquirySpinner.hide();
+        $('form').submit(function (e) {
+            e.preventDefault();
+            var form_data = new FormData(this);
+            form_data.append('userId', $("#userId").val());
+            btnSend.attr("disabled", true);
+            enquirySpinner.show();
+            e.preventDefault();
+            $.ajax({
+                type: 'post',
+                url: '/user/photo',
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    btnSend.attr("disabled", false);
+                    if (!response.error) {
+                        alertBoxTemplate("Message sent successfully ", false);
+
+                    }
+                    else
+                        alertBoxTemplate("Form submission was not successful, please try again later.", true);
+                    enquirySpinner.hide();
+
+
+                },
+                error: function (jqXHR, exception) {
+                    btnSend.attr("disabled", false);
+                    alertBoxTemplate("Form submission was not successful, please try again later.", true);
+                    enquirySpinner.hide();
+                }
+            });
+        })
+    });
+</script>
+<!-- Jquery DataTable Plugin Js -->

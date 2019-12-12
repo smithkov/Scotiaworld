@@ -712,27 +712,53 @@
                       </tbody>
                   </table>
                    {{#if user.roleId}}
-                   
-                     
                       <input type="hidden" name="userId" value="{{app.user.id}}"/>
+                      <div class="demo-checkbox">
+                          <input type="checkbox" name="eligibilityCheck" id="basic_checkbox_1"
+                              class="filled-in" {{#if app.eligibilityCheck}}checked{{/if}} />
+                          <label for="basic_checkbox_1">Eligibility Check </label>
+                      </div>
+                      <div class="demo-checkbox">
+                          <input type="checkbox" name="reqProvision" id="basic_checkbox_2"
+                              class="filled-in" {{#if app.reqProvision}}checked{{/if}} />
+                          <label for="basic_checkbox_2">Requirement Provision </label>
+                      </div>
+                      <div class="demo-checkbox">
+                          <input type="checkbox" name="hasFinalSubmit" id="basic_checkbox_3"
+                              class="filled-in" {{#if app.hasFinalSubmit}}checked{{/if}} />
+                          <label for="basic_checkbox_3">Application Submitted  </label>
+                      </div>
                       <div class="form-group form-float">
                         <label>Decision Status</label>
                         <div class="form-line">
                         <select class='form-control' id="cboDecision" name="decision" required>
+                          {{#if app.decision}}
+                          <option value='{{app.decision}}'>{{app.decision}}</option>
+                          {{else}}
                           <option value=''>--Select--</option>
-                          <option value='Approved'>Approved</option>
-                          <option value='Rejected'>Rejected</option>
+                          {{/if}}
+                          <option value='Conditional Offer'>Conditional Offer</option>
+                          <option value='Unconditional Offer'>Unconditional Offer</option>
+                          <option value='Application Rejected'>Application Rejected</option>
                         </select>
                       </div>
                       </div>
-
+                      <div class="demo-checkbox">
+                          <input type="checkbox" name="hasPaid" id="basic_checkbox_4"
+                              class="filled-in" {{#if app.hasPaid}}checked{{/if}} />
+                          <label for="basic_checkbox_4">Fee Payment Confirmation </label>
+                      </div>
+                      <div class="demo-checkbox">
+                          <input type="checkbox" name="hasCas" {{#if app.hasCas}}checked{{/if}} id="basic_checkbox_5"
+                              class="filled-in" />
+                          <label for="basic_checkbox_5">CAS Issuance</label>
+                      </div>               
                       <div  id="txtReason" class="form-group  form-float">
                         <label>Reason of rejection</label>
                         <div class="form-line">
                         <textarea  cols="30" rows="3" name="reason" class="form-control"></textarea>
                       </div>
                       </div>
-
                       <button type="submit" class="btn pull-right bg-primary waves-effect">Submit</button>
                     
                     {{else}}
@@ -774,7 +800,7 @@
      var txtReason = $("#txtReason");
      txtReason.hide();
     $("#cboDecision").change(function(){
-      if($(this).val() === "Rejected")
+      if($(this).val() === "Application Rejected")
         txtReason.show();
         else {
           txtReason.hide();

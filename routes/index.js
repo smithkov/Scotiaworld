@@ -10,7 +10,7 @@ var Logo = require("../models").Logo;
 var Banner = require("../models").Banner;
 var config = require("../my_modules/config");
 const bestSelling = "BEST SELLING COURSES";
-router.get("/", async function(req, res) {
+router.get("/", async function (req, res) {
   let courses = await Query.Course.findAll();
 
   let studyAreas = await Query.StudyArea.findAll();
@@ -59,6 +59,7 @@ router.get("/schools", async (req, res) => {
       let course = await Query.Course.findByInstitutionId(schools[i].id);
 
       for (var j = 0; j < course.length; j++) {
+
         fac.push(course[j].StudyArea.id);
       }
       let filterIds = uniq(fac);
@@ -66,9 +67,17 @@ router.get("/schools", async (req, res) => {
       for (var u = 0; u < filterIds.length; u++) {
         let getById = await Query.StudyArea.findById(filterIds[u]);
         fac.push(getById);
+        let coursesByFaculty = await Query.Course.findByFacultyId(
+          getById.id,
+          schools[i].id
+        );
+
         let surrogate = {
           facultyId: getById.id,
+
           name: getById.name,
+          facultyImage: getById.FacultyImages[0].path,
+          totalCourse: coursesByFaculty.length,
           studyAreaId: getById.id,
           institutionId: schools[i].id
         };
@@ -101,28 +110,47 @@ router.post("/getCoursesByFaculty", async (req, res) => {
 });
 
 router.get("/schoolsMobile", async (req, res) => {
+  // var schoolArray = [];
+  // var schools = await Query.Institution.findAll();
+  // var fac = [];
+  // for (var i = 0; i < schools.length; i++) {
+  //   let course = await Query.Course.findByInstitutionId(schools[i].id);
+
+  //   for (var j = 0; j < course.length; j++) {
+  //     fac.push(course[j].StudyArea.id);
+  //   }
+  //   let filterIds = uniq(fac);
+  //   fac = [];
+  //   for (var u = 0; u < filterIds.length; u++) {
+  //     let getById = await Query.StudyArea.findById(filterIds[u]);
+  //     let coursesByFaculty = await Query.Course.findByFacultyId(
+  //       getById.id,
+  //       schools[i].id
+  //     );
+  //     fac.push({ fac: getById, num: coursesByFaculty.length });
+  //   }
+  //   schoolArray.push({ uni: schools[i], faculty: fac });
+  //   fac = [];
+  // }
   var schoolArray = [];
   var schools = await Query.Institution.findAll();
   var fac = [];
-  for (var i = 0; i < schools.length; i++) {
-    let course = await Query.Course.findByInstitutionId(schools[i].id);
 
-    for (var j = 0; j < course.length; j++) {
-      fac.push(course[j].StudyArea.id);
+  for (var i = 0; i < schools.length; i++) {
+    let getSurrogateFaculty = await Query.SurrogateFaculty.findByInstitution(
+      schools[i].id
+    );
+    if (getSurrogateFaculty.length > 0) {
+
+      getSurrogateFaculty.forEach(school => {
+        fac.push(school);
+      });
+      schoolArray.push({ uni: schools[i], faculty: fac });
     }
-    let filterIds = uniq(fac);
-    fac = [];
-    for (var u = 0; u < filterIds.length; u++) {
-      let getById = await Query.StudyArea.findById(filterIds[u]);
-      let coursesByFaculty = await Query.Course.findByFacultyId(
-        getById.id,
-        schools[i].id
-      );
-      fac.push({ fac: getById, num: coursesByFaculty.length });
-    }
-    schoolArray.push({ uni: schools[i], faculty: fac });
+
     fac = [];
   }
+
 
   return res.send({
     auth: false,
@@ -140,9 +168,9 @@ router.get("/schoolsMobile", async (req, res) => {
 //   });
 // });
 
-router.get("/institutions", function(req, res) {
-  Query.Course.findByPopular().then(function(populars) {
-    Query.Course.findAll().then(function(course) {
+router.get("/institutions", function (req, res) {
+  Query.Course.findByPopular().then(function (populars) {
+    Query.Course.findAll().then(function (course) {
       res.render("institutions", {
         data: reduceArray(populars),
         best: bestSelling
@@ -151,7 +179,7 @@ router.get("/institutions", function(req, res) {
   });
 });
 
-router.get("/compare-fees", async function(req, res) {
+router.get("/compare-fees", async function (req, res) {
   let populars = await Query.Course.findByPopular();
   let courses = await Query.Course.findAll();
   let degreeTypes = await Query.DegreeType.findAll();
@@ -174,7 +202,7 @@ function reduceArray(arr) {
   }
   return newArr;
 }
-router.get("/courses", async function(req, res) {
+router.get("/courses", async function (req, res) {
   let populars = await Query.Course.findByPopular();
   let courses = await Query.Course.findAll();
   res.render("course", {
@@ -184,14 +212,14 @@ router.get("/courses", async function(req, res) {
   });
 });
 
-router.get("/getCourses", async function(req, res) {
+router.get("/getCourses", async function (req, res) {
   let courses = await Query.Course.findAll();
   return res.send({
     data: courses
   });
 });
 
-router.get("/dropDown", async function(req, res) {
+router.get("/dropDown", async function (req, res) {
   let faculty = await Query.StudyArea.findAll();
   let degreeTypes = await Query.DegreeType.findAll();
   let cities = await Query.City.findAll();
@@ -206,7 +234,7 @@ router.get("/dropDown", async function(req, res) {
   });
 });
 
-router.post("/courseSearch", async function(req, res) {
+router.post("/courseSearch", async function (req, res) {
   let degreeId = req.body.degreeId;
   let facultyId = req.body.facultyId;
   let institutionId = req.body.institutionId;
@@ -221,7 +249,7 @@ router.post("/courseSearch", async function(req, res) {
   });
 });
 
-router.post("/popular", async function(req, res) {
+router.post("/popular", async function (req, res) {
   let degreeId = req.body.degreeId;
   let facultyId = req.body.facultyId;
   let institutionId = req.body.institutionId;
@@ -235,10 +263,10 @@ router.post("/popular", async function(req, res) {
   });
 });
 
-router.get("/popular-Courses", async function(req, res) {
+router.get("/popular-Courses", async function (req, res) {
   res.render("popular");
 });
-router.post("/compareFee", async function(req, res) {
+router.post("/compareFee", async function (req, res) {
   let institutionId = req.body.institutionId1;
   let institutionId2 = req.body.institutionId2;
   let facultyId = req.body.facultyId;
@@ -259,7 +287,7 @@ router.post("/compareFee", async function(req, res) {
   });
 });
 
-router.post("/compareFeeSingle", async function(req, res) {
+router.post("/compareFeeSingle", async function (req, res) {
   let institutionId = req.body.institutionId;
   let facultyId = req.body.facultyId;
   let pageNext = req.body.pageNext;
@@ -277,7 +305,7 @@ router.post("/compareFeeSingle", async function(req, res) {
   });
 });
 
-router.get("/about", async function(req, res) {
+router.get("/about", async function (req, res) {
   // let course = await Query.Course.findAll();
   // for (var i = 0; i < course.length; i++) {
   //   console.log(i);
@@ -294,7 +322,7 @@ router.get("/about", async function(req, res) {
   res.render("about", { data: reduceArray(populars), best: bestSelling });
 });
 
-router.get("/pre-departure", async function(req, res) {
+router.get("/pre-departure", async function (req, res) {
   let desc = "Pre-Departure Guideline";
   let populars = await Query.Course.findByPopular();
   let departure = await Query.Departure.findAll();
@@ -306,9 +334,9 @@ router.get("/pre-departure", async function(req, res) {
   });
 });
 
-router.get("/visa-application-guideline", function(req, res) {
+router.get("/visa-application-guideline", function (req, res) {
   let desc = "Visa Application Guideline";
-  Query.Guideline.findAll().then(function(guide) {
+  Query.Guideline.findAll().then(function (guide) {
     res.render("richTextTemp", {
       app: guide[0],
       description: desc
@@ -317,19 +345,19 @@ router.get("/visa-application-guideline", function(req, res) {
 });
 
 router.get("/why-us", (req, res) => {
-  Query.Course.findByPopular().then(function(populars) {
+  Query.Course.findByPopular().then(function (populars) {
     res.render("whyChoose", { data: reduceArray(populars), best: bestSelling });
   });
 });
 
 router.get("/contact-us", (req, res) => {
-  Query.Course.findByPopular().then(function(populars) {
+  Query.Course.findByPopular().then(function (populars) {
     res.render("contactUs", { data: reduceArray(populars), best: bestSelling });
   });
 });
 
 router.get("/scholarship", (req, res) => {
-  Query.Course.findByPopular().then(function(populars) {
+  Query.Course.findByPopular().then(function (populars) {
     res.render("scholarship", {
       data: reduceArray(populars),
       best: bestSelling
@@ -338,7 +366,7 @@ router.get("/scholarship", (req, res) => {
 });
 
 router.get("/about-scotland", (req, res) => {
-  Query.Course.findByPopular().then(function(populars) {
+  Query.Course.findByPopular().then(function (populars) {
     res.render("aboutScotland", {
       data: reduceArray(populars),
       best: bestSelling
@@ -357,7 +385,7 @@ router.get("/detail/:school/:course/:id", async (req, res) => {
   });
 });
 
-router.get("/school-courses/:name/:_id", async function(req, res, next) {
+router.get("/school-courses/:name/:_id", async function (req, res, next) {
   let populars, institutions;
   let Schoolname = req.params.name;
   let id = req.params._id;
@@ -372,11 +400,11 @@ router.get("/school-courses/:name/:_id", async function(req, res, next) {
   });
 });
 
-router.get("/school-faculties/:name/:_id", async function(req, res, next) {
+router.get("/school-faculties/:name/:_id", async function (req, res, next) {
   let facultyName = req.params.name;
   let id = req.params._id;
 
-  Query.Course.findByPopular().then(async function(populars) {
+  Query.Course.findByPopular().then(async function (populars) {
     let courseByInstitution = await Query.Course.findByInstitutionId(id);
     let InstitutionById = await Query.Institution.findById(id);
     var faculty = [];
@@ -452,21 +480,21 @@ router.get("/faculty/:_id/:schoolId", async (req, res) => {
   });
 });
 
-router.get("/dashboard", ensureAuthenticated, async function(req, res) {
-  let courses = await Query.Course.findAll();
-  let institutions = await Query.Institution.findAll();
+router.get("/dashboard", ensureAuthenticated, async function (req, res) {
+  //let courses = await Query.Course.findAll();
+  //let institutions = await Query.Institution.findAll();
   let submittedApplication = await Query.Application.findBySubmitted();
   let app = await Query.Application.findByUser(req.user.id);
-  let allApplications = await Query.Application.findAll();
+  //let allApplications = await Query.Application.findAll();
   let users = await Query.User.findAll();
   res.render("dashboard", {
     layout: "layoutDashboard.handlebars",
-    instLim: institutions,
-    courses: courses.length,
+    //instLim: institutions,
+    //courses: courses.length,
     submitted: submittedApplication,
-    institutions: institutions.length,
+    //institutions: institutions.length,
     users: users.length,
-    apply: allApplications,
+    //apply: allApplications,
     app: app
   });
   // });
