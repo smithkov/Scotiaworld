@@ -1,0 +1,557 @@
+<!-- Waves Effect Css -->
+
+<section class="content">
+  <!-- Advanced Form Example With Validation -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+      <div class="header">
+        <h2>Application Form</h2>
+      </div>
+      <div class="body table-responsive">
+        <table cellspacing="0" cellpadding="0" class="table">
+
+          <tbody>
+            <tr class="active">
+              <th scope="row">First name:</th>
+              <td><input id="1" disabled name="firstname" value="{{app.firstname}}" class="form-control" /></td>
+            </tr>
+            {{#if app.middlename}}
+            <tr class="active">
+              <th scope="row">Middle name:</th>
+              <td><input id="100" disabled name="middlename" value="{{app.middlename}}" class="form-control" /></td>
+
+            </tr>
+            {{/if}}
+            <tr class="active">
+              <th scope="row">Last name:</th>
+              <td><input id="2" disabled name="lastname" value="{{app.lastname}}" class="form-control" /></td>
+            </tr>
+            <tr class="active">
+              <th scope="row">Nationality:</th>
+              <td>
+                <select id="3" disabled class='form-control show-tick' name="countryId" required>
+                  <option value='{{app.countryId}}'>
+                    {{#if app.countryId}}
+                    {{app.Country.name}}
+                    {{else}}
+                    --Select Nationality--
+                    {{/if}}
+                  </option>
+                  {{#each countries}}
+                  <option value='{{this.id}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">Date of birth:</th>
+              <td><input id="4" disabled name="dob" value="{{app.dob}}" class="form-control" /></td>
+            </tr>
+            <tr class="active">
+              <th scope="row">Gender:</th>
+              <td><select id="5" disabled class='form-control show-tick' name="gender" required>
+                  <option value='{{app.gender}}'>
+                    {{#if app.gender}}
+                    {{app.gender}}
+                    {{else}}
+                    --Select Gender--
+                    {{/if}}
+
+                  </option>
+                  <option value='Male'>Male</option>
+                  <option value='Female'>Female</option>
+                </select>
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">Marital staus:</th>
+              <td>
+                <select id="6" disabled class='form-control show-tick' name="marital" required>
+                  <option value='{{app.marital}}'>
+                    {{#if app.marital}}
+                    {{app.marital}}
+                    {{else}}
+                    --Select Marital Status--
+                    {{/if}}
+                  </option>
+                  <option value='Married'>Married</option>
+                  <option value='Single'>Single</option>
+                </select>
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">Home Address:</th>
+              <td>
+                <textarea id="7" disabled name="homeAddress" cols="30" rows="3" placeholder="home address"
+                  class="form-control no-resize">{{app.homeAddress}}</textarea>
+              </td>
+
+            </tr>
+            {{#if app.postalAddress}}
+            <tr class="active">
+              <th scope="row">Postal address:</th>
+              <td>
+                <textarea id="8" disabled name="postalAddress" cols="30" rows="3" placeholder="postal address"
+                  class="form-control no-resize">{{app.postalAddress}}</textarea>
+              </td>
+
+            </tr>
+            {{/if}}
+            <tr class="active">
+              <th scope="row">Phone number:</th>
+              <td>
+                <input id="9" disabled type="text" name="phone" value="{{app.phone}}"
+                  class="form-control mobile-phone-number" placeholder="Ex: +00 (000) 000-00-00" required>
+              </td>
+
+            </tr>
+
+
+            <tr class="active">
+              <th scope="row">Highest qualification:</th>
+              <td>
+                <select id="10" disabled class='form-control' name="hQualification" required>
+                  <option value='{{app.hQualification}}'>
+
+                    {{#if app.hQualification}}
+                    {{app.hQualification}}
+                    {{else}}
+                    --Select Highest Qualification--
+                    {{/if}}
+
+                  </option>
+                  {{#each quali}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">Grade:</th>
+              <td>
+                <input id="11" disabled name="hGrade" value="{{app.hGrade}}" class="form-control" type="text" required>
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">School name:</th>
+              <td>
+                <input id="12" disabled name="hSchoolName" value="{{app.hSchoolName}}" class="form-control" type="text"
+                  required>
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">Has completed? :</th>
+              <td>
+                <select id="13" disabled class='form-control' name="hCompleted" required>
+                  <option value='{{app.hCompleted}}'>
+                    {{#if app.hCompleted}}
+                    {{app.hCompleted}}
+                    {{else}}
+                    --Programme Completed?--
+                    {{/if}}
+
+                  </option>
+                  <option value='Yes'>Yes</option>
+                  <option value='No'>No</option>
+                </select>
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">Programme year:</th>
+              <td>
+                <select id="14" disabled class='form-control' name="hProgrammeYear" required>
+                  <option value='{{app.hProgrammeYear}}'>
+                    {{#if app.hProgrammeYear}}
+                    {{app.hProgrammeYear}}
+                    {{else}}
+                    --Select Programme Year--
+                    {{/if}}
+
+                  </option>
+                  {{#each year}}
+                  <option value='{{this}}'>{{this}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            {{#if app.pQualification.name}}
+            <tr class="active">
+              <th scope="row">Previous qualification:</th>
+              <td>
+                <select id="15" disabled class='form-control' name="pQualification">
+                  <option value='{{app.pQualification}}'>
+                    {{#if app.pQualification}}
+                    {{app.pQualification}}
+                    {{else}}
+                    --Select Previous Qualification--
+                    {{/if}}
+
+                  </option>
+                  {{#each quali}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+
+
+            <tr class="active">
+              <th scope="row">Grade:</th>
+              <td>
+                <input id="16" disabled name="pGrade" value="{{app.pGrade}}" class="form-control" type="text">
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">School name:</th>
+              <td>
+                <input id="17" disabled name="pSchoolName" value="{{app.pSchoolName}}" class="form-control" type="text">
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">Programme completed?:</th>
+              <td>
+                <select id="18" disabled class='form-control' name="pCompleted">
+                  <option value='{{app.pCompleted}}'>
+                    {{#if app.pCompleted}}
+                    {{app.pCompleted}}
+                    {{else}}
+                    --Select Programme Completed?--
+                    {{/if}}
+
+                  </option>
+                  <option value='Yes'>Yes</option>
+                  <option value='No'>No</option>
+                </select>
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">Programme year:</th>
+              <td>
+                <select id="19" disabled class='form-control' name="pProgrammeYear">
+                  <option value='{{app.pProgrammeYear}}'>
+                    {{#if app.pProgrammeYear}}
+                    {{app.pProgrammeYear}}
+                    {{else}}
+                    --Select Programme Year--
+                    {{/if}}
+
+                  </option>
+                  {{#each year}}
+                  <option value='{{this}}'>{{this}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+
+            {{#if app.highSchoolName}}
+            <tr class="active">
+              <th scope="row">High school name:</th>
+              <td>
+                <input id="20" disabled name="highSchoolName" value="{{app.highSchoolName}}" class="form-control"
+                  type="text">
+              </td>
+
+            </tr>
+            <tr class="active">
+              <th scope="row">Year of completion:</th>
+              <td>
+                <select id="21" disabled class='form-control' name="completionYr">
+                  <option value='{{app.completionYr}}'>
+                    {{#if app.completionYr}}
+                    {{app.completionYr}}
+                    {{else}}
+                    --Select Year of Completion--
+                    {{/if}}
+                  </option>
+                  {{#each year}}
+                  <option value='{{this}}'>{{this}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+            {{#if app.englishTest}}
+            <tr class="active">
+              <th scope="row">English proficiency test:</th>
+              <td>
+                <select id="22" disabled class='form-control' name="englishTest">
+                  <option value='{{app.englishTest}}'>
+                    {{#if app.englishTest}}
+                    {{app.englishTest}}
+                    {{else}}
+                    --Select English proficiency Test--
+                    {{/if}}
+                  </option>
+                  <option value='IELTS'>IELTS</option>
+                  <option value='TOEFL'>TOEFL</option>
+                  <option value='PTE'>PTE</option>
+                  <option value='NONE'>NONE</option>
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+
+            {{#if app.course1}}
+            <tr class="active">
+              <th scope="row">Course of interest (first choice):</th>
+              <td>
+                <select id="23" disabled class='form-control' name="course1" required>
+                  <option value='{{app.course1}}'>
+                    {{#if app.course1}}
+                    {{app.course1}}
+                    {{else}}
+                    --Select Course of Interest--
+                    {{/if}}
+                  </option>
+                  {{#each courses}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+
+            {{#if app.course2}}
+            <tr class="active">
+              <th scope="row">Course of interest (second choice):</th>
+              <td>
+                <select id="24" disabled class='form-control' name="course2" required>
+                  <option value='{{app.course2}}'>
+                    {{#if app.course2}}
+                    {{app.course2}}
+                    {{else}}
+                    --Select Course of Interest--
+                    {{/if}}
+                  </option>
+                  {{#each courses}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+
+            {{#if app.level}}
+            <tr class="active">
+              <th scope="row">Programme level:</th>
+              <td>
+                <select id="25" disabled class='form-control' name="level" required>
+                  <option value='{{app.level}}'>
+                    {{#if app.level}}
+                    {{app.level}}
+                    {{else}}
+                    --Programme Level--
+                    {{/if}}
+                  </option>
+                  {{#each quali}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+
+            {{#if app.City.name}}
+            <tr class="active">
+              <th scope="row">Preffered location in Scotland:</th>
+              <td>
+                <select id="26" disabled class='form-control' name="cityOfChoice" required>
+                  <option value='{{app.cityId}}'>
+                    {{#if app.cityId}}
+                    {{app.City.name}}
+                    {{else}}
+                    --Preffere Location--
+                    {{/if}}
+                  </option>
+                  {{#each cities}}
+                  <option value='{{this.id}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+
+            {{#if app.schoolWish1}}
+            <tr class="active">
+              <th scope="row">Preffered institution (first choice):</th>
+              <td>
+                <select id="27" disabled class='form-control' name="schoolWish1" required>
+                  <option value='{{app.schoolWish1}}'>
+                    {{#if app.schoolWish1}}
+                    {{app.schoolWish1}}
+                    {{else}}
+                    --Select School--
+                    {{/if}}
+                  </option>
+                  {{#each institutions}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+
+            {{#if app.schoolWish2}}
+            <tr class="active">
+              <th scope="row">Preffered institution (second choice):</th>
+              <td>
+                <select id="28" disabled class='form-control' name="schoolWish2" required>
+                  <option value='{{app.schoolWish2}}'>
+                    {{#if app.schoolWish2}}
+                    {{app.schoolWish2}}
+                    {{else}}
+                    --Select School--
+                    {{/if}}
+                  </option>
+                  {{#each institutions}}
+                  <option value='{{this.name}}'>{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+            {{#if app.sponsor}}
+            <tr class="active">
+              <th scope="row">Sponsorship:</th>
+              <td>
+                <select id="29" disabled name="sponsor" class="form-control" required>
+                  <option value='{{app.sponsor}}'>
+                    {{#if app.sponsor}}
+                    {{app.sponsor}}
+                    {{else}}
+                    --Select Sponsor--
+                    {{/if}}
+                  </option>
+                  <option value="Self-sponsored">Self-sponsored</option>
+                  <option value="Parents">Parents</option>
+                  <option value="Other relatives">Other relatives</option>
+                  <option value="Employer">Employer</option>
+                  <option value="Scholarship">Scholarship</option>
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+            {{#if app.sponsorName}}
+            <tr class="active">
+              <th scope="row">Sponsor's name:</th>
+              <td>
+                <input id="30" disabled name="sponsorName" value="{{app.sponsorName}}" class="form-control" type="text"
+                  required>
+              </td>
+
+            </tr>
+            {{/if}}
+            {{#if app.sponsorOccupation}}
+            <tr class="active">
+              <th scope="row">Sponsor's occupation:</th>
+              <td>
+                <input id="31" disabled name="sponsorOccupation" value="{{app.sponsorOccupation}}" class="form-control"
+                  type="text" required>
+              </td>
+
+            </tr>
+            {{/if}}
+            {{#if app.budget}}
+            <tr class="active">
+              <th scope="row">Your budget for tuition fees:</th>
+              <td>
+                <input id="32" disabled name="budget" value="{{app.budget}}" class="form-control" type="text">
+              </td>
+
+            </tr>
+            {{/if}}
+            {{#if app.hasApplied}}
+            <tr class="active">
+              <th scope="row">Have you applied for a visa?:</th>
+              <td>
+                <select id="33" disabled class='form-control' name="hasApplied" required>
+                  <option value='{{app.hasApplied}}'>
+                    {{#if app.hasApplied}}
+                    {{app.hasApplied}}
+                    {{else}}
+                    --Select one of the options--
+                    {{/if}}
+
+                  </option>
+                  <option value='Yes'>Yes</option>
+                  <option value='No'>No</option>
+                </select>
+              </td>
+
+            </tr>
+            {{/if}}
+            {{#if app.purpose}}
+            <tr class="active">
+              <th scope="row">Travel purpose:</th>
+              <td>
+                <textarea id="34" disabled cols="30" rows="3" name="purpose"
+                  class="form-control">{{app.purpose}}</textarea>
+              </td>
+
+            </tr>
+            {{/if}}
+            {{#if app.reasonOfRefusal}}
+            <tr class="active">
+              <th scope="row">Purpose of denial:</th>
+              <td>
+                <textarea id="35" disabled cols="30" rows="3" name="reasonOfRefusal"
+                  class="form-control">{{app.reasonOfRefusal}}</textarea>
+              </td>
+
+            </tr>
+            {{/if}}
+            {{#if app.reasonOfRefusal}}
+            <tr class="active">
+              <th scope="row">More Information:</th>
+              <td>
+                <textarea id="36" disabled cols="30" rows="3" cols="30" name="moreInfo"
+                  class="form-control">{{app.moreInfo}}</textarea>
+              </td>
+
+            </tr>
+            {{/if}}
+
+            <tr class="active">
+              <th scope="row">Credential(s):</th>
+              <td>
+                <embed src="/credentials/{{app.credential}}" type="application/pdf" width="100%" height="600px" />
+                {{!-- <div class="demo-google-material-icon"> <a href="/credentials/{{app.credential}}"><i
+                        class="material-icons">attach_file</i> <span class="icon-name"></span>{{app.credential}}</a>
+                  </div> --}}
+
+              </td>
+
+            </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <!-- #END# Advanced Form Example With Validation -->
+</section>

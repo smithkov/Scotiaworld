@@ -8,6 +8,7 @@ var config = require("../my_modules/config");
 var bcrypt = require("bcryptjs");
 var Query = require("../queries/query");
 let jwt = require("jsonwebtoken");
+let defaultImage = "no_photo.jpg";
 require("dotenv").config();
 let middleware = require("../middleware");
 
@@ -27,20 +28,23 @@ const verifyUrl = url + verifyPath;
 const forgotPasswordUrl = url + "/resetPassword/";
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
-var OneSignal = require('onesignal-node');
+var OneSignal = require("onesignal-node");
 
 var myClient = new OneSignal.Client({
-  userAuthKey: 'MTlhOGVmNWEtNGU2MC00ZTdiLWI4MzMtZTllZDJmMjdhNjQw',
-  // note that "app" must have "appAuthKey" and "appId" keys      
-  app: { appAuthKey: 'OWNjNDg3YzMtMTkzYi00MWZlLTgzNWQtMThlNzlhOGQwNzVm', appId: '0bf3e865-0144-4221-a007-94c89b37ac63' }
+  userAuthKey: "MTlhOGVmNWEtNGU2MC00ZTdiLWI4MzMtZTllZDJmMjdhNjQw",
+  // note that "app" must have "appAuthKey" and "appId" keys
+  app: {
+    appAuthKey: "OWNjNDg3YzMtMTkzYi00MWZlLTgzNWQtMThlNzlhOGQwNzVm",
+    appId: "0bf3e865-0144-4221-a007-94c89b37ac63"
+  }
 });
 
 // Register
-router.get("/register", function (req, res) {
+router.get("/register", function(req, res) {
   res.render("register");
 });
 
-router.get("/photo", ensureAuthenticated, function (req, res) {
+router.get("/photo", ensureAuthenticated, function(req, res) {
   let photo = config.photoChooser(req.user.photo);
   let user = req.user;
   user.photo = photo;
@@ -51,26 +55,31 @@ router.get("/photo", ensureAuthenticated, function (req, res) {
 });
 
 // Login
-router.get(config.login, recaptcha.middleware.render, function (req, res) {
-  var firstNotification = new OneSignal.Notification({
-    contents: {
-      en: "Test notification",
-      tr: "Test mesajı"
-    },
-    contents: { "en": "Old content" },
-    included_segments: ["Active Users", "Inactive Users"]
-  });
-  myClient.sendNotification(firstNotification, function (err, httpResponse, data) {
-    if (err) {
-      console.log('Something went wrong...');
-    } else {
-      console.log(data, httpResponse.statusCode);
-    }
-  });
-  res.render("login", { captcha: res.recaptcha });
+router.get(config.login, recaptcha.middleware.render, function(req, res) {
+  // var firstNotification = new OneSignal.Notification({
+  //   contents: {
+  //     en: "Test notification",
+  //     tr: "Test mesajı"
+  //   },
+  //   contents: { en: "Old content" },
+  //   included_segments: ["Active Users", "Inactive Users"]
+  // });
+  // myClient.sendNotification(firstNotification, function(
+  //   err,
+  //   httpResponse,
+  //   data
+  // ) {
+  //   if (err) {
+  //     console.log("Something went wrong...");
+  //   } else {
+  //     console.log(data, httpResponse.statusCode);
+  //   }
+  // });
+  if (req.user) res.redirect("/dashboard");
+  else res.render("login", { captcha: res.recaptcha });
 });
 
-router.post("/photo", config.photo.single("file"), async function (req, res) {
+router.post("/photo", config.photo.single("file"), async function(req, res) {
   var id = req.body.userId;
   var filename = null;
 
@@ -96,15 +105,15 @@ router.post(
     failureRedirect: config.loginRedirect,
     failureFlash: true
   }),
-  function (req, res, next) {
+  function(req, res, next) {
     res.redirect("/dashboard");
   }
 );
 
-router.post("/mobileLogin", async function (req, res) {
+router.post("/mobileLogin", async function(req, res) {
   let username = req.body.username;
   let password = req.body.password;
-  User.findOne({ where: { username: username } }).then(async function (user) {
+  User.findOne({ where: { username: username } }).then(async function(user) {
     if (user) {
       var passwordIsValid = bcrypt.compareSync(password, user.password);
       if (passwordIsValid) {
@@ -131,7 +140,7 @@ router.post("/mobileLogin", async function (req, res) {
     }
   });
 });
-router.post("/mobileRegister", async function (req, res) {
+router.post("/mobileRegister", async function(req, res) {
   var email = req.body.email;
   var username = req.body.username;
   var password = req.body.password;
@@ -148,11 +157,11 @@ router.post("/mobileRegister", async function (req, res) {
   let mailExist = await User.findOne({ where: { email: email } });
   let userExist = await User.findOne({ where: { username: username } });
   if (!mailExist && !userExist) {
-    bcrypt.genSalt(4, function (err, salt) {
-      bcrypt.hash(newUser.password, salt, function (err, hash) {
+    bcrypt.genSalt(4, function(err, salt) {
+      bcrypt.hash(newUser.password, salt, function(err, hash) {
         newUser.password = hash;
         // create that user as no one by that username exists
-        User.create(newUser).then(function (user) {
+        User.create(newUser).then(function(user) {
           if (user) {
             let token = jwt.sign({ username: username }, process.env.secret, {
               expiresIn: "24h" // expires in 24 hours
@@ -175,8 +184,7 @@ router.post("/mobileRegister", async function (req, res) {
       message: "Email already exist!",
       token: null
     });
-  }
-  else if (userExist) {
+  } else if (userExist) {
     res.json({
       success: false,
       message: "Username already exist!",
@@ -184,7 +192,7 @@ router.post("/mobileRegister", async function (req, res) {
     });
   }
 });
-router.post("/mobileChangePassword", async function (req, res) {
+router.post("/mobileChangePassword", async function(req, res) {
   let isError = false;
   let username = req.body.username;
   let oldPassword = req.body.oldPassword;
@@ -195,13 +203,12 @@ router.post("/mobileChangePassword", async function (req, res) {
   if (userExist) {
     let passwordIsValid = bcrypt.compareSync(oldPassword, userExist.password);
     if (passwordIsValid) {
-      bcrypt.genSalt(4, function (err, salt) {
-        bcrypt.hash(newPassword, salt, function (err, hash) {
+      bcrypt.genSalt(4, function(err, salt) {
+        bcrypt.hash(newPassword, salt, function(err, hash) {
           var newUser = {
             id: userExist.id,
             username: userExist.username,
-            password: hash,
-            roleId: false
+            password: hash
           };
 
           Query.User.update(newUser, newUser.id).then(update => {
@@ -218,6 +225,44 @@ router.post("/mobileChangePassword", async function (req, res) {
     res.json(response(isError));
   }
 });
+
+router.post("/change-Password", ensureAuthenticated, async function(req, res) {
+  let oldPass = req.body.oldPass;
+  let newPass = req.body.newPass;
+  let newPass2 = req.body.newPass2;
+  let username = req.user.username;
+
+  //checking for email and username are already taken
+  if (newPass === newPass2) {
+    let userExist = await User.findOne({ where: { username: username } });
+    if (userExist) {
+      let passwordIsValid = bcrypt.compareSync(oldPass, userExist.password);
+      if (passwordIsValid) {
+        bcrypt.genSalt(4, function(err, salt) {
+          bcrypt.hash(newPass, salt, function(err, hash) {
+            var newUser = {
+              id: userExist.id,
+              password: hash
+            };
+
+            Query.User.update(newUser, newUser.id).then(update => {
+              //res.json(response(isError));
+            });
+          });
+        });
+        req.flash("success_msg", "Password changed successfully.");
+      } else {
+        req.flash("error_msg", "Old password is not correct");
+      }
+    } else {
+      req.flash("error_msg", "Something went wrong.");
+    }
+  } else {
+    req.flash("error_msg", "New password and re-type password do not match.");
+  }
+
+  res.redirect("/user/change-password");
+});
 function response(isError) {
   return {
     error: isError,
@@ -227,7 +272,12 @@ function response(isError) {
     token: null
   };
 }
-router.post("/register", async function (req, res) {
+
+router.get("/logout", function(req, res) {
+  req.logout();
+  res.redirect(config.loginRedirect);
+});
+router.post("/register", async function(req, res) {
   var email = req.body.email;
   var username = req.body.username;
   var password = req.body.password;
@@ -243,11 +293,11 @@ router.post("/register", async function (req, res) {
   let mailExist = await User.findOne({ where: { email: email } });
   let userExist = await User.findOne({ where: { username: username } });
   if (!mailExist && !userExist) {
-    bcrypt.genSalt(4, function (err, salt) {
-      bcrypt.hash(newUser.password, salt, function (err, hash) {
+    bcrypt.genSalt(4, function(err, salt) {
+      bcrypt.hash(newUser.password, salt, function(err, hash) {
         newUser.password = hash;
         // create that user as no one by that username exists
-        User.create(newUser).then(function (user) {
+        User.create(newUser).then(function(user) {
           if (user) {
             req.flash("success_msg", "You are registered and can now login");
             res.redirect(config.loginRedirect);
@@ -265,30 +315,30 @@ router.post("/register", async function (req, res) {
 });
 
 passport.use(
-  new LocalStrategy(function (username, password, done) {
-    User.findOne({ where: { username: username } }).then(user => {
-      if (!user) {
-        return done(null, false, { message: "Unknown User" });
-      }
+  new LocalStrategy(async function(username, password, done) {
+    let user = await Query.User.findByUsername(username);
 
-      Query.comparePassword(password, user.password, function (err, isMatch) {
-        if (err) throw err;
-        if (isMatch) {
-          return done(null, user);
-        } else {
-          return done(null, false, { message: "Invalid password" });
-        }
-      });
+    if (!user) {
+      return done(null, false, { message: "Unknown User" });
+    }
+
+    Query.comparePassword(password, user.password, function(err, isMatch) {
+      if (err) throw err;
+      if (isMatch) {
+        return done(null, user);
+      } else {
+        return done(null, false, { message: "Invalid password" });
+      }
     });
   })
 );
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
-  User.findByPk(id).then(user => {
+passport.deserializeUser(function(id, done) {
+  Query.User.findById(id).then(user => {
     done(null, user);
   });
 });
@@ -309,14 +359,6 @@ function captchaVerificationRegister(req, res, next) {
     return next();
   }
 }
-
-router.get("/logout", function (req, res) {
-  req.logout();
-
-  req.flash("success_msg", "You are logged out");
-
-  res.redirect(config.loginRedirect);
-});
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -350,7 +392,6 @@ router.post("/sendAdminMessage", async (req, res) => {
     } else {
       isError = true;
     }
-
   } catch (err) {
     console.log(err);
     isError = true;
@@ -375,11 +416,26 @@ router.post("/markAsRead", async (req, res) => {
   }
 
   return res.send({
-
     error: isError
   });
 });
+//get sent messages for web users
+router.get("/sentMessages", ensureAuthenticated, async (req, res) => {
+  var message = await Query.Mail.findSentMessages(req.user.id);
 
+  var newMessages = [];
+  for (var i = 0; message.length > i; i++) {
+    message[i].senderName = req.user.username;
+    newMessages.push(message[i]);
+  }
+
+  res.render("sentMessage", {
+    layout: "layoutDashboard.handlebars",
+    user: req.user,
+    data: newMessages
+  });
+});
+//get sent messages for mobile users
 router.post("/getSentMessages", async (req, res) => {
   let isError = false;
   let senderId = req.body.userId;
@@ -390,6 +446,78 @@ router.post("/getSentMessages", async (req, res) => {
     data: getMessage
   });
 });
+
+//this is get route for creating a new message
+router.get("/compose", ensureAuthenticated, async function(req, res, next) {
+  res.render("compose", {
+    layout: "layoutDashboard.handlebars",
+    user: req.user
+  });
+
+  //  res.render('list',{layout: 'layoutDashboard.handlebars',entity:entityName});
+});
+//this route basically gets messages by user for web app users
+router.get("/inbox", ensureAuthenticated, async function(req, res, next) {
+  let message = await Query.Mail.findByUserId(req.user);
+  var newMessages = [];
+  for (var i = 0; message.length > i; i++) {
+    let user = await Query.User.findById(message[i].senderId);
+    message[i].senderPhoto = user.photo ? user.photo : defaultImage;
+    message[i].senderName = user.username;
+    newMessages.push(message[i]);
+  }
+
+  res.render("inbox", {
+    layout: "layoutDashboard.handlebars",
+    user: req.user,
+    data: newMessages
+  });
+
+  //  res.render('list',{layout: 'layoutDashboard.handlebars',entity:entityName});
+});
+
+router.get("/myAccount", ensureAuthenticated, async function(req, res, next) {
+  res.render("account", {
+    layout: "layoutDashboard.handlebars",
+    user: req.user
+  });
+
+  //  res.render('list',{layout: 'layoutDashboard.handlebars',entity:entityName});
+});
+
+router.get("/change-Password", ensureAuthenticated, async function(
+  req,
+  res,
+  next
+) {
+  res.render("changePassword", {
+    layout: "layoutDashboard.handlebars",
+    user: req.user
+  });
+});
+
+//this route basically gets messages by user for web app users
+router.get("/inbox-view/:id/:sender", ensureAuthenticated, async function(
+  req,
+  res,
+  next
+) {
+  let messageId = req.params.id;
+  let sender = req.params.sender;
+  if (!messageId) throw new Error("The message may have been deleted!");
+
+  letGetMessageById = await Query.Mail.findById(messageId);
+
+  res.render("inbox-read", {
+    layout: "layoutDashboard.handlebars",
+    user: req.user,
+    senderName: sender,
+    message: letGetMessageById
+  });
+
+  //  res.render('list',{layout: 'layoutDashboard.handlebars',entity:entityName});
+});
+//this gets messages by user for mobile app users.
 router.post("/getMessageByUser", async (req, res) => {
   let isError = false;
   let user = req.body.user;
@@ -398,28 +526,22 @@ router.post("/getMessageByUser", async (req, res) => {
   var newMessages = [];
   for (var i = 0; message.length > i; i++) {
     let user = await Query.User.findById(message[i].senderId);
-    message[i].senderPhoto = user.photo;
+    message[i].senderPhoto = user.photo ? user.photo : defaultImage;
     message[i].senderName = user.username;
 
-    console.log(message[i].senderPhoto)
-    newMessages.push(message[i])
-
+    console.log(message[i].senderPhoto);
+    newMessages.push(message[i]);
   }
-
-
   return res.send({
     data: newMessages
   });
-
-
-
 });
 //Admin sends message to users
 router.post("/sendMessage", async (req, res) => {
   let message = req.body.message.trim();
   let subject = req.body.subject.trim();
-  let recipient = req.body.recipient.trim();
-  let userId = req.body.userId;
+  let recipient = req.body.recipient;
+  let senderId = req.body.userId;
 
   let isAllUsers = req.body.isAllUsers;
   let isError = false;
@@ -427,7 +549,7 @@ router.post("/sendMessage", async (req, res) => {
     message: message,
     subject: subject,
     hasRead: false,
-    senderId: req.user.id,
+    senderId: senderId,
     hasReadAdmin: true,
     hasDelete: false
   };
@@ -453,7 +575,7 @@ router.post("/sendMessage", async (req, res) => {
   });
 });
 
-router.get("/all", function (req, res, next) {
+router.get("/all", ensureAuthenticated, function(req, res, next) {
   // if(req.user.roleId){
   //   StudyArea.getAll(function(err,data){
   //     if(err){

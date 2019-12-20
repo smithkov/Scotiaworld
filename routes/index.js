@@ -10,10 +10,10 @@ var Logo = require("../models").Logo;
 var Banner = require("../models").Banner;
 var config = require("../my_modules/config");
 const bestSelling = "BEST SELLING COURSES";
-router.get("/", async function (req, res) {
-  let courses = await Query.Course.findAll();
+router.get("/", async function(req, res) {
+  //let courses = await Query.Course.findAll();
 
-  let studyAreas = await Query.StudyArea.findAll();
+  //let studyAreas = await Query.StudyArea.findAll();
 
   let populars = await Query.Course.findByPopular();
   let cities = await Query.City.findAll();
@@ -23,10 +23,10 @@ router.get("/", async function (req, res) {
   let banner = await Query.Banner.activeBanners();
   res.render("index", {
     banner: banner,
-    courses: courses.length,
+    //courses: courses.length,
     institutions: institutions.length,
     schools: institutions,
-    faculties: studyAreas.length,
+    //faculties: studyAreas.length,
     city: cities.length,
     best: bestSelling,
     data: populars
@@ -40,7 +40,15 @@ function uniq(a) {
 function getSchoolAndFaculty() {
   return schoolArray;
 }
+router.post("/courseListingMobile",async function(req,res,next){
+let offset = req.body.offsetData;
+let limit = req.body.limitData;
+let searchParam = req.body.searchParam;
 
+let course = await Query.Course.findPaginated(offset,limit,searchParam);
+
+res.send({data:course})
+})
 router.get("/schools", async (req, res) => {
   var schoolArray = [];
   var schools = await Query.Institution.findAll();
@@ -59,7 +67,6 @@ router.get("/schools", async (req, res) => {
       let course = await Query.Course.findByInstitutionId(schools[i].id);
 
       for (var j = 0; j < course.length; j++) {
-
         fac.push(course[j].StudyArea.id);
       }
       let filterIds = uniq(fac);
@@ -141,7 +148,6 @@ router.get("/schoolsMobile", async (req, res) => {
       schools[i].id
     );
     if (getSurrogateFaculty.length > 0) {
-
       getSurrogateFaculty.forEach(school => {
         fac.push(school);
       });
@@ -150,7 +156,6 @@ router.get("/schoolsMobile", async (req, res) => {
 
     fac = [];
   }
-
 
   return res.send({
     auth: false,
@@ -168,9 +173,9 @@ router.get("/schoolsMobile", async (req, res) => {
 //   });
 // });
 
-router.get("/institutions", function (req, res) {
-  Query.Course.findByPopular().then(function (populars) {
-    Query.Course.findAll().then(function (course) {
+router.get("/institutions", function(req, res) {
+  Query.Course.findByPopular().then(function(populars) {
+    Query.Course.findAll().then(function(course) {
       res.render("institutions", {
         data: reduceArray(populars),
         best: bestSelling
@@ -179,7 +184,7 @@ router.get("/institutions", function (req, res) {
   });
 });
 
-router.get("/compare-fees", async function (req, res) {
+router.get("/compare-fees", async function(req, res) {
   let populars = await Query.Course.findByPopular();
   let courses = await Query.Course.findAll();
   let degreeTypes = await Query.DegreeType.findAll();
@@ -202,7 +207,7 @@ function reduceArray(arr) {
   }
   return newArr;
 }
-router.get("/courses", async function (req, res) {
+router.get("/courses", async function(req, res) {
   let populars = await Query.Course.findByPopular();
   let courses = await Query.Course.findAll();
   res.render("course", {
@@ -212,14 +217,14 @@ router.get("/courses", async function (req, res) {
   });
 });
 
-router.get("/getCourses", async function (req, res) {
+router.get("/getCourses", async function(req, res) {
   let courses = await Query.Course.findAll();
   return res.send({
     data: courses
   });
 });
 
-router.get("/dropDown", async function (req, res) {
+router.get("/dropDown", async function(req, res) {
   let faculty = await Query.StudyArea.findAll();
   let degreeTypes = await Query.DegreeType.findAll();
   let cities = await Query.City.findAll();
@@ -234,7 +239,7 @@ router.get("/dropDown", async function (req, res) {
   });
 });
 
-router.post("/courseSearch", async function (req, res) {
+router.post("/courseSearch", async function(req, res) {
   let degreeId = req.body.degreeId;
   let facultyId = req.body.facultyId;
   let institutionId = req.body.institutionId;
@@ -249,7 +254,7 @@ router.post("/courseSearch", async function (req, res) {
   });
 });
 
-router.post("/popular", async function (req, res) {
+router.post("/popular", async function(req, res) {
   let degreeId = req.body.degreeId;
   let facultyId = req.body.facultyId;
   let institutionId = req.body.institutionId;
@@ -263,10 +268,10 @@ router.post("/popular", async function (req, res) {
   });
 });
 
-router.get("/popular-Courses", async function (req, res) {
+router.get("/popular-Courses", async function(req, res) {
   res.render("popular");
 });
-router.post("/compareFee", async function (req, res) {
+router.post("/compareFee", async function(req, res) {
   let institutionId = req.body.institutionId1;
   let institutionId2 = req.body.institutionId2;
   let facultyId = req.body.facultyId;
@@ -287,7 +292,7 @@ router.post("/compareFee", async function (req, res) {
   });
 });
 
-router.post("/compareFeeSingle", async function (req, res) {
+router.post("/compareFeeSingle", async function(req, res) {
   let institutionId = req.body.institutionId;
   let facultyId = req.body.facultyId;
   let pageNext = req.body.pageNext;
@@ -305,7 +310,7 @@ router.post("/compareFeeSingle", async function (req, res) {
   });
 });
 
-router.get("/about", async function (req, res) {
+router.get("/about", async function(req, res) {
   // let course = await Query.Course.findAll();
   // for (var i = 0; i < course.length; i++) {
   //   console.log(i);
@@ -322,7 +327,7 @@ router.get("/about", async function (req, res) {
   res.render("about", { data: reduceArray(populars), best: bestSelling });
 });
 
-router.get("/pre-departure", async function (req, res) {
+router.get("/pre-departure", async function(req, res) {
   let desc = "Pre-Departure Guideline";
   let populars = await Query.Course.findByPopular();
   let departure = await Query.Departure.findAll();
@@ -334,9 +339,9 @@ router.get("/pre-departure", async function (req, res) {
   });
 });
 
-router.get("/visa-application-guideline", function (req, res) {
+router.get("/visa-application-guideline", function(req, res) {
   let desc = "Visa Application Guideline";
-  Query.Guideline.findAll().then(function (guide) {
+  Query.Guideline.findAll().then(function(guide) {
     res.render("richTextTemp", {
       app: guide[0],
       description: desc
@@ -345,19 +350,19 @@ router.get("/visa-application-guideline", function (req, res) {
 });
 
 router.get("/why-us", (req, res) => {
-  Query.Course.findByPopular().then(function (populars) {
+  Query.Course.findByPopular().then(function(populars) {
     res.render("whyChoose", { data: reduceArray(populars), best: bestSelling });
   });
 });
 
 router.get("/contact-us", (req, res) => {
-  Query.Course.findByPopular().then(function (populars) {
+  Query.Course.findByPopular().then(function(populars) {
     res.render("contactUs", { data: reduceArray(populars), best: bestSelling });
   });
 });
 
 router.get("/scholarship", (req, res) => {
-  Query.Course.findByPopular().then(function (populars) {
+  Query.Course.findByPopular().then(function(populars) {
     res.render("scholarship", {
       data: reduceArray(populars),
       best: bestSelling
@@ -366,11 +371,25 @@ router.get("/scholarship", (req, res) => {
 });
 
 router.get("/about-scotland", (req, res) => {
-  Query.Course.findByPopular().then(function (populars) {
+  Query.Course.findByPopular().then(function(populars) {
     res.render("aboutScotland", {
       data: reduceArray(populars),
       best: bestSelling
     });
+  });
+});
+
+router.get("/checklist", ensureAuthenticated, (req, res) => {
+  res.render("checklist", {
+    layout: "layoutDashboard.handlebars",
+    user: req.user
+  });
+});
+
+router.get("/help", ensureAuthenticated, (req, res) => {
+  res.render("help", {
+    layout: "layoutDashboard.handlebars",
+    user: req.user
   });
 });
 
@@ -385,7 +404,7 @@ router.get("/detail/:school/:course/:id", async (req, res) => {
   });
 });
 
-router.get("/school-courses/:name/:_id", async function (req, res, next) {
+router.get("/school-courses/:name/:_id", async function(req, res, next) {
   let populars, institutions;
   let Schoolname = req.params.name;
   let id = req.params._id;
@@ -400,11 +419,11 @@ router.get("/school-courses/:name/:_id", async function (req, res, next) {
   });
 });
 
-router.get("/school-faculties/:name/:_id", async function (req, res, next) {
+router.get("/school-faculties/:name/:_id", async function(req, res, next) {
   let facultyName = req.params.name;
   let id = req.params._id;
 
-  Query.Course.findByPopular().then(async function (populars) {
+  Query.Course.findByPopular().then(async function(populars) {
     let courseByInstitution = await Query.Course.findByInstitutionId(id);
     let InstitutionById = await Query.Institution.findById(id);
     var faculty = [];
@@ -480,23 +499,75 @@ router.get("/faculty/:_id/:schoolId", async (req, res) => {
   });
 });
 
-router.get("/dashboard", ensureAuthenticated, async function (req, res) {
+router.get("/dashboard", ensureAuthenticated, async function(req, res) {
   //let courses = await Query.Course.findAll();
   //let institutions = await Query.Institution.findAll();
-  let submittedApplication = await Query.Application.findBySubmitted();
-  let app = await Query.Application.findByUser(req.user.id);
-  //let allApplications = await Query.Application.findAll();
-  let users = await Query.User.findAll();
-  res.render("dashboard", {
-    layout: "layoutDashboard.handlebars",
-    //instLim: institutions,
-    //courses: courses.length,
-    submitted: submittedApplication,
-    //institutions: institutions.length,
-    users: users.length,
-    //apply: allApplications,
-    app: app
-  });
+  let isAdmin = req.user.roleId;
+  if (isAdmin) {
+    let submittedApplication = await Query.Application.findBySubmitted();
+
+    //let allApplications = await Query.Application.findAll();
+
+    let unread = await Query.Mail.findAdminUnreadMessages(req.user.id);
+
+    let hasBadge = unread.length > 0 ? true : false;
+    res.render("dashboard", {
+      layout: "layoutDashboard.handlebars",
+      //instLim: institutions,
+      unreadNum: unread.length,
+      hasBadge: hasBadge,
+      submitted: submittedApplication
+    });
+  } else {
+    let app = await Query.Application.findByUser(req.user.id);
+
+    let applicationPercentage = 0;
+    let isShowProgress = true;
+    let counter = 0;
+    let max = 26;
+    if (app && app.hasSubmitted) {
+      counter = 26;
+    } else if (app) {
+      app.firstname = !app.firstname || counter++;
+      app.lastname = !app.lastname || counter++;
+      app.dob = !app.dob || counter++;
+      app.gender = !app.gender || counter++;
+      app.marital = !app.marital || counter++;
+      app.homeAddress = !app.homeAddress || counter++;
+      app.phone = !app.phone || counter++;
+      app.hGrade = !app.hGrade || counter++;
+      app.hSchoolName = !app.hSchoolName || counter++;
+      app.hCompleted = !app.hCompleted || counter++;
+      app.hProgrammeYear = !app.hProgrammeYear || counter++;
+      app.pQualification = !app.pQualification || counter++;
+      app.pGrade = !app.pGrade || counter++;
+      app.pSchoolName = !app.pSchoolName || counter++;
+      app.pCompleted = !app.pCompleted || counter++;
+      app.pProgrammeYear = !app.pProgrammeYear || counter++;
+      app.highSchoolName = !app.highSchoolName || counter++;
+      app.completionYr = !app.completionYr || counter++;
+      app.englishTest = !app.englishTest || counter++;
+      app.sponsor = !app.sponsor || counter++;
+      app.sponsorName = !app.sponsorName || counter++;
+      app.sponsorOccupation = !app.sponsorOccupation || counter++;
+      app.budget = !app.budget || counter++;
+      app.credential = !app.credential || counter++;
+      app.hQualification = !app.hQualification || counter++;
+      app.pQualification = !app.pQualification || counter++;
+    } else {
+      isShowProgress = false;
+    }
+
+    applicationPercentage = (counter / max) * 100;
+
+    res.render("dashboard", {
+      layout: "layoutDashboard.handlebars",
+      user: req.user,
+      showProgress: isShowProgress,
+      appPercentage: parseInt(applicationPercentage),
+      app: app
+    });
+  }
   // });
 });
 

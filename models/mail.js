@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
       hasReadAdmin: DataTypes.BOOLEAN,
       userId: DataTypes.INTEGER,
       senderId: DataTypes.INTEGER,
-	  senderPhoto: DataTypes.STRING,
-	  senderName: DataTypes.STRING,
+      senderPhoto: DataTypes.STRING,
+      senderName: DataTypes.STRING,
       message: DataTypes.STRING,
       hasDelete: DataTypes.BOOLEAN,
       isDraft: DataTypes.BOOLEAN,
       isPublic: DataTypes.BOOLEAN,
-	  createdAt: DataTypes.DATE
+      createdAt: DataTypes.DATE
     },
     {}
   );

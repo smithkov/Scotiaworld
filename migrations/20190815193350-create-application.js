@@ -29,6 +29,9 @@ module.exports = {
       homeAddress: {
         type: Sequelize.STRING
       },
+      contactEmail: {
+        type: Sequelize.STRING
+      },
       postalAddress: {
         type: Sequelize.STRING
       },
@@ -98,6 +101,9 @@ module.exports = {
       hasSubmitted: {
         type: Sequelize.BOOLEAN
       },
+      hasDeleted: {
+        type: Sequelize.BOOLEAN
+      },
       stage: {
         type: Sequelize.STRING
       },
@@ -139,7 +145,7 @@ module.exports = {
       cityId: {
         type: Sequelize.INTEGER
       },
-	  courseId: {
+      courseId: {
         type: Sequelize.INTEGER
       },
       schoolWish1: {

@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       marital: DataTypes.STRING,
       homeAddress: DataTypes.STRING,
       postalAddress: DataTypes.STRING,
+      contactEmail: DataTypes.STRING,
       phone: DataTypes.STRING,
       hGrade: DataTypes.STRING,
       hSchoolName: DataTypes.STRING,
@@ -34,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       reasonOfRefusal: DataTypes.STRING,
       moreInfo: DataTypes.STRING,
       hasSubmitted: DataTypes.BOOLEAN,
+      hasDeleted: DataTypes.BOOLEAN,
       stage: DataTypes.STRING,
       decision: DataTypes.STRING,
       credential: DataTypes.STRING,
@@ -44,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       course2: DataTypes.STRING,
       level: DataTypes.STRING,
       cityId: DataTypes.INTEGER,
-	  courseId: DataTypes.INTEGER,
+      courseId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       schoolWish1: DataTypes.STRING,
       schoolWish2: DataTypes.STRING,
@@ -54,15 +56,14 @@ module.exports = (sequelize, DataTypes) => {
       hasDecided: DataTypes.BOOLEAN,
       hasPaid: DataTypes.BOOLEAN,
       hasCas: DataTypes.BOOLEAN
-
     },
     {}
   );
-  Application.associate = function (models) {
+  Application.associate = function(models) {
     // associations can be defined here
     //Application.belongsTo(models.Institution);
     Application.belongsTo(models.City);
-	Application.belongsTo(models.Course);
+    Application.belongsTo(models.Course);
     Application.belongsTo(models.Country);
     Application.belongsTo(models.User);
   };

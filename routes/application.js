@@ -14,7 +14,6 @@ const url = require("url");
 const entityName = "application";
 const year = [];
 
-
 function apiMsg(isError) {
   return isError
     ? "Application could not be saved successfully!"
@@ -28,7 +27,7 @@ function getYear() {
   }
   return year;
 }
-router.post("/mobileStep1", async function (req, res, next) {
+router.post("/mobileStep1", async function(req, res, next) {
   let currentUserId = req.body.userId;
   let application = await Application.findByUser(currentUserId);
   let quali = await Qualification.findAll();
@@ -37,7 +36,9 @@ router.post("/mobileStep1", async function (req, res, next) {
   //let institution = await Institution.findAll();
   let country = await Country.findAll();
 
-  let getCourse = application ? await Query.Course.findById(application.courseId) : "";
+  let getCourse = application
+    ? await Query.Course.findById(application.courseId)
+    : "";
 
   return res.send({
     //courses: course,
@@ -50,7 +51,7 @@ router.post("/mobileStep1", async function (req, res, next) {
   });
 });
 
-router.get("/step1", ensureAuthenticated, async function (req, res, next) {
+router.get("/step1", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
 
@@ -76,7 +77,7 @@ router.get("/step1", ensureAuthenticated, async function (req, res, next) {
   }
 });
 
-router.get("/step2", ensureAuthenticated, async function (req, res, next) {
+router.get("/step2", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let application = await Application.findByUser(currentUserId);
@@ -100,7 +101,7 @@ router.get("/step2", ensureAuthenticated, async function (req, res, next) {
     });
 });
 
-router.get("/step3", ensureAuthenticated, async function (req, res, next) {
+router.get("/step3", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let application = await Application.findByUser(currentUserId);
@@ -125,7 +126,7 @@ router.get("/step3", ensureAuthenticated, async function (req, res, next) {
   }
 });
 
-router.get("/step4", ensureAuthenticated, async function (req, res, next) {
+router.get("/step4", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let application = await Application.findByUser(currentUserId);
@@ -149,7 +150,7 @@ router.get("/step4", ensureAuthenticated, async function (req, res, next) {
     });
 });
 
-router.get("/step5", ensureAuthenticated, async function (req, res, next) {
+router.get("/step5", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let application = await Application.findByUser(currentUserId);
@@ -173,7 +174,7 @@ router.get("/step5", ensureAuthenticated, async function (req, res, next) {
     });
 });
 
-router.get("/applicationByUser/:id", ensureAuthenticated, function (
+router.get("/applicationByUser/:id", ensureAuthenticated, function(
   req,
   res,
   next
@@ -189,7 +190,7 @@ router.get("/applicationByUser/:id", ensureAuthenticated, function (
   });
 });
 
-router.get("/finish", ensureAuthenticated, async function (req, res, next) {
+router.get("/finish", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let country = await Country.findAll();
@@ -215,17 +216,29 @@ router.get("/finish", ensureAuthenticated, async function (req, res, next) {
   }
 });
 
-router.get("/applicants", ensureAuthenticated, function (req, res, next) {
-  Application.findAll().then(applications => {
-    res.render("applicantList", {
-      layout: "layoutDashboard.handlebars",
-      app: applications,
-      user: req.user
-    });
+router.get("/applicants", ensureAuthenticated, async function(req, res, next) {
+  let applications = await Application.findAll();
+  res.render("applicantList", {
+    layout: "layoutDashboard.handlebars",
+    app: applications,
+    user: req.user
   });
 });
 
-router.get("/Update/:id", ensureAuthenticated, function (req, res, next) {
+router.get("/read-Application", ensureAuthenticated, async function(
+  req,
+  res,
+  next
+) {
+  let applications = await Query.Application.findByUser(req.user.id);
+  res.render("readApplication", {
+    layout: "layoutDashboard.handlebars",
+    app: applications,
+    user: req.user
+  });
+});
+
+router.get("/Update/:id", ensureAuthenticated, function(req, res, next) {
   let id = req.params.id;
   Application.findById(id).then(data => {
     res.render("update", {
@@ -244,14 +257,14 @@ router.get("/Update/:id", ensureAuthenticated, function (req, res, next) {
 //
 // });
 
-router.get("/delete/:id", ensureAuthenticated, function (req, res, next) {
+router.get("/delete/:id", ensureAuthenticated, function(req, res, next) {
   let id = req.params.id;
   Application.delete(id).then(data => {
     res.redirect("/listing");
   });
 });
 
-router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function (
+router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function(
   req,
   res,
   next
@@ -363,7 +376,7 @@ router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function (
   }
 });
 
-router.post("/decision", function (req, res, next) {
+router.post("/decision", ensureAuthenticated, function(req, res, next) {
   let applicationId = req.body.id;
   //let userId = req.body.userId;
   var decision = req.body.decision;
@@ -395,7 +408,7 @@ router.post("/decision", function (req, res, next) {
     }
   });
 });
-router.post("/form1", function (req, res, next) {
+router.post("/form1", ensureAuthenticated, function(req, res, next) {
   var firstname = req.body.firstname;
   var middlename = req.body.middlename;
   var lastname = req.body.lastname;
@@ -435,7 +448,7 @@ router.post("/form1", function (req, res, next) {
   res.redirect("/application/step2");
 });
 
-router.post("/mobileForm1", async function (req, res, next) {
+router.post("/mobileForm1", async function(req, res, next) {
   var dataObject;
 
   let isError = false;
@@ -458,12 +471,9 @@ router.post("/mobileForm1", async function (req, res, next) {
 
   let applicationId = req.body.id;
 
-
   var countryId = await Country.findByName(req.body.countryId);
 
   try {
-
-
     var newApplication = {
       firstname: firstname,
       userId: userId,
@@ -483,7 +493,6 @@ router.post("/mobileForm1", async function (req, res, next) {
     };
     if (applicationId) {
       dataObject = await Application.update(newApplication, applicationId);
-
     } else {
       dataObject = await Application.create(newApplication);
     }
@@ -493,10 +502,14 @@ router.post("/mobileForm1", async function (req, res, next) {
 
   let getApplication = await Query.Application.findByUser(userId);
   //req.flash('success_msg', 'Application save successfully');
-  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
+  return res.send({
+    error: isError,
+    message: apiMsg(isError),
+    app: getApplication
+  });
 });
 
-router.post("/form2", ensureAuthenticated, function (req, res, next) {
+router.post("/form2", ensureAuthenticated, function(req, res, next) {
   var homeAddress = req.body.homeAddress;
   var postalAddress = req.body.postalAddress;
   var phone = req.body.phone;
@@ -538,11 +551,12 @@ router.post("/form2", ensureAuthenticated, function (req, res, next) {
   }
 });
 
-router.post("/mobileForm2", async function (req, res, next) {
+router.post("/mobileForm2", async function(req, res, next) {
   var dataObject;
   var homeAddress = req.body.homeAddress;
   var postalAddress = req.body.postalAddress;
   var phone = req.body.phone;
+  var contactEmail = req.body.contactEmail;
   var applicationId = req.body.id;
   let userId = req.body.userId;
 
@@ -551,6 +565,7 @@ router.post("/mobileForm2", async function (req, res, next) {
     var newApplication = {
       userId: userId,
       homeAddress: homeAddress,
+      contactEmail: contactEmail,
       postalAddress: postalAddress,
       phone: phone
     };
@@ -561,17 +576,45 @@ router.post("/mobileForm2", async function (req, res, next) {
     } else {
       dataObject = await Application.create(newApplication);
     }
-  }
-  catch (err) {
+  } catch (err) {
     isError = true;
   }
   let getApplication = await Query.Application.findByUser(userId);
-  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
+  return res.send({
+    error: isError,
+    message: apiMsg(isError),
+    app: getApplication
+  });
 });
 
+router.put("/removeApplication/:id", async function(req, res, next) {
+  let userId = req.body.userId;
 
-router.post("/form3", ensureAuthenticated, function (req, res, next) {
+  let applicationId = req.params.id;
+  let isError = false;
+  try {
+    var newApplication = {
+      hasDeleted: true,
+      userId: userId,
+      id: applicationId
+    };
 
+    if (applicationId) {
+      newApplication.id = applicationId;
+      let dataObject = await Application.update(newApplication, applicationId);
+    }
+  } catch (err) {
+    isError = true;
+  }
+  let getApplication = await Query.Application.findByUser(userId);
+  return res.send({
+    error: isError,
+    message: apiMsg(isError),
+    app: getApplication
+  });
+});
+
+router.post("/form3", ensureAuthenticated, function(req, res, next) {
   var applicationId = req.body.id;
 
   var hQualification = req.body.hQualification;
@@ -608,14 +651,14 @@ router.post("/form3", ensureAuthenticated, function (req, res, next) {
   if (applicationId) {
     newApplication.id = applicationId;
 
-    Application.update(newApplication, applicationId).then(application => { });
+    Application.update(newApplication, applicationId).then(application => {});
   } else {
-    Application.create(newApplication).then(data => { });
+    Application.create(newApplication).then(data => {});
   }
   res.redirect("/application/step4");
 });
 
-router.post("/mobileForm3", async function (req, res, next) {
+router.post("/mobileForm3", async function(req, res, next) {
   var dataObject;
   var applicationId = req.body.id;
   let isError = false;
@@ -663,12 +706,15 @@ router.post("/mobileForm3", async function (req, res, next) {
     isError = true;
   }
   let getApplication = await Query.Application.findByUser(userId);
-  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
+  return res.send({
+    error: isError,
+    message: apiMsg(isError),
+    app: getApplication
+  });
 });
 
-router.post("/form4", ensureAuthenticated, function (req, res, next) {
+router.post("/form4", ensureAuthenticated, function(req, res, next) {
   var applicationId = req.body.id;
-
 
   var sponsor = req.body.sponsor;
   var sponsorName = req.body.sponsorName;
@@ -685,15 +731,15 @@ router.post("/form4", ensureAuthenticated, function (req, res, next) {
 
   if (applicationId) {
     newApplication.id = applicationId;
-    Application.update(newApplication, applicationId).then(image => { });
+    Application.update(newApplication, applicationId).then(image => {});
   } else {
-    Application.create(newApplication).then(data => { });
+    Application.create(newApplication).then(data => {});
   }
 
   res.redirect("/application/step5");
 });
 
-router.post("/mobileForm4", async function (req, res, next) {
+router.post("/mobileForm4", async function(req, res, next) {
   var dataObject;
   var applicationId = req.body.id;
 
@@ -718,22 +764,23 @@ router.post("/mobileForm4", async function (req, res, next) {
     } else {
       dataObject = await Application.create(newApplication);
     }
-  }
-  catch (err) {
+  } catch (err) {
     isError = true;
   }
   let getApplication = await Query.Application.findByUser(userId);
 
-  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
+  return res.send({
+    error: isError,
+    message: apiMsg(isError),
+    app: getApplication
+  });
 });
-router.post("/mobileForm6", config.cpUpload2, async function (req, res, next) {
+router.post("/mobileForm6", config.cpUpload2, async function(req, res, next) {
   var dataObject;
   let isError = false;
   let applicationId = req.body.id;
   let userId = req.body.userId;
   try {
-
-
     let img =
       req.files["credential"] === undefined
         ? ""
@@ -748,16 +795,19 @@ router.post("/mobileForm6", config.cpUpload2, async function (req, res, next) {
     } else {
       dataObject = await Application.create(newApplication);
     }
-  }
-  catch (err) {
+  } catch (err) {
     isError = true;
   }
   let getApplication = await Query.Application.findByUser(userId);
 
-  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
+  return res.send({
+    error: isError,
+    message: apiMsg(isError),
+    app: getApplication
+  });
 });
 
-router.post("/mobileSubmission", async function (req, res, next) {
+router.post("/mobileSubmission", async function(req, res, next) {
   var dataObject;
   let isError = false;
   let applicationId = req.body.id;
@@ -776,10 +826,14 @@ router.post("/mobileSubmission", async function (req, res, next) {
     isError = true;
   }
   let getApplication = await Query.Application.findByUser(userId);
-  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
+  return res.send({
+    error: isError,
+    message: apiMsg(isError),
+    app: getApplication
+  });
 });
 
-router.post("/form5", config.cpUpload2, ensureAuthenticated, function (
+router.post("/form5", config.cpUpload2, ensureAuthenticated, function(
   req,
   res,
   next
@@ -814,7 +868,7 @@ router.post("/form5", config.cpUpload2, ensureAuthenticated, function (
   res.redirect("/application/finish");
 });
 
-router.post("/mobileForm5", async function (req, res) {
+router.post("/mobileForm5", async function(req, res) {
   var dataObject;
   let applicationId = req.body.id;
   let hasApplied = req.body.hasApplied;
@@ -860,7 +914,11 @@ router.post("/mobileForm5", async function (req, res) {
 
   let getApplication = await Query.Application.findByUser(userId);
 
-  return res.send({ error: isError, message: apiMsg(isError), app: getApplication });
+  return res.send({
+    error: isError,
+    message: apiMsg(isError),
+    app: getApplication
+  });
 });
 
 function ensureAuthenticated(req, res, next) {
