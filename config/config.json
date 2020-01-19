@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "thescoti_admin",
-    "password": "nnamdics123",
+    "username": "root",
+    "password": "",
     "database": "thescoti_db",
-    "host": "68.66.224.47",
+    "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": false
   },

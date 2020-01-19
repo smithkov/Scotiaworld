@@ -9,6 +9,7 @@ var Country = require("../queries/query").Country;
 var config = require("../my_modules/config");
 var ObjectID = require("mongodb").ObjectID;
 var Query = require("../queries/query");
+const mail = require("../my_modules/mailer");
 
 const url = require("url");
 const entityName = "application";
@@ -81,6 +82,9 @@ router.get("/step2", ensureAuthenticated, async function(req, res, next) {
   //if(req.user.roleId){
   let currentUserId = req.user.id;
   let application = await Application.findByUser(currentUserId);
+  let currentEmail = application.contactEmail;
+  application.contactEmail = currentEmail || req.user.email;
+
   let quali = await Qualification.findAll();
   let course = await Course.findAll();
   let city = await City.findAll();
@@ -264,117 +268,126 @@ router.get("/delete/:id", ensureAuthenticated, function(req, res, next) {
   });
 });
 
-router.post("/finalSubmit", config.cpUpload2, ensureAuthenticated, function(
-  req,
-  res,
-  next
-) {
-  let applicationId = req.body.id;
-  let firstname = req.body.firstname;
-  let middlename = req.body.middlename;
-  let lastname = req.body.lastname;
-  let countryId = req.body.countryId;
-  let dob = req.body.dob;
-  let gender = req.body.gender;
-  let marital = req.body.marital;
-  let userId = req.user.id;
-  let homeAddress = req.body.homeAddress;
-  let postalAddress = req.body.postalAddress;
-  let phone = req.body.phone;
-  let hQualification = req.body.hQualification;
-  let hGrade = req.body.hGrade;
-  let hSchoolName = req.body.hSchoolName;
-  let hCompleted = req.body.hCompleted;
-  let hProgrammeYear = req.body.hProgrammeYear;
-  let pQualification = req.body.pQualification;
-  let pGrade = req.body.pGrade;
-  let pSchoolName = req.body.pSchoolName;
-  let pCompleted = req.body.pCompleted;
-  let pProgrammeYear = req.body.pProgrammeYear;
-  let highSchoolName = req.body.highSchoolName;
-  let completionYr = req.body.completionYr;
-  let englishTest = req.body.englishTest;
-  let course1 = req.body.course1;
-  let course2 = req.body.course2;
-  let level = req.body.level;
-  let cityOfChoice = req.body.cityOfChoice;
-  let schoolWish1 = req.body.schoolWish1;
-  let schoolWish2 = req.body.schoolWish2;
-  let sponsor = req.body.sponsor;
-  let sponsorName = req.body.sponsorName;
-  let sponsorOccupation = req.body.sponsorOccupation;
-  let budget = req.body.budget;
-  let hasApplied = req.body.hasApplied;
-  let purpose = req.body.purpose;
-  let reasonOfRefusal = req.body.reasonOfRefusal;
-  let moreInfo = req.body.moreInfo;
-  let credential = req.body.credential;
+router.post(
+  "/finalSubmit",
+  config.cpUpload2,
+  ensureAuthenticated,
+  async function(req, res, next) {
+    let applicationId = req.body.id;
+    let firstname = req.body.firstname;
+    let middlename = req.body.middlename;
+    let lastname = req.body.lastname;
+    let countryId = req.body.countryId;
+    let dob = req.body.dob;
+    let gender = req.body.gender;
+    let marital = req.body.marital;
+    let contactEmail = req.body.contactEmail;
+    let userId = req.user.id;
+    let homeAddress = req.body.homeAddress;
+    let postalAddress = req.body.postalAddress;
+    let phone = req.body.phone;
+    let hQualification = req.body.hQualification;
+    let hGrade = req.body.hGrade;
+    let hSchoolName = req.body.hSchoolName;
+    let hCompleted = req.body.hCompleted;
+    let hProgrammeYear = req.body.hProgrammeYear;
+    let pQualification = req.body.pQualification;
+    let pGrade = req.body.pGrade;
+    let pSchoolName = req.body.pSchoolName;
+    let pCompleted = req.body.pCompleted;
+    let pProgrammeYear = req.body.pProgrammeYear;
+    let highSchoolName = req.body.highSchoolName;
+    let completionYr = req.body.completionYr;
+    let englishTest = req.body.englishTest;
+    let course1 = req.body.course1;
+    let course2 = req.body.course2;
+    let level = req.body.level;
+    let cityOfChoice = req.body.cityOfChoice;
+    let schoolWish1 = req.body.schoolWish1;
+    let schoolWish2 = req.body.schoolWish2;
+    let sponsor = req.body.sponsor;
+    let sponsorName = req.body.sponsorName;
+    let sponsorOccupation = req.body.sponsorOccupation;
+    let budget = req.body.budget;
+    let hasApplied = req.body.hasApplied;
+    let purpose = req.body.purpose;
+    let reasonOfRefusal = req.body.reasonOfRefusal;
+    let moreInfo = req.body.moreInfo;
+    let credential = req.body.credential;
 
-  console.log(req.body);
-  let img =
-    req.files["credential"] === undefined
-      ? credential
-      : req.files["credential"][0].filename;
+    console.log(req.body);
+    let img =
+      req.files["credential"] === undefined
+        ? credential
+        : req.files["credential"][0].filename;
 
-  let newApplication = {
-    id: applicationId,
-    firstname: firstname,
-    middlename: middlename,
-    lastname: lastname,
-    countryId: countryId,
-    dob: dob,
-    marital: marital,
-    gender: gender,
-    userId: userId,
-    homeAddress: homeAddress,
-    postalAddress: postalAddress,
-    phone: phone,
-    hQualification: hQualification,
-    hGrade: hGrade,
-    hSchoolName: hSchoolName,
-    hCompleted: hCompleted,
-    hProgrammeYear: hProgrammeYear,
-    pQualification: pQualification,
-    pGrade: pGrade,
-    pSchoolName: pSchoolName,
-    pCompleted: pCompleted,
-    pProgrammeYear: pProgrammeYear,
-    highSchoolName: highSchoolName,
-    completionYr: completionYr,
-    englishTest: englishTest,
-    course2: course2,
-    course1: course1,
-    level: level,
-    cityId: cityOfChoice,
-    schoolWish1: schoolWish1,
-    schoolWish2: schoolWish2,
-    sponsor: sponsor,
-    sponsorName: sponsorName,
-    sponsorOccupation: sponsorOccupation,
-    budget: budget,
-    hasApplied: hasApplied,
-    purpose: purpose,
-    reasonOfRefusal: reasonOfRefusal,
-    credential: img,
-    moreInfo: moreInfo,
-    hasSubmitted: true,
-    decision: "PENDING"
-  };
+    let newApplication = {
+      id: applicationId,
+      firstname: firstname,
+      middlename: middlename,
+      lastname: lastname,
+      contactEmail: contactEmail,
+      countryId: countryId,
+      dob: dob,
+      marital: marital,
+      gender: gender,
+      userId: userId,
+      homeAddress: homeAddress,
+      postalAddress: postalAddress,
+      phone: phone,
+      hQualification: hQualification,
+      hGrade: hGrade,
+      hSchoolName: hSchoolName,
+      hCompleted: hCompleted,
+      hProgrammeYear: hProgrammeYear,
+      pQualification: pQualification,
+      pGrade: pGrade,
+      pSchoolName: pSchoolName,
+      pCompleted: pCompleted,
+      pProgrammeYear: pProgrammeYear,
+      highSchoolName: highSchoolName,
+      completionYr: completionYr,
+      englishTest: englishTest,
+      course2: course2,
+      course1: course1,
+      level: level,
+      cityId: cityOfChoice,
+      schoolWish1: schoolWish1,
+      schoolWish2: schoolWish2,
+      sponsor: sponsor,
+      sponsorName: sponsorName,
+      sponsorOccupation: sponsorOccupation,
+      budget: budget,
+      hasApplied: hasApplied,
+      purpose: purpose,
+      reasonOfRefusal: reasonOfRefusal,
+      credential: img,
+      moreInfo: moreInfo,
+      hasSubmitted: true,
+      decision: "PENDING"
+    };
 
-  if (applicationId) {
-    Application.update(newApplication, applicationId).then(application => {
-      req.flash("success_msg", "Application submission was successful");
-      res.redirect("/application/finish");
-    });
+    let getApplication = await Query.Application.findByUser(userId);
+    if (applicationId) {
+      Application.update(newApplication, applicationId).then(app => {
+        mail.send(
+          getApplication.contactEmail,
+          mail.applicationSubject(),
+          mail.messageForAppSubmission(getApplication.firstname)
+        );
+        req.flash("success_msg", "Application submission was successful");
+        res.redirect("/application/finish");
+      });
 
-    res.render("applicationMsg", {
-      layout: "layoutDashboard.handlebars",
-      user: req.user
-    });
-  } else {
-    throw new Error("Application error ocuured");
+      res.render("applicationMsg", {
+        layout: "layoutDashboard.handlebars",
+        user: req.user
+      });
+    } else {
+      throw new Error("Application error ocuured");
+    }
   }
-});
+);
 
 router.post("/decision", ensureAuthenticated, function(req, res, next) {
   let applicationId = req.body.id;
@@ -402,7 +415,12 @@ router.post("/decision", ensureAuthenticated, function(req, res, next) {
     };
 
     if (data) {
-      Application.update(newApplication, applicationId).then(application => {
+      Application.update(newApplication, applicationId).then(app => {
+        mail.send(
+          data.contactEmail,
+          mail.applicationSubject(),
+          mail.messageForAppStatus(data.firstname)
+        );
         res.redirect("/application/applicants");
       });
     }
@@ -510,10 +528,11 @@ router.post("/mobileForm1", async function(req, res, next) {
 });
 
 router.post("/form2", ensureAuthenticated, function(req, res, next) {
-  var homeAddress = req.body.homeAddress;
-  var postalAddress = req.body.postalAddress;
-  var phone = req.body.phone;
-  var applicationId = req.body.id;
+  let homeAddress = req.body.homeAddress;
+  let postalAddress = req.body.postalAddress;
+  let phone = req.body.phone;
+  let contactEmail = req.body.contactEmail;
+  let applicationId = req.body.id;
 
   let isError = false;
 
@@ -521,6 +540,7 @@ router.post("/form2", ensureAuthenticated, function(req, res, next) {
     userId: req.user.id,
     homeAddress: homeAddress,
     postalAddress: postalAddress,
+    contactEmail: contactEmail,
     phone: phone
   };
 
@@ -819,13 +839,19 @@ router.post("/mobileSubmission", async function(req, res, next) {
     hasSubmitted: true,
     decision: "PENDING"
   };
+  let getApplication = await Query.Application.findByUser(userId);
   if (applicationId) {
     newApplication.id = applicationId;
     dataObject = await Application.update(newApplication, applicationId);
+    mail.send(
+      getApplication.contactEmail,
+      mail.applicationSubject(),
+      mail.messageForAppSubmission(getApplication.firstname)
+    );
   } else {
     isError = true;
   }
-  let getApplication = await Query.Application.findByUser(userId);
+
   return res.send({
     error: isError,
     message: apiMsg(isError),

@@ -11,6 +11,7 @@ let jwt = require("jsonwebtoken");
 let defaultImage = "no_photo.jpg";
 require("dotenv").config();
 let middleware = require("../middleware");
+const mail = require("../my_modules/mailer");
 
 var Recaptcha = require("express-recaptcha").Recaptcha;
 var recaptcha = new Recaptcha(
@@ -20,7 +21,7 @@ var recaptcha = new Recaptcha(
 
 var User = require("../models").User;
 var Model = require("../models");
-var Mailer = require("../my_modules/mailer");
+
 const url = "https://namdex.herokuapp.com";
 //const url = "http://localhost:3000";
 const verifyPath = "/verifyAccount/";
@@ -371,7 +372,7 @@ function ensureAuthenticated(req, res, next) {
 
 //Users send message to admin only
 router.post("/sendAdminMessage", async (req, res) => {
-  let message = req.body.message.trim();
+  let message = req.body.message;
   let subject = req.body.subject.trim();
   let senderId = req.body.userId;
 
@@ -392,6 +393,7 @@ router.post("/sendAdminMessage", async (req, res) => {
     } else {
       isError = true;
     }
+    mail.send(mail.altSender(), mail.messageSubject(getUser.username), message);
   } catch (err) {
     console.log(err);
     isError = true;
@@ -418,6 +420,37 @@ router.post("/markAsRead", async (req, res) => {
   return res.send({
     error: isError
   });
+});
+
+router.post("/getUsernames", async (req, res) => {
+  let username = req.body.username;
+
+  try {
+    let users = await Query.User.findPaginated(username);
+    let userArray = [];
+    for (var i = 0; i < users.length; i++) {
+      let getApplication = await Query.Application.findByUser(users[i].id);
+      userArray.push({
+        id: users[i].username,
+        value: users[i].username,
+        label: getApplication
+          ? users[i].username +
+            ` (${getApplication.firstname} ${getApplication.lastname})`
+          : users[i].username + ` (${users[i].email})`
+      });
+    }
+
+    return res.send({
+      data: users,
+      users: userArray,
+      error: false
+    });
+  } catch (err) {
+    return res.send({
+      data: null,
+      error: err
+    });
+  }
 });
 //get sent messages for web users
 router.get("/sentMessages", ensureAuthenticated, async (req, res) => {
@@ -564,6 +597,7 @@ router.post("/sendMessage", async (req, res) => {
 
       messageObject.userId = getUser.id;
       let createMsg = await Query.Mail.create(messageObject);
+      mail.send(getUser.email, mail.messageSubject("Administrator"), message);
     }
   } catch (err) {
     console.log(err);

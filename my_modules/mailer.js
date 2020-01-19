@@ -1,80 +1,61 @@
-const nodemailer = require("nodemailer"),
-  EmailTemplate = require("email-templates").EmailTemplate,
-  path = require("path"),
-  Promise = require("bluebird");
+require("dotenv").config();
+const nodemailer = require("nodemailer");
+const altMailID = "info@scotstudy.co.uk";
+const mailID = "no-reply@scotstudy.co.uk";
 
-let transporter = nodemailer.createTransport({
-  host: "mail.thescotiaworld.co.uk",
-  port: 465,
-  tls: {
-    rejectUnauthorized: false
-  },
-  auth: {
-    user: "info@thescotiaworld.co.uk",
-    pass: "2000years@BC"
-  }
-});
-
-module.exports.send = function(mailOptions) {
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-    }
-  });
+module.exports.sender = function() {
+  return mailID;
+};
+module.exports.altSender = function() {
+  return altMailID;
+};
+module.exports.applicationSubject = function() {
+  return "APPLICATION STATUS";
 };
 
-function loadTemplate(templateName, contexts) {
-  var template = new EmailTemplate(
-    path.join(__dirname, "/../templates", templateName)
-  );
-  return Promise.all(
-    contexts.map(context => {
-      return new Promise((resolve, reject) => {
-        template.render(context, (err, result) => {
-          if (err) reject(err);
-          else resolve({ email: result, context });
-        });
-      });
-    })
-  );
-}
-// var users = [
-//     {
-//         name: 'Jack',
-//         email: 'nnamdi4nwosu@gmail.com',
-//         link:'www.links'
-//     }
-// ];
-module.exports.sendMail = function(users) {
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
+module.exports.messageSubject = function(username) {
+  return `MESSAGE FROM ${username} OF SCOTSTUDY`;
+};
+module.exports.sender = function(username) {
+  return;
+};
 
-  // create reusable transporter object using the default SMTP transport
+module.exports.messageForAppStatus = function(recipient) {
+  return `Hi ${recipient}, <br/> You have a new notification regarding your application with Scotstudy. kindly login for the latest update`;
+};
 
-  var transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com",
-    secureConnection: false, // TLS requires secureConnection to be false
-    port: 587, // port for secure SMTP
+module.exports.messageForAppSubmission = function(recipient, status) {
+  return `Hi ${recipient}, <br/> Thank you for submitting your application, we will get back to you shortly.`;
+};
+
+module.exports.send = function(recipient, subject, message) {
+  let mailOptions = {
+    from: mailID,
+    sender: "Message from Scotstudy",
+    to: recipient,
+    subject: subject,
+    html: message
+  };
+
+  let transporter = nodemailer.createTransport({
+    host: `mail.scotstudy.co.uk`,
+    port: 465,
     tls: {
-      ciphers: "SSLv3"
+      rejectUnauthorized: false
     },
     auth: {
-      user: "smithdegreat@hotmail.com", // generated ethereal user
-      pass: "2000years@bc" // generated ethereal password
+      user: `${mailID}`,
+      pass: process.env.password
     }
   });
-
-  // send mail with defined transport object
-  loadTemplate("emailfiles", users).then(results => {
-    return Promise.all(
-      results.map(result => {
-        transporter.sendMail({
-          from: "Me :)", // sender address
-          to: result.context.email, // list of receivers
-          subject: result.email.subject, // Subject line
-          text: result.email.text, // plain text body
-          html: result.email.html // html body
-        });
-      })
-    );
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error)
+      return console.log(
+        `--------------------------------------------${error}`
+      );
+    else
+      return console.log(
+        `--------------------------------------------sent mail successfully`
+      );
   });
 };

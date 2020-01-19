@@ -9,6 +9,7 @@ var Query = require("../queries/query");
 var Logo = require("../models").Logo;
 var Banner = require("../models").Banner;
 var config = require("../my_modules/config");
+const mail = require("../my_modules/mailer");
 const bestSelling = "BEST SELLING COURSES";
 router.get("/", async function(req, res) {
   //let courses = await Query.Course.findAll();
@@ -40,68 +41,33 @@ function uniq(a) {
 function getSchoolAndFaculty() {
   return schoolArray;
 }
-router.post("/courseListingMobile",async function(req,res,next){
-let offset = req.body.offsetData;
-let limit = req.body.limitData;
-let searchParam = req.body.searchParam;
+router.post("/courseListingMobile", async function(req, res, next) {
+  let offset = req.body.offsetData;
+  let limit = req.body.limitData;
+  let searchParam = req.body.searchParam;
 
-let course = await Query.Course.findPaginated(offset,limit,searchParam);
+  let course = await Query.Course.findPaginated(offset, limit, searchParam);
 
-res.send({data:course})
-})
-router.get("/schools", async (req, res) => {
-  var schoolArray = [];
-  var schools = await Query.Institution.findAll();
-  var fac = [];
-
-  for (var i = 0; i < schools.length; i++) {
-    let getSurrogateFaculty = await Query.SurrogateFaculty.findByInstitution(
-      schools[i].id
+  res.send({ data: course });
+});
+router.get("/data", function(req, res) {
+  try {
+    Query.Institution.paginatedFindAll().then(
+      schools => {
+        return res.send({
+          auth: false,
+          token: null,
+          error: false,
+          data: schools
+        });
+      },
+      error => {
+        console.log(`-------This is a inner error ${error}----------------`);
+      }
     );
-    if (getSurrogateFaculty.length > 0) {
-      getSurrogateFaculty.forEach(school => {
-        fac.push(school.StudyArea);
-      });
-      schoolArray.push({ uni: schools[i], faculty: fac });
-    } else {
-      let course = await Query.Course.findByInstitutionId(schools[i].id);
-
-      for (var j = 0; j < course.length; j++) {
-        fac.push(course[j].StudyArea.id);
-      }
-      let filterIds = uniq(fac);
-      fac = [];
-      for (var u = 0; u < filterIds.length; u++) {
-        let getById = await Query.StudyArea.findById(filterIds[u]);
-        fac.push(getById);
-        let coursesByFaculty = await Query.Course.findByFacultyId(
-          getById.id,
-          schools[i].id
-        );
-
-        let surrogate = {
-          facultyId: getById.id,
-
-          name: getById.name,
-          facultyImage: getById.FacultyImages[0].path,
-          totalCourse: coursesByFaculty.length,
-          studyAreaId: getById.id,
-          institutionId: schools[i].id
-        };
-        let surrogateCFaculty = await Query.SurrogateFaculty.create(surrogate);
-      }
-      schoolArray.push({ uni: schools[i], faculty: fac });
-    }
-
-    fac = [];
+  } catch (err) {
+    console.log(`-------This is a custom error ${err}----------------`);
   }
-
-  return res.send({
-    auth: false,
-    token: null,
-    error: false,
-    data: schoolArray
-  });
 });
 router.post("/getCoursesByFaculty", async (req, res) => {
   let schoolId = req.body.schoolId;
@@ -276,16 +242,20 @@ router.post("/compareFee", async function(req, res) {
   let institutionId2 = req.body.institutionId2;
   let facultyId = req.body.facultyId;
   let degreeTypeId = req.body.degreeTypeId;
+  let offSet1 = req.body.offSetOne;
+  let offSet2 = req.body.offSetTwo;
 
   let courseForInstitution1 = await Query.Course.findByInstitutionIdSearch(
     institutionId,
     facultyId,
-    degreeTypeId
+    degreeTypeId,
+    offSet1
   );
   let courseForInstitution2 = await Query.Course.findByInstitutionIdSearch(
     institutionId2,
     facultyId,
-    degreeTypeId
+    degreeTypeId,
+    offSet2
   );
   return res.send({
     data: { course1: courseForInstitution1, course2: courseForInstitution2 }
@@ -405,7 +375,7 @@ router.get("/detail/:school/:course/:id", async (req, res) => {
 });
 
 router.get("/school-courses/:name/:_id", async function(req, res, next) {
-  let populars, institutions;
+  //let populars, institutions;
   let Schoolname = req.params.name;
   let id = req.params._id;
 

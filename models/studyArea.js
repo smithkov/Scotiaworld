@@ -3,7 +3,9 @@ module.exports = (sequelize, DataTypes) => {
   const StudyArea = sequelize.define(
     "StudyArea",
     {
-      name: DataTypes.STRING
+      name: DataTypes.STRING,
+      institutionId: DataTypes.INTEGER,
+      originalId: DataTypes.INTEGER
     },
     {}
   );

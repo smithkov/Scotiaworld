@@ -68,7 +68,7 @@
 		});
 		app.controller('school', function ($scope, $http) {
 
-			$http.get("/schools")
+			$http.get("/data")
 				.then(function (response) {
 					$scope.menu = response.data.data;
 					localStorage.setItem("menu", response.data.data)
@@ -130,15 +130,15 @@
 								<ul id="uni-menu" class="sub-menu">
 
 									<li ng-repeat="u in menu">
-										<a href="/school-faculties/{[{u.uni.name}]}/{[{u.uni.id}]}"
-											ng-bind="u.uni.name">
+										<a href="/school-faculties/{[{u.name}]}/{[{u.id}]}" ng-bind="u.name">
 											<span class="drop-icon">▾</span>
 											<label title="Toggle Drop-down" class="drop-icon" for="sm2">▾</label>
 										</a>
 										<input type="checkbox" id="sm2">
 										<ul class="sub-menu">
-											<li ng-repeat="f in u.faculty"><a href="/faculty/{[{f.id}]}/{[{u.uni.id}]}"
-													ng-bind="f.name"></a></li>
+											<li ng-repeat="f in u.StudyAreas"><a
+													href="/faculty/{[{f.originalId}]}/{[{u.id}]}" ng-bind="f.name"></a>
+											</li>
 
 										</ul>
 									</li>

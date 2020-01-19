@@ -254,6 +254,8 @@
 		$(document).ready(function () {
 
 			var ten = 10;
+			var offSetOne = 0;
+			var offSetTwo = 0;
 			var enquiryContainer = $(".enquiryContainer");
 			var feeCompareContainer = $(".feeCompareContainer");
 			var btnSearch = $("#btnSearch");
@@ -284,15 +286,7 @@
 			var renderData2 = [];
 			var totalData1 = 0;
 			var totalData2 = 0;
-			var paginationObject = {
-				limit: ten,
-				nextPage: 0,
-				nextPage2: 0,
-				total: 0,
-				total2: 0,
-				url: "/compareFee",
-				url2: "/compareFee"
-			}
+
 
 			var limit1, limit2, pageNext1, pagePrevious1, pageNext2, pagePrevious2;
 
@@ -417,14 +411,9 @@
 				}
 				else {
 					$(this).attr("disabled", false);
-					pageNext1 -= limit1;
+					offSetOne -= limit1;
 					pagePrevious1 -= limit1;
-					renderData = [];
-					renderData = allData.slice(pagePrevious1, pageNext1);
-					wrapper1.empty();
-					renderData.forEach(function (course) {
-						wrapper1.append(template({ hasData: true, data: course }));
-					})
+
 
 					paginationControl();
 					//paginationCaption((pageNext1), totalData1, pageOneCaption, limit1);
@@ -436,14 +425,9 @@
 				}
 				else {
 					$(this).attr("disabled", false);
-					pageNext2 -= limit2;
+					offSetTwo -= limit2;
 					pagePrevious2 -= limit2;
-					renderData2 = [];
-					renderData2 = allData2.slice(pagePrevious2, pageNext2);
-					wrapper2.empty();
-					renderData2.forEach(function (course) {
-						wrapper2.append(template({ hasData: true, data: course }));
-					})
+					ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level, offSetOne, offSetTwo);
 					paginationControl();
 					//paginationCaption((pageNext2), totalData2, pageTwoCaption, limit2);
 
@@ -451,22 +435,12 @@
 			})
 
 			btnNext.click(function (e) {
-				pageNext1 += limit1;
+				offSetOne += limit1;
 				pagePrevious1 += limit1;
-				renderData = [];
-				//allData.forEach(function (item) {
-				//console.log(allData.slice(pagePrevious1, pageNext1))
-				allData = allData;
-				//})
-				renderData = allData.slice(pagePrevious1, pageNext1);
 
-				wrapper1.empty();
-				renderData.forEach(function (course) {
-					wrapper1.append(template({ hasData: true, data: course }));
-				})
+				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level, offSetOne, offSetTwo);
 
 				paginationControl();
-
 
 				//paginationCaption(pageNext1, allData.length, pageOneCaption, limit1);
 
@@ -474,16 +448,9 @@
 			})
 			btnNext2.click(function (e) {
 
-				pageNext2 += limit2;
+				offSetTwo += limit2;
 				pagePrevious2 += limit2;
-				renderData2 = [];
-				allData2 = allData2;
-				renderData2 = allData2.slice(pagePrevious2, pageNext2);
-
-				wrapper2.empty();
-				renderData2.forEach(function (course) {
-					wrapper2.append(template({ hasData: true, data: course }));
-				});
+				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level, offSetOne, offSetTwo);
 				//adding the first parameter as pagePrevious initial value is zero 
 				paginationControl();
 				//paginationCaption(pageNext2, totalData2, pageTwoCaption, limit2);
@@ -536,7 +503,7 @@
 					level: cboLevel
 				}
 			}
-			function ajaxRequest(uni1, uni2, faculty, level) {
+			function ajaxRequest(uni1, uni2, faculty, level, offSetOne, offSetTwo) {
 
 				var firstUniText = uni1.find(":selected").text().trim();
 				var firstUniVal = uni1.val().trim();
@@ -567,7 +534,7 @@
 				$.ajax({
 					type: "POST",
 					url: "/compareFee",
-					data: { institutionId1: firstUniVal, institutionId2: secondUniVal, facultyId: facultyVal, degreeTypeId: levelVal },
+					data: { institutionId1: firstUniVal, institutionId2: secondUniVal, facultyId: facultyVal, degreeTypeId: levelVal, offSetOne: offSetOne, offSetTwo: offSetTwo },
 					dataType: "json",
 					success: function (result) {
 						initializeParams();
@@ -607,21 +574,21 @@
 					}
 				});
 			}
-			ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level);
+			ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level, offSetOne, offSetTwo);
 			btnSearch.click(function () {
-				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty), getIputs().level;
+				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level, offSetOne, offSetTwo);
 			});
 			cboUni1.change(function () {
-				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level);
+				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level, offSetOne, offSetTwo);
 			})
 			cboUni2.change(function () {
-				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level);
+				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level, offSetOne, offSetTwo);
 			})
 			cboFaculty.change(function () {
-				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level);
+				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level, offSetOne, offSetTwo);
 			})
 			cboLevel.change(function () {
-				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level);
+				ajaxRequest(getIputs().uni1, getIputs().uni2, getIputs().faculty, getIputs().level, offSetOne, offSetTwo);
 			})
 
 			function alertBoxTemplate(message, isError) {

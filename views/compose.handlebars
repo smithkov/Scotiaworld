@@ -1,3 +1,11 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<style>
+  .ui-autocomplete-loading {
+    background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
+  }
+</style>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <section class="content">
   <div class="container-fluid">
 
@@ -25,11 +33,14 @@
                 </div>
               </div>
               <div class="form-group form-float">
-                <label>Recipient's Username</label>
-                <div class="form-line">
+
+                <label for="username">Recipient's Username: </label>
+                <div class="ui-widget">
                   <input type="text" required name="recipient" id="username" placeholder="recipient's username"
                     class="form-control">
                 </div>
+
+
               </div>
               <div class="demo-checkbox">
                 <input type="checkbox" name="isAllUsers" id="basic_checkbox_2" class="filled-in allUser" />
@@ -187,4 +198,28 @@
     </div>
 
   </div>
+  <script>
+    $(function () {
+      var userName = $("#username");
+
+      userName.autocomplete({
+        source: function (request, response) {
+          $.ajax({
+            url: "/user/getUsernames",
+            type: 'post',
+            data: {
+              username: request.term
+            },
+            success: function (data) {
+              response(data.users);
+
+            }
+          });
+        },
+        minLength: 2,
+
+      });
+
+    });
+  </script>
 </section>

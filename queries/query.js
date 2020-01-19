@@ -265,6 +265,11 @@ module.exports = {
         include: ["Courses", "City"]
       });
     },
+    paginatedFindAll: function() {
+      return Institution.findAll({
+        include: ["StudyAreas"]
+      });
+    },
     findById: function(id) {
       return Institution.findByPk(id, { include: [{ model: City }] });
     },
@@ -334,7 +339,12 @@ module.exports = {
         include: [{ all: true }]
       });
     },
-    findByInstitutionIdSearch: function(schoolId, facultyId, degreeTypeId) {
+    findByInstitutionIdSearch: function(
+      schoolId,
+      facultyId,
+      degreeTypeId,
+      offSet
+    ) {
       let dataObj = {
         institutionId: schoolId,
         studyAreaId: facultyId,
@@ -358,9 +368,13 @@ module.exports = {
       return hasValues
         ? Course.findAll({
             where: dataObj,
+            offset: 0,
+            limit: 10,
             include: [{ all: true }]
           })
         : Course.findAll({
+            offset: offSet,
+            limit: 10,
             include: [{ all: true }]
           });
     },
@@ -538,6 +552,12 @@ module.exports = {
   User: {
     findAll: function() {
       return User.findAll();
+    },
+    findPaginated: function(username) {
+      return User.findAll({
+        where: { username: { [Op.like]: `%${username}%` } },
+        limit: 10
+      });
     },
     create: function(obj) {
       return User.create(obj);

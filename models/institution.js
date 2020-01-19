@@ -14,14 +14,10 @@ module.exports = (sequelize, DataTypes) => {
   );
   Institution.associate = function(models) {
     // associations can be defined here
-    Institution.belongsToMany(models.StudyArea, {
-      through: "SchoolFaculty",
-      as: "studyAreas",
-      foreignKey: "institutionId",
-      otherKey: "studyAreaId"
-    });
-    Institution.hasMany(models.Image);
+
+    //Institution.hasMany(models.Image);
     Institution.hasMany(models.Course);
+    Institution.hasMany(models.StudyArea);
     //Institution.hasMany(models.Application);
     Institution.belongsTo(models.InstitutionType);
     Institution.hasMany(models.FeeRange);
