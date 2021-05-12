@@ -39,7 +39,7 @@
     "multer-s3": "^2.9.0",
     "mysql2": "^1.7.0",
     "node-cache": "^4.2.1",
-    "nodemailer": "^4.7.0",
+    "nodemailer": "^6.4.16",
     "nodemon": "^1.19.4",
     "onesignal-node": "^2.1.1",
     "passport": "*",
