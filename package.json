@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/multer": "^1.3.10",
-    "aws-sdk": "^2.585.0",
+    "aws-sdk": "^2.814.0",
     "bcryptjs": "*",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
